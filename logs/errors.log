@@ -285,3 +285,7 @@
 [26-Nov-2025 16:58:48 Asia/Dhaka] PHP Deprecated:  substr(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 234
 [23-Apr-2026 19:26:08 Asia/Dhaka] [2026-04-23 19:26:08] Uncaught Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'first_name' in 'field list' in C:\xampp\htdocs\clinicapp\pages\employees.php:6
 
+[23-Apr-2026 19:38:05 Asia/Dhaka] [2026-04-23 19:38:05] Uncaught Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'first_name' in 'field list' in C:\xampp\htdocs\clinicapp\pages\employees.php:6
+
+[23-Apr-2026 19:38:19 Asia/Dhaka] [2026-04-23 19:38:19] Uncaught Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'first_name' in 'field list' in C:\xampp\htdocs\clinicapp\pages\employees.php:6
+

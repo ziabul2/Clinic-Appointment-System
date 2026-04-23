@@ -29,6 +29,16 @@ try {
             <?php echo csrf_input(); ?>
             <div class="row">
                 <div class="col-md-6 mb-3">
+                    <label class="form-label">First Name</label>
+                    <input class="form-control" name="first_name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input class="form-control" name="last_name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
                     <label class="form-label">Username</label>
                     <input class="form-control" name="username" required>
                 </div>

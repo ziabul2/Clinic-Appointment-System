@@ -317,6 +317,8 @@ try {
                 $username = sanitizeInput($_POST['username']);
                 $email = sanitizeInput($_POST['email']);
                 $role = sanitizeInput($_POST['role']);
+                $first_name = sanitizeInput($_POST['first_name'] ?? '');
+                $last_name = sanitizeInput($_POST['last_name'] ?? '');
                 $password = isset($_POST['password']) ? trim($_POST['password']) : '';
                 $doctor_id = isset($_POST['doctor_id']) && $_POST['doctor_id'] !== '' ? sanitizeInput($_POST['doctor_id']) : null;
 
@@ -336,29 +338,36 @@ try {
                 }
 
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $query = "INSERT INTO users (username, password, email, role, created_at" . (isset($doctor_id) ? ", doctor_id" : "") . ") VALUES (:username, :password, :email, :role, NOW()" . (isset($doctor_id) ? ", :doctor_id" : "") . ")";
+                $query = "INSERT INTO users (username, password, email, role, first_name, last_name, created_at" . (isset($doctor_id) ? ", doctor_id" : "") . ") VALUES (:username, :password, :email, :role, :first_name, :last_name, NOW()" . (isset($doctor_id) ? ", :doctor_id" : "") . ")";
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':username', $username);
                 $stmt->bindParam(':password', $hash);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':role', $role);
-                    // Create notifications for admin/receptionist users
-                    try {
-                        $title = 'New patient added';
-                        $message = "Patient $first_name $last_name was added to the system.";
-                        $meta = ['patient_id' => $db->lastInsertId() ?: null];
-                        $aq = $db->query("SELECT user_id FROM users WHERE role IN ('admin','receptionist')");
-                        if ($aq) {
-                            foreach ($aq->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                                createNotification($db, $row['user_id'], 'patient_created', $title, $message, $meta);
-                            }
-                        }
-                    } catch (Exception $e) {
-                        logAction('NOTIF_ERROR', 'Failed to create patient notifications: ' . $e->getMessage());
-                    }
+                $stmt->bindParam(':first_name', $first_name);
+                $stmt->bindParam(':last_name', $last_name);
+                if (isset($doctor_id)) $stmt->bindParam(':doctor_id', $doctor_id);
 
                 if ($stmt->execute()) {
                     $newId = $db->lastInsertId();
+                    
+                    // Create notifications for admin/receptionist users
+                    try {
+                        $title = 'New user added';
+                        $message = "User $username ($role) was added to the system.";
+                        $meta = ['user_id' => $newId];
+                        $aq = $db->query("SELECT user_id FROM users WHERE role IN ('admin','receptionist')");
+                        if ($aq) {
+                            foreach ($aq->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                                if ($row['user_id'] != ($_SESSION['user_id'] ?? 0)) {
+                                    createNotification($db, $row['user_id'], 'user_created', $title, $message, $meta);
+                                }
+                            }
+                        }
+                    } catch (Exception $e) {
+                        logAction('NOTIF_ERROR', 'Failed to create user notifications: ' . $e->getMessage());
+                    }
+
                     logAction('USER_ADDED', "User $username (Role: $role) added by " . ($_SESSION['username'] ?? 'System'));
                     logAuth('USER_CREATED', $username, $newId);
                     // Detect AJAX and return JSON when appropriate
@@ -434,6 +443,61 @@ try {
                 }
             }
             redirect('pages/map_patients_users.php');
+            break;
+
+        case 'update_user':
+            if ($_POST) {
+                if (!verify_csrf()) { $_SESSION['error'] = 'Invalid CSRF.'; redirect('pages/employees.php'); }
+                checkRole(['admin','root']);
+                $user_id = sanitizeInput($_POST['user_id']);
+                $username = sanitizeInput($_POST['username']);
+                $email = sanitizeInput($_POST['email']);
+                $role = sanitizeInput($_POST['role']);
+                $first_name = sanitizeInput($_POST['first_name'] ?? '');
+                $last_name = sanitizeInput($_POST['last_name'] ?? '');
+                $doctor_id = isset($_POST['doctor_id']) && $_POST['doctor_id'] !== '' ? sanitizeInput($_POST['doctor_id']) : null;
+
+                $query = "UPDATE users SET username = :username, email = :email, role = :role, first_name = :first_name, last_name = :last_name, doctor_id = :doctor_id WHERE user_id = :id";
+                $stmt = $db->prepare($query);
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':role', $role);
+                $stmt->bindParam(':first_name', $first_name);
+                $stmt->bindParam(':last_name', $last_name);
+                $stmt->bindParam(':doctor_id', $doctor_id);
+                $stmt->bindParam(':id', $user_id);
+
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = 'User updated successfully.';
+                    logAction('USER_UPDATED', "User $username updated by " . ($_SESSION['username'] ?? 'System'));
+                } else {
+                    $_SESSION['error'] = 'Failed to update user.';
+                }
+            }
+            redirect('pages/employees.php');
+            break;
+
+        case 'delete_user':
+            if (isset($_GET['id'])) {
+                checkRole(['admin','root']);
+                $user_id = sanitizeInput($_GET['id']);
+                
+                // Don't allow deleting yourself
+                if ($user_id == ($_SESSION['user_id'] ?? 0)) {
+                    $_SESSION['error'] = 'You cannot delete your own account.';
+                    redirect('pages/employees.php');
+                }
+
+                $stmt = $db->prepare("DELETE FROM users WHERE user_id = :id");
+                $stmt->bindParam(':id', $user_id);
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = 'User deleted successfully.';
+                    logAction('USER_DELETED', "User ID $user_id deleted by " . ($_SESSION['username'] ?? 'System'));
+                } else {
+                    $_SESSION['error'] = 'Failed to delete user.';
+                }
+            }
+            redirect('pages/employees.php');
             break;
 
         case 'apply_patient_column':

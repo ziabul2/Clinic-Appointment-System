@@ -3,7 +3,10 @@ $page_title = 'Employees';
 require_once '../includes/header.php';
 if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','root'])) redirect('../index.php');
 
-$q = $db->prepare('SELECT user_id, username, role, email, first_name, last_name, profile_picture FROM users ORDER BY role, username');
+$q = $db->prepare('SELECT u.user_id, u.username, u.role, u.email, u.first_name, u.last_name, u.profile_picture, d.first_name as doc_first, d.last_name as doc_last, d.profile_picture as doc_pic 
+                   FROM users u 
+                   LEFT JOIN doctors d ON u.doctor_id = d.doctor_id 
+                   ORDER BY u.role, u.username');
 $q->execute();
 $rows = $q->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -32,15 +35,26 @@ $rows = $q->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($rows as $r): ?>
                 <tr>
                     <td>
-                        <?php if (!empty($r['profile_picture']) && file_exists(__DIR__ . '/../uploads/users/' . $r['profile_picture'])): ?>
-                            <img src="../uploads/users/<?php echo htmlspecialchars($r['profile_picture']); ?>" style="width:40px;height:40px;object-fit:cover;border-radius:50%;">
+                        <?php 
+                        $pic = !empty($r['profile_picture']) ? $r['profile_picture'] : ($r['doc_pic'] ?? '');
+                        if (!empty($pic) && file_exists(__DIR__ . '/../uploads/users/' . $pic)): ?>
+                            <img src="../uploads/users/<?php echo htmlspecialchars($pic); ?>" style="width:40px;height:40px;object-fit:cover;border-radius:50%;">
+                        <?php elseif (!empty($pic) && file_exists(__DIR__ . '/../uploads/doctors/' . $pic)): ?>
+                            <img src="../uploads/doctors/<?php echo htmlspecialchars($pic); ?>" style="width:40px;height:40px;object-fit:cover;border-radius:50%;">
                         <?php else: ?>
                             <i class="fas fa-user-circle fa-2x text-muted"></i>
                         <?php endif; ?>
                     </td>
                     <td><?php echo htmlspecialchars($r['username']); ?></td>
-                    <td><?php echo htmlspecialchars(trim(($r['first_name'] ?? '') . ' ' . ($r['last_name'] ?? ''))); ?></td>
-                    <td><?php echo htmlspecialchars($r['role']); ?></td>
+                    <td>
+                        <?php 
+                        $fname = !empty($r['first_name']) ? $r['first_name'] : ($r['doc_first'] ?? '');
+                        $lname = !empty($r['last_name']) ? $r['last_name'] : ($r['doc_last'] ?? '');
+                        $fullName = trim($fname . ' ' . $lname);
+                        echo htmlspecialchars(!empty($fullName) ? $fullName : $r['username']); 
+                        ?>
+                    </td>
+                    <td><span class="badge bg-info"><?php echo htmlspecialchars($r['role']); ?></span></td>
                     <td><?php echo htmlspecialchars($r['email']); ?></td>
                     <td>
                         <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
