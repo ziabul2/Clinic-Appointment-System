@@ -1,0 +1,285 @@
+[24-Nov-2025 10:15:51 Asia/Dhaka] PHP Warning:  mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\xampp\htdocs\clinicapp\includes\functions.php on line 187
+[24-Nov-2025 10:15:51 Asia/Dhaka] PHP mail() failed to send to eng.zim.babu@gmail.com
+[24-Nov-2025 10:38:46 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 41be03b00d2f7-bd760fafe6dsm11405955a12.34 - gsmtp
+
+[24-Nov-2025 10:38:46 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: EHLO Rangpur-Eye-Hospital
+
+[24-Nov-2025 10:38:46 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [103.23.207.10]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+[24-Nov-2025 10:38:46 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: STARTTLS
+
+[24-Nov-2025 10:38:47 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+[24-Nov-2025 10:38:47 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: EHLO Rangpur-Eye-Hospital
+
+[24-Nov-2025 10:38:47 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [103.23.207.10]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+[24-Nov-2025 10:38:47 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: AUTH LOGIN
+
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: [credentials hidden]
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: [credentials hidden]
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: MAIL FROM:<eng.zim.babu@gmail.com>
+
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 250 2.1.0 OK 41be03b00d2f7-bd760fafe6dsm11405955a12.34 - gsmtp
+
+[24-Nov-2025 10:38:48 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: RCPT TO:<eng.zim.babu@gmail.com>
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 250 2.1.5 OK 41be03b00d2f7-bd760fafe6dsm11405955a12.34 - gsmtp
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: DATA
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 354 Go ahead 41be03b00d2f7-bd760fafe6dsm11405955a12.34 - gsmtp
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: Date: Mon, 24 Nov 2025 10:38:45 +0600
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: To: eng.zim.babu@gmail.com
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: From: Clinic Appointment System <eng.zim.babu@gmail.com>
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: Subject: Appointment Confirmation - Test
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: Message-ID: <zrUZ1dVEAjb3hA2cRcA9W1OMHRtfKTTB5n3zVkUjpxY@Rangpur-Eye-Hospital>
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: X-Mailer: PHPMailer 7.0.0 (https://github.com/PHPMailer/PHPMailer)
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: MIME-Version: 1.0
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: Content-Type: text/html; charset=iso-8859-1
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: 
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: <p>This is a test of the SMTP mail function from the Clinic app.</p><p>If you see this, SMTP send was successful.</p>
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: 
+
+[24-Nov-2025 10:38:49 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: .
+
+[24-Nov-2025 10:38:50 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 250 2.0.0 OK  1763959146 41be03b00d2f7-bd760fafe6dsm11405955a12.34 - gsmtp
+
+[24-Nov-2025 10:38:50 Asia/Dhaka] PHPMailer debug level 1; message: CLIENT -> SERVER: QUIT
+
+[24-Nov-2025 10:38:50 Asia/Dhaka] PHPMailer debug level 2; message: SERVER -> CLIENT: 221 2.0.0 closing connection 41be03b00d2f7-bd760fafe6dsm11405955a12.34 - gsmtp
+
+[24-Nov-2025 11:30:25 Asia/Dhaka] [2025-11-24 11:30:25] Uncaught Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'doctor_id' in 'field list' in C:\xampp\htdocs\clinicapp\import_cli.php:55
+
+[24-Nov-2025 13:27:24 Asia/Dhaka] [OAUTH] Token response: {
+  "error": "invalid_client",
+  "error_description": "Unauthorized"
+}
+[24-Nov-2025 14:20:24 Asia/Dhaka] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\clinicapp\includes\header.php:119) in C:\xampp\htdocs\clinicapp\config\config.php on line 80
+[24-Nov-2025 16:55:26 Asia/Dhaka] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\clinicapp\includes\header.php:114) in C:\xampp\htdocs\clinicapp\config\config.php on line 103
+[24-Nov-2025 17:34:29 Asia/Dhaka] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\clinicapp\includes\header.php:107) in C:\xampp\htdocs\clinicapp\config\config.php on line 106
+[2025-11-24 18:41:32] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[2025-11-24 18:41:32] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[2025-11-24 18:42:41] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[2025-11-24 18:42:43] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[2025-11-24 18:42:45] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[2025-11-24 18:42:46] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[2025-11-24 18:43:33] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[24-Nov-2025 18:43:33 Asia/Dhaka] [2025-11-24 18:43:33] Uncaught Exception: Call to a member function prepare() on null in C:\xampp\htdocs\clinicapp\process.php:419
+
+[2025-11-24 18:43:46] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[24-Nov-2025 18:43:46 Asia/Dhaka] [2025-11-24 18:43:46] Uncaught Exception: Call to a member function prepare() on null in C:\xampp\htdocs\clinicapp\process.php:419
+
+[2025-11-24 18:43:48] [ERROR] [DATABASE_ERROR] Connection error: SQLSTATE[HY000] [1049] Unknown database 'clinic_management'
+[24-Nov-2025 19:42:45 Asia/Dhaka] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\clinicapp\includes\header.php:110) in C:\xampp\htdocs\clinicapp\config\config.php on line 116
+[24-Nov-2025 19:50:46 Asia/Dhaka] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\clinicapp\includes\header.php:110) in C:\xampp\htdocs\clinicapp\config\config.php on line 116
+[24-Nov-2025 20:17:17 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\view_patient.php on line 72
+[24-Nov-2025 20:17:24 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\edit_patient.php on line 128
+[24-Nov-2025 20:21:50 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\view_patient.php on line 72
+[24-Nov-2025 20:21:54 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\edit_patient.php on line 128
+[24-Nov-2025 21:08:33 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\view_patient.php on line 72
+[24-Nov-2025 22:29:04 Asia/Dhaka] [2025-11-24 22:29:04] Uncaught Exception: Call to undefined function csrf_token_key() in C:\xampp\htdocs\clinicapp\pages\prescription_edit.php:76
+
+[24-Nov-2025 22:30:28 Asia/Dhaka] [2025-11-24 22:30:28] Uncaught Exception: Call to undefined function csrf_token_key() in C:\xampp\htdocs\clinicapp\pages\prescription_edit.php:76
+
+[24-Nov-2025 22:31:19 Asia/Dhaka] [2025-11-24 22:31:19] Uncaught Exception: Call to undefined function csrf_token_key() in C:\xampp\htdocs\clinicapp\pages\prescription_edit.php:76
+
+[24-Nov-2025 23:34:35 Asia/Dhaka] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\clinicapp\pages\tools.php on line 5
+[24-Nov-2025 23:34:46 Asia/Dhaka] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\clinicapp\pages\tools_image_upload.php on line 5
+[25-Nov-2025 12:00:39 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 154
+[25-Nov-2025 12:00:39 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 160
+[25-Nov-2025 12:00:39 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 195
+[25-Nov-2025 12:00:39 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 248
+[25-Nov-2025 12:01:06 Asia/Dhaka] [2025-11-25 12:01:06] Uncaught Exception: Call to undefined function verify_csrf_token() in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php:41
+
+[25-Nov-2025 12:01:26 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 154
+[25-Nov-2025 12:01:26 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 160
+[25-Nov-2025 12:01:26 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 195
+[25-Nov-2025 12:01:26 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 248
+[25-Nov-2025 12:01:40 Asia/Dhaka] [2025-11-25 12:01:40] Uncaught Exception: Call to undefined function verify_csrf_token() in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php:41
+
+[25-Nov-2025 12:05:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 154
+[25-Nov-2025 12:05:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 160
+[25-Nov-2025 12:05:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 195
+[25-Nov-2025 12:05:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 248
+[25-Nov-2025 12:05:57 Asia/Dhaka] [2025-11-25 12:05:57] Uncaught Exception: Call to undefined function verify_csrf_token() in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php:41
+
+[25-Nov-2025 12:24:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 154
+[25-Nov-2025 12:24:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 160
+[25-Nov-2025 12:24:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 195
+[25-Nov-2025 12:24:52 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 248
+[25-Nov-2025 16:15:15 Asia/Dhaka] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\clinicapp\pages\tools.php on line 5
+[25-Nov-2025 19:26:55 Asia/Dhaka] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\clinicapp\pages\tools.php on line 5
+[25-Nov-2025 19:47:57 Asia/Dhaka] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\clinicapp\pages\tools.php on line 5
+[25-Nov-2025 19:48:04 Asia/Dhaka] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\clinicapp\pages\tools.php on line 5
+[25-Nov-2025 22:38:15 Asia/Dhaka] PHP Fatal error:  Maximum execution time of 120 seconds exceeded in C:\xampp\htdocs\clinicapp\vendor\phpmailer\phpmailer\src\SMTP.php on line 1331
+[2025-11-25T23:11:33+06:00] [PHPMailer_ERROR] SMTP Error: data not accepted.
+[26-Nov-2025 12:21:01 Asia/Dhaka] PHP Warning:  Undefined variable $doctors in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 170
+[26-Nov-2025 12:21:01 Asia/Dhaka] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 170
+[26-Nov-2025 12:21:01 Asia/Dhaka] PHP Warning:  Undefined variable $total in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 194
+[26-Nov-2025 14:17:37 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 352
+[26-Nov-2025 14:17:37 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 359
+[26-Nov-2025 14:17:37 Asia/Dhaka] PHP Warning:  Undefined array key "revenue_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:17:37 Asia/Dhaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:18:34 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 352
+[26-Nov-2025 14:18:34 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 359
+[26-Nov-2025 14:18:34 Asia/Dhaka] PHP Warning:  Undefined array key "revenue_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:18:34 Asia/Dhaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:18:43 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 352
+[26-Nov-2025 14:18:43 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 359
+[26-Nov-2025 14:18:43 Asia/Dhaka] PHP Warning:  Undefined array key "revenue_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:18:43 Asia/Dhaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:18:51 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 352
+[26-Nov-2025 14:18:51 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 359
+[26-Nov-2025 14:18:51 Asia/Dhaka] PHP Warning:  Undefined array key "revenue_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:18:51 Asia/Dhaka] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 373
+[26-Nov-2025 14:24:55 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:24:55 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:24:55 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:24:55 Asia/Dhaka] [2025-11-26 14:24:55] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:24:57 Asia/Dhaka] [2025-11-26 14:24:57] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:24:57 Asia/Dhaka] [2025-11-26 14:24:57] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:24:57 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:24:57 Asia/Dhaka] [2025-11-26 14:24:57] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:25:03 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:25:03 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:25:03 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:25:03 Asia/Dhaka] [2025-11-26 14:25:03] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:26:41 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:26:41 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:26:41 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:26:41 Asia/Dhaka] [2025-11-26 14:26:41] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:26:42 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:26:42 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:26:42 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:26:42 Asia/Dhaka] [2025-11-26 14:26:42] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:26:43 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:26:43 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:26:43 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:26:43 Asia/Dhaka] [2025-11-26 14:26:43] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:27:20 Asia/Dhaka] PHP Warning:  Undefined array key "new_patients_today" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 240
+[26-Nov-2025 14:27:20 Asia/Dhaka] PHP Warning:  Undefined array key "waitlist_pending" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 263
+[26-Nov-2025 14:27:20 Asia/Dhaka] PHP Warning:  Undefined variable $appointments_by_doctor in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 270
+[26-Nov-2025 14:27:20 Asia/Dhaka] [2025-11-26 14:27:20] Uncaught Exception: array_slice(): Argument #1 ($array) must be of type array, null given in C:\xampp\htdocs\clinicapp\pages\dashboard.php:270
+
+[26-Nov-2025 14:28:06 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:28:06 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 14:29:05 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:29:05 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 14:29:14 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:29:14 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 14:30:45 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:30:45 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 14:31:09 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:31:09 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 14:31:10 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:31:10 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 14:31:13 Asia/Dhaka] PHP Warning:  Undefined array key "active_doctors" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 189
+[26-Nov-2025 14:31:13 Asia/Dhaka] PHP Warning:  Undefined array key "active_receptionists" in C:\xampp\htdocs\clinicapp\pages\dashboard.php on line 198
+[26-Nov-2025 15:13:59 Asia/Dhaka] PHP Warning:  Undefined variable $patients in C:\xampp\htdocs\clinicapp\pages\add_appointment.php on line 280
+[26-Nov-2025 15:13:59 Asia/Dhaka] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\clinicapp\pages\add_appointment.php on line 280
+[26-Nov-2025 15:14:11 Asia/Dhaka] PHP Warning:  Undefined variable $patients in C:\xampp\htdocs\clinicapp\pages\add_appointment.php on line 282
+[26-Nov-2025 15:14:11 Asia/Dhaka] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\clinicapp\pages\add_appointment.php on line 282
+[26-Nov-2025 15:17:06 Asia/Dhaka] PHP Warning:  Undefined variable $patients in C:\xampp\htdocs\clinicapp\pages\add_appointment.php on line 282
+[26-Nov-2025 15:17:06 Asia/Dhaka] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\clinicapp\pages\add_appointment.php on line 282
+[26-Nov-2025 15:24:01 Asia/Dhaka] [2025-11-26 15:24:01] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:400
+
+[26-Nov-2025 15:25:36 Asia/Dhaka] [2025-11-26 15:25:36] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 15:34:57 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicapp\pages\patients.php on line 104
+[26-Nov-2025 15:35:17 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicapp\pages\patients.php on line 104
+[26-Nov-2025 15:35:37 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicapp\pages\patients.php on line 104
+[26-Nov-2025 15:40:46 Asia/Dhaka] [2025-11-26 15:40:46] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 15:49:11 Asia/Dhaka] [2025-11-26 15:49:11] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 15:52:47 Asia/Dhaka] [2025-11-26 15:52:47] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 15:54:49 Asia/Dhaka] [2025-11-26 15:54:49] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:400
+
+[26-Nov-2025 16:07:38 Asia/Dhaka] [2025-11-26 16:07:38] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:400
+
+[26-Nov-2025 16:20:20 Asia/Dhaka] [2025-11-26 16:20:20] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 16:49:36 Asia/Dhaka] [2025-11-26 16:49:36] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 16:52:19 Asia/Dhaka] [2025-11-26 16:52:19] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Warning:  Undefined array key "date_of_birth" in C:\xampp\htdocs\clinicapp\process.php on line 107
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Warning:  Undefined array key "gender" in C:\xampp\htdocs\clinicapp\process.php on line 108
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Warning:  Undefined array key "emergency_contact" in C:\xampp\htdocs\clinicapp\process.php on line 109
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Warning:  Undefined array key "medical_history" in C:\xampp\htdocs\clinicapp\process.php on line 110
+[26-Nov-2025 16:53:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:53:07 Asia/Dhaka] [2025-11-26 16:53:07] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:376
+
+[26-Nov-2025 16:54:56 Asia/Dhaka] [2025-11-26 16:54:56] Uncaught Exception: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\clinicapp\includes\functions.php:400
+
+[26-Nov-2025 16:55:58 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 154
+[26-Nov-2025 16:55:58 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 160
+[26-Nov-2025 16:55:58 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 195
+[26-Nov-2025 16:55:58 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 248
+[26-Nov-2025 16:56:18 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 154
+[26-Nov-2025 16:56:18 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 160
+[26-Nov-2025 16:56:18 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 195
+[26-Nov-2025 16:56:18 Asia/Dhaka] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointment_actions.php on line 248
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Warning:  Undefined array key "date_of_birth" in C:\xampp\htdocs\clinicapp\process.php on line 107
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Warning:  Undefined array key "gender" in C:\xampp\htdocs\clinicapp\process.php on line 108
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Warning:  Undefined array key "emergency_contact" in C:\xampp\htdocs\clinicapp\process.php on line 109
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Warning:  Undefined array key "medical_history" in C:\xampp\htdocs\clinicapp\process.php on line 110
+[26-Nov-2025 16:58:07 Asia/Dhaka] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\config\config.php on line 122
+[26-Nov-2025 16:58:44 Asia/Dhaka] PHP Deprecated:  substr(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 234
+[26-Nov-2025 16:58:46 Asia/Dhaka] PHP Deprecated:  substr(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 234
+[26-Nov-2025 16:58:48 Asia/Dhaka] PHP Deprecated:  substr(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\clinicapp\pages\appointments.php on line 234

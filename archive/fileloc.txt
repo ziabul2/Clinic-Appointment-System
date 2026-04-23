@@ -1,0 +1,38 @@
+clinic_appointment_system/
+│
+├── config/
+│   ├── database.php
+│   └── config.php
+│
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   ├── functions.php
+│   └── auth.php
+│
+├── logs/
+│   ├── errors.log
+│   ├── process.log
+│   └── backup/
+│
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│
+├── pages/
+│   ├── dashboard.php
+│   ├── patients.php
+│   ├── doctors.php
+│   ├── appointments.php
+│   ├── add_patient.php
+│   ├── add_doctor.php
+│   ├── book_appointment.php
+│   └── view_appointment.php
+│
+├── index.php
+├── process.php
+├── README.txt
+└── database_backup.sql

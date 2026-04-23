@@ -1,0 +1,9 @@
+﻿{
+    "total_sql_files":  10,
+    "database":  "clinic_management",
+    "table_count":  8,
+    "zip_size_bytes":  15158,
+    "created_at":  "2025-11-25T10:18:11.1242325+06:00",
+    "zip_path":  "C:\\xampp\\htdocs\\clinicapp\\backupAutomotion\\backups\\db_backup_20251125_101809.zip",
+    "backup_name":  "db_backup_20251125_101809"
+}

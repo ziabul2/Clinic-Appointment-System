@@ -1,0 +1,48 @@
+Configure mail settings in config.php:
+
+Set MAIL_FROM and, if you want proper SMTP delivery, set MAIL_SMTP_HOST, MAIL_SMTP_PORT, MAIL_SMTP_USER, MAIL_SMTP_PASS, and MAIL_SMTP_SECURE.
+Note: The shipped helper uses PHP mail() by default. For reliable SMTP (Gmail, Mailgun, SendGrid, etc.) integrate PHPMailer and configure SMTP credentials — I can help add PHPMailer if you want.
+Add doctor_id to users table if you want doctors linked to user accounts:
+
+Run the migration file via phpMyAdmin or command line:
+Example (PowerShell):
+Then link doctor users to doctor_id via admin Add User (select Associate Doctor) or update in DB.
+Test the flows:
+
+DB test: http://localhost/clinicapp/db_test.php
+Login: http://localhost/clinicapp/index.php
+Admin -> Users: http://localhost/clinicapp/pages/users.php (create user; check email)
+Book appointment: Book a test appointment and check logs/emails.
+Notes & security/UX recommendations
+
+Sending plaintext passwords by email is insecure — it's implemented per your request to allow admin to share credentials, but recommend:
+Create a password-reset link flow (tokenized), or force password change on first login.
+Use secure SMTP (PHPMailer) to avoid mail acceptance issues.
+CSRF protection: not yet added — I recommend adding CSRF tokens to all forms next.
+Email deliverability: your PHP mail() needs a working MTA (XAMPP on Windows usually requires external SMTP relay); I can add PHPMailer and sample SMTP config so you can use Mailgun/SendGrid/Gmail SMTP.
+UI/UX: added animations; we can further improve with a small icon set, better spacing, loader states, and more consistent alerts. I can produce a short UI polish pass.
+How to test locally (short checklist)
+
+Start XAMPP (Apache + MySQL).
+Ensure your database clinic_management exists and tables are present. If you haven't imported schema yet, import database_backup.sql via phpMyAdmin or mysql CLI.
+If your users table does not yet have a doctor_id column, run the migration:
+Open a MySQL shell or phpMyAdmin and run the SQL file:
+File: 001_add_doctor_id_to_users.sql
+Or run this in PowerShell (adjust credentials):
+Visit the DB test page first:
+http://localhost/clinicapp/db_test.php
+Expect: "Database connection OK." and a server time (or an instruction to check logs).
+Login page:
+http://localhost/clinicapp/index.php
+Use an Admin account (seeded users table). If you used demo credentials (admin/password) ensure that record exists; otherwise create via SQL or use the Add User page after logging in as an existing admin.
+Admin user management:
+http://localhost/clinicapp/pages/users.php
+Create new users (choose role Doctor and optionally link to a doctor profile).
+Reset passwords via the modal.
+Doctor view:
+Login as a Doctor user (username/password provided by admin) and visit:
+http://localhost/clinicapp/pages/my_appointments.php
+Doctor should see appointments for the linked doctor_id.
+Patients & doctors pages:
+Patients: http://localhost/clinicapp/pages/patients.php (add/view/edit/delete should work)
+Doctors: http://localhost/clinicapp/pages/doctors.php (list/add/edit/delete)

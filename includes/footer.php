@@ -1,0 +1,644 @@
+<?php
+    // Footer content
+?>
+    </div> <!-- End container -->
+
+    <!-- Modern Animated Footer -->
+    <footer class="footer mt-auto py-3 bg-dark text-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="footer-brand d-flex align-items-center">
+                        <div class="hospital-icon me-2">
+                            <i class="fas fa-hospital-alt heartbeat"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 gradient-text"><?php echo SITE_NAME; ?></h5>
+                            <small class="text-muted slide-in">Efficient Clinic Management System</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 text-md-end">
+                    <div class="footer-info">
+                        <div class="admin-badge float-md-end">
+                            <span class="badge bg-primary glow">
+                                <i class="fas fa-user-shield me-1"></i>Admin: Ziabul Islam
+                            </span>
+                        </div>
+                        <div class="footer-meta mt-2">
+                            <small class="text-muted fade-in">
+                                <i class="fas fa-code me-1"></i>Version 2.1 
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-copyright me-1"></i><?php echo date('Y'); ?> All Rights Reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Wave Separator -->
+            <div class="wave-separator">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                    <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                    <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+                </svg>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../assets/js/script.js"></script>
+
+    <!-- Footer Styles -->
+    <style>
+        /* Footer Base Styles */
+        .footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+            border-top: 1px solid #444;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Wave Separator */
+        .wave-separator {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .wave-separator svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 15px;
+        }
+
+        .wave-separator .shape-fill {
+            fill: #0d6efd;
+        }
+
+        /* Animations */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(13, 110, 253, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animation Classes */
+        .heartbeat {
+            animation: heartbeat 2s ease-in-out infinite;
+            color: #0d6efd;
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .slide-in {
+            animation: slideIn 1s ease-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .gradient-text {
+            background: linear-gradient(-45deg, #0d6efd, #20c997, #0dcaf0, #0d6efd);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        /* Hospital Icon */
+        .hospital-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Footer Brand */
+        .footer-brand h5 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Admin Badge */
+        .admin-badge .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        /* Footer Meta */
+        .footer-meta {
+            font-size: 0.8rem;
+        }
+
+        /* Hover Effects */
+        .footer-brand:hover .hospital-icon {
+            transform: rotate(360deg);
+            transition: transform 0.6s ease;
+        }
+
+        .admin-badge:hover .badge {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer .row {
+                text-align: center;
+            }
+            
+            .footer-brand {
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+            
+            .admin-badge {
+                float: none !important;
+                display: inline-block;
+            }
+            
+            .footer-meta {
+                margin-top: 0.5rem !important;
+            }
+            
+            .wave-separator svg {
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer {
+                padding: 1rem 0 !important;
+            }
+            
+            .footer-brand h5 {
+                font-size: 1.1rem;
+            }
+            
+            .hospital-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Ensure footer stays at bottom */
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        /* Custom Scrollbar for Modern Browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0d6efd, #0dcaf0);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #0b5ed7, #0ba8d9);
+        }
+    </style>
+
+    <!-- Footer Interaction Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add scroll effect to footer
+            const footer = document.querySelector('.footer');
+            
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                
+                // Add shadow when scrolled to bottom
+                if (scrollPosition + windowHeight >= documentHeight - 100) {
+                    footer.style.boxShadow = '0 -5px 30px rgba(13, 110, 253, 0.3)';
+                } else {
+                    footer.style.boxShadow = 'none';
+                }
+            });
+
+            // Add click animation to admin badge
+            const adminBadge = document.querySelector('.admin-badge .badge');
+            if (adminBadge) {
+                adminBadge.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            }
+
+            // Add hover sound effect (optional)
+            const hospitalIcon = document.querySelector('.hospital-icon');
+            if (hospitalIcon) {
+                hospitalIcon.addEventListener('mouseenter', function() {
+                    // You can add a subtle sound effect here if desired
+                    console.log('Hospital icon hovered!');
+                });
+            }
+
+            // Dynamic year update (in case of long sessions)
+            function updateYear() {
+                const yearElements = document.querySelectorAll('[data-year]');
+                const currentYear = new Date().getFullYear();
+                yearElements.forEach(el => {
+                    el.textContent = currentYear;
+                });
+            }
+            
+            // Update year every minute (in case of long sessions spanning midnight)
+            setInterval(updateYear, 60000);
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            const footer = document.querySelector('.footer');
+            footer.style.opacity = '0';
+            footer.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                footer.style.transition = 'all 0.5s ease-out';
+                footer.style.opacity = '1';
+                footer.style.transform = 'translateY(0)';
+            }, 500);
+        });
+
+        // Mobile Actions Dropdown Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = document.querySelectorAll('.actions-toggle');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const collapse = this.nextElementSibling;
+                    if (collapse && collapse.classList.contains('actions-collapse')) {
+                        // close other open panels first
+                        document.querySelectorAll('.actions-collapse.show').forEach(c => {
+                            if (c !== collapse) c.classList.remove('show');
+                        });
+                        collapse.classList.toggle('show');
+                        this.classList.toggle('collapsed');
+                    }
+                });
+            });
+
+            // Close any open action panels when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.actions-toggle') && !e.target.closest('.actions-collapse')) {
+                    document.querySelectorAll('.actions-collapse.show').forEach(c => {
+                        c.classList.remove('show');
+                        const t = c.previousElementSibling;
+                        if (t && t.classList && t.classList.contains('actions-toggle')) t.classList.add('collapsed');
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect: add .scrolled when page is scrolled
+        document.addEventListener('DOMContentLoaded', function() {
+            const nav = document.querySelector('.navbar-transparent');
+            if (!nav) return;
+            function onScroll() {
+                if (window.scrollY > 30) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+            }
+            onScroll();
+            window.addEventListener('scroll', onScroll);
+        });
+
+        // Theme toggle: initialize and persist theme (light/dark)
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            // Determine initial theme: localStorage -> prefers-color-scheme -> default light
+            const stored = localStorage.getItem('clinic_theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let theme = stored || (prefersDark ? 'dark' : 'light');
+
+            function applyTheme(t) {
+                if (t === 'dark') {
+                    body.classList.add('theme-dark');
+                    body.classList.remove('theme-light');
+                    if (themeToggle) themeToggle.checked = true;
+                } else {
+                    body.classList.remove('theme-dark');
+                    body.classList.add('theme-light');
+                    if (themeToggle) themeToggle.checked = false;
+                }
+                localStorage.setItem('clinic_theme', t);
+                // notify listeners that theme changed (so dynamic measurements can update)
+                try { document.dispatchEvent(new Event('clinic:themeChanged')); } catch (e) { /* ignore */ }
+            }
+
+            applyTheme(theme);
+
+            if (themeToggle) {
+                themeToggle.addEventListener('change', function() {
+                    theme = this.checked ? 'dark' : 'light';
+                    applyTheme(theme);
+                });
+            }
+        });
+
+        // When theme changes, persist preference to server (best-effort)
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
+            themeToggle.addEventListener('change', function() {
+                const theme = this.checked ? 'dark' : 'light';
+                try {
+                    fetch('../process.php?action=save_theme', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                        body: 'theme=' + encodeURIComponent(theme)
+                    }).then(res => res.json()).then(data => {
+                        // no-op for now; session updated on server
+                    }).catch(()=>{/*silent*/});
+                } catch(e) { /* ignore */ }
+            });
+        });
+
+        // Intercept send-mail forms and print links to provide AJAX feedback and notifications
+        document.addEventListener('DOMContentLoaded', function() {
+                // helper to update notif badge (increment)
+                function bumpNotifCount(delta) {
+                    try {
+                        const el = document.getElementById('notifCountBadge');
+                        if (!el) return;
+                        const cur = parseInt(el.textContent||'0',10) || 0;
+                        const next = Math.max(0, cur + (delta||1));
+                        el.textContent = next;
+                        el.style.display = next>0? 'inline-block' : 'none';
+                    } catch(e) {}
+                }
+
+                // helper to set notif badge to absolute value
+                function setNotifBadge(count) {
+                    try {
+                        const el = document.getElementById('notifCountBadge');
+                        if (!el) return;
+                        const n = parseInt(count||0,10) || 0;
+                        el.textContent = n;
+                        el.style.display = n>0? 'inline-block' : 'none';
+                    } catch(e) {}
+                }
+
+                // Fetch unread count from server and update badge
+                function fetchUnreadCount() {
+                    try {
+                        fetch('../process.php?action=notifications_unread_count', { headers: {'X-Requested-With':'XMLHttpRequest'} })
+                            .then(r => r.json())
+                            .then(json => {
+                                if (json && typeof json.unread_count !== 'undefined') setNotifBadge(json.unread_count);
+                            }).catch(()=>{/*silent*/});
+                    } catch(e) {}
+                }
+
+                // Fetch notifications list and render inside dropdown
+                function fetchNotificationsAndRender() {
+                    const container = document.getElementById('notifDropdownContent');
+                    if (!container) return;
+                    container.innerHTML = '<div class="text-center text-muted small">Loading...</div>';
+                    fetch('../process.php?action=notifications_fetch', { headers: {'X-Requested-With':'XMLHttpRequest'} })
+                        .then(r => r.json())
+                        .then(json => {
+                            if (!json || !Array.isArray(json.notifications)) {
+                                container.innerHTML = '<div class="text-center text-muted small">No notifications</div>';
+                                return;
+                            }
+                            if (json.notifications.length === 0) {
+                                container.innerHTML = '<div class="text-center text-muted small">No notifications</div>';
+                                return;
+                            }
+                            container.innerHTML = '';
+                            json.notifications.forEach(n => {
+                                const item = document.createElement('div');
+                                item.className = 'dropdown-item d-flex align-items-start';
+                                item.style.cursor = 'default';
+                                item.dataset.notifId = n.id;
+                                const inner = `
+                                    <div style="flex:1">
+                                        <div class="fw-bold">${escapeHtml(n.title||'Notification')}</div>
+                                        <div class="small text-muted">${escapeHtml(n.message||'')}</div>
+                                        <div class="small text-muted mt-1">${escapeHtml(n.created_at||'')}</div>
+                                    </div>
+                                    <div class="ms-2">
+                                        ${ n.is_read ? '<span class="badge bg-light text-dark">Read</span>' : '<button class="btn btn-sm btn-outline-primary mark-read-btn">Mark</button>' }
+                                    </div>
+                                `;
+                                item.innerHTML = inner;
+                                container.appendChild(item);
+                            });
+                            // attach mark handlers
+                            container.querySelectorAll('.mark-read-btn').forEach(btn => {
+                                btn.addEventListener('click', function(e){
+                                    e.preventDefault(); e.stopPropagation();
+                                    const p = this.closest('[data-notif-id]');
+                                    if (!p) return;
+                                    const id = p.dataset.notifId;
+                                    markNotificationsRead([id], function(ok){ if (ok) { fetchNotificationsAndRender(); fetchUnreadCount(); } });
+                                });
+                            });
+                        }).catch(err => {
+                            container.innerHTML = '<div class="text-center text-danger small">Error loading notifications</div>';
+                            console.error('Fetch notifications error', err);
+                        });
+                }
+
+                // mark notifications read by ids (array). callback receives boolean ok
+                function markNotificationsRead(ids, cb) {
+                    try {
+                        const body = new URLSearchParams();
+                        ids.forEach(i => body.append('ids[]', i));
+                        fetch('../process.php?action=notifications_mark_read', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                            body: body.toString()
+                        }).then(r => r.json()).then(json => { if (cb) cb(json && json.ok); }).catch(()=>{ if (cb) cb(false); });
+                    } catch(e) { if (cb) cb(false); }
+                }
+
+                // small HTML-escape helper for inserting text
+                function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]; }); }
+
+            // Attach submit handlers to send_appointment_mail forms
+            document.querySelectorAll('form[action*="send_appointment_mail"]').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const btn = form.querySelector('button[type=submit]');
+                    const apId = form.querySelector('input[name="appointment_id"]') ? form.querySelector('input[name="appointment_id"]').value : null;
+                    if (!apId) {
+                        window.flashNotify('error','Error','Missing appointment id');
+                        return;
+                    }
+                    // show sending notification
+                    const sendingNotify = flashNotify('info','Sending','Sending appointment email...', 0);
+                    // build form data
+                    const fd = new FormData(form);
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        body: fd
+                    }).then(r => r.json()).then(json => {
+                        // remove sending notification by showing an immediate success/error (notifications auto-hide)
+                        if (json && json.ok) {
+                            window.flashNotify('success','Mail Sent', json.message || 'Appointment email sent');
+                            bumpNotifCount(1);
+                        } else {
+                            window.flashNotify('error','Mail Failed', (json && json.message) ? json.message : 'Failed to send appointment email');
+                        }
+                    }).catch(err => {
+                        window.flashNotify('error','Mail Error','Network or server error while sending mail');
+                        console.error('Send mail error', err);
+                    });
+                });
+            });
+
+            // Intercept print links to log print attempts and show notifications
+            document.querySelectorAll('a[target="_blank"][href*="print_appointment.php"]').forEach(a => {
+                a.addEventListener('click', function(e) {
+                    // allow opening the print window, then also send a background log
+                    const href = this.href;
+                    // extract appointment id from href query
+                    const url = new URL(href, window.location.origin);
+                    const id = url.searchParams.get('id') || url.searchParams.get('appointment_id') || url.searchParams.get('appointment');
+                    // show notification that print started
+                    window.flashNotify('info','Printing','Opening print view...', 3000);
+                    if (id) {
+                        // send background log request
+                        fetch('../process.php?action=log_print', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                            body: 'appointment_id=' + encodeURIComponent(id)
+                        }).then(r => r.json()).then(json => {
+                            if (json && json.ok) {
+                                window.flashNotify('success','Print','Print logged successfully', 3000);
+                                bumpNotifCount(1);
+                            } else {
+                                window.flashNotify('error','Print Error', (json && json.message) ? json.message : 'Failed to log print');
+                            }
+                        }).catch(err => {
+                            window.flashNotify('error','Print Error','Network error logging print');
+                            console.error('Log print error', err);
+                        });
+                    }
+                });
+
+                // Initialize unread count on load
+                fetchUnreadCount();
+
+                // When bell dropdown is opened, fetch notifications
+                const bell = document.getElementById('notificationBell');
+                if (bell) {
+                    bell.addEventListener('show.bs.dropdown', function(e){
+                        fetchNotificationsAndRender();
+                    });
+                }
+
+                // mark all read button
+                const markAllBtn = document.getElementById('markAllReadBtn');
+                if (markAllBtn) {
+                    markAllBtn.addEventListener('click', function(e){
+                        e.preventDefault();
+                        // fetch current list then mark all ids
+                        fetch('../process.php?action=notifications_fetch', { headers: {'X-Requested-With':'XMLHttpRequest'} })
+                            .then(r => r.json()).then(json => {
+                                if (json && Array.isArray(json.notifications) && json.notifications.length>0) {
+                                    const ids = json.notifications.filter(n=>!n.is_read).map(n=>n.id);
+                                    if (ids.length===0) return;
+                                    markNotificationsRead(ids, function(ok){ if (ok) { fetchNotificationsAndRender(); fetchUnreadCount(); } });
+                                }
+                            }).catch(()=>{});
+                    });
+                }
+            });
+        });
+
+        // Dynamic navbar height adjustment to prevent content hiding under fixed navbar
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const nav = document.querySelector('.navbar-transparent');
+
+            function adjustNavbarPadding() {
+                const navEl = document.querySelector('.navbar-transparent');
+                if (!navEl) return;
+                const h = Math.ceil(navEl.getBoundingClientRect().height);
+                // set CSS variable and inline padding to be precise across pages
+                document.body.style.setProperty('--navbar-height', h + 'px');
+                if (body.classList.contains('has-fixed-navbar')) {
+                    body.style.paddingTop = h + 'px';
+                }
+            }
+
+            // run at least once on load
+            adjustNavbarPadding();
+
+            // update on resize to handle responsive navbar height changes
+            window.addEventListener('resize', function() {
+                adjustNavbarPadding();
+            });
+
+            // Observe class changes on navbar (to react to .scrolled toggling)
+            const navEl = document.querySelector('.navbar-transparent');
+            if (navEl && window.MutationObserver) {
+                const mo = new MutationObserver(function() { adjustNavbarPadding(); });
+                mo.observe(navEl, { attributes: true, attributeFilter: ['class'] });
+            }
+
+            // Also adjust after theme changes (theme toggle code calls applyTheme)
+            document.addEventListener('clinic:themeChanged', adjustNavbarPadding);
+        });
+    </script>
+</body>
+</html>

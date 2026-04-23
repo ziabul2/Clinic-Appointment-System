@@ -1,0 +1,4 @@
+username,email,role,doctor_id
+jdoe,john.doe@example.com,Doctor,1
+asmith,anna.smith@example.com,Receptionist,
+drbrown,dr.brown@example.com,Doctor,2

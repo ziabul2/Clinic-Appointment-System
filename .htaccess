@@ -1,0 +1,6 @@
+# Disable directory listing and provide custom error pages
+Options -Indexes
+
+# Custom error documents (adjust path if your app is hosted under a subpath)
+ErrorDocument 404 /clinicapp/pages/404.php
+ErrorDocument 403 /clinicapp/pages/403.php
