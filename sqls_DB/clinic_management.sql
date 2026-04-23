@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2025 at 10:36 AM
+-- Generation Time: Apr 23, 2026 at 03:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `clinic_management`
 --
-CREATE DATABASE IF NOT EXISTS `clinic_management` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `clinic_management`;
 
 -- --------------------------------------------------------
 
@@ -86,7 +84,8 @@ INSERT INTO `appointments` (`appointment_id`, `patient_id`, `doctor_id`, `appoin
 (5, 4, 3, '2025-11-25', '09:00:00', NULL, 'scheduled', 'pending', NULL, 0.00, NULL, NULL, 0.00, 'normal', 30, NULL, NULL, 0, NULL, NULL, 'dg', '', 'tgfhdg', '2025-11-23 10:48:26', '2025-11-23 10:48:26'),
 (6, 4, 1, '2025-11-26', '10:00:00', NULL, 'scheduled', 'pending', NULL, 0.00, NULL, NULL, 0.00, 'normal', 30, NULL, NULL, 0, NULL, NULL, 'Cold issues', 'emergency', 'Back Pain', '2025-11-24 06:04:26', '2025-11-24 06:04:26'),
 (9, 5, 4, '2025-11-28', '10:00:00', NULL, 'scheduled', 'pending', NULL, 0.00, NULL, NULL, 0.00, 'normal', 30, NULL, NULL, 0, NULL, NULL, 'None', 'emergency', 'Back pain', '2025-11-24 10:55:26', '2025-11-24 10:55:26'),
-(11, 5, 4, '2025-12-05', '10:00:00', NULL, 'scheduled', 'pending', NULL, 0.00, NULL, NULL, 0.00, 'normal', 30, NULL, NULL, 0, NULL, NULL, 'none', '', 'pain', '2025-11-24 11:34:29', '2025-11-24 11:34:29');
+(11, 5, 4, '2025-12-05', '10:00:00', NULL, 'scheduled', 'pending', NULL, 0.00, NULL, NULL, 0.00, 'normal', 30, NULL, NULL, 0, NULL, NULL, 'none', '', 'pain', '2025-11-24 11:34:29', '2025-11-24 11:34:29'),
+(12, 4, 1, '2026-04-29', '10:15:00', NULL, 'scheduled', 'pending', NULL, 0.00, NULL, NULL, 0.00, 'normal', 30, NULL, NULL, 0, NULL, NULL, '', '', 'https://github.com/ziabul2/Clinic-Appointment-System', '2026-04-23 13:27:01', '2026-04-23 13:27:01');
 
 -- --------------------------------------------------------
 
@@ -509,6 +508,9 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
   `role` enum('admin','receptionist','doctor','patient') DEFAULT 'receptionist',
   `doctor_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -518,16 +520,16 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `role`, `doctor_id`, `created_at`) VALUES
-(1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@clinic.com', 'admin', NULL, '2025-11-23 06:48:28'),
-(2, 'reception', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'reception@clinic.com', 'receptionist', NULL, '2025-11-23 06:48:28'),
-(3, 'zim', '121212', 'zim@me.com', 'receptionist', NULL, '2025-11-23 07:25:28'),
-(4, 'jdoe', '$2y$10$V6VIqskRVBwsuWzn5I21/e8IsmZXTcUTp6Ccm6hWC.k6oDrSPvJkW', 'john.doe@example.com', 'doctor', 1, '2025-11-24 05:55:31'),
-(5, 'asmith', '$2y$10$uhv/1FApBCKVbYRGVdXKMOt4lUg0OGZ082Na6RW3vUgQdWQXRM0ey', 'anna.smith@example.com', 'receptionist', NULL, '2025-11-24 05:55:36'),
-(6, 'drbrown', '$2y$10$gJrXnXCdo.Xn.PLn63Oge.yEtQeHEg6hjGvCcyeXhHL1JI2I7IQPi', 'dr.brown@example.com', 'doctor', 2, '2025-11-24 05:55:41'),
-(7, 'drziabul', '$2y$10$atHpAweyVy8VDauEleb69./QEKN.41BBVqGE0fS2G0.J46xIGQyma', 'ziabul@duck.com', 'doctor', 3, '2025-11-24 06:01:54'),
-(8, 'ziabulislam222292', '$2y$10$821VfnI1y0a8gNS5rvqZTuq65GlbKPwVoRUPJu086gkUUL4beBs/S', 'ziabulislam2222@gmail.com', 'patient', NULL, '2025-11-24 08:11:20'),
-(9, 'ziabulislam222243', '$2y$10$6jqOmy0wSYtLoh763E/Fl.6SwS72vD8Df.xV6I6s0MDS2z2xCAdD6', 'ziabulislam2222@gmail.com', 'doctor', 4, '2025-11-24 09:11:35');
+INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `first_name`, `last_name`, `profile_picture`, `role`, `doctor_id`, `created_at`) VALUES
+(1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@clinic.com', NULL, NULL, 'usr_1776952354_06c435db3ae3.jpg', 'admin', NULL, '2025-11-23 06:48:28'),
+(2, 'reception', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'reception@clinic.com', NULL, NULL, NULL, 'receptionist', NULL, '2025-11-23 06:48:28'),
+(3, 'zim', '121212', 'zim@me.com', NULL, NULL, NULL, 'receptionist', NULL, '2025-11-23 07:25:28'),
+(4, 'jdoe', '$2y$10$V6VIqskRVBwsuWzn5I21/e8IsmZXTcUTp6Ccm6hWC.k6oDrSPvJkW', 'john.doe@example.com', NULL, NULL, NULL, 'doctor', 1, '2025-11-24 05:55:31'),
+(5, 'asmith', '$2y$10$uhv/1FApBCKVbYRGVdXKMOt4lUg0OGZ082Na6RW3vUgQdWQXRM0ey', 'anna.smith@example.com', NULL, NULL, NULL, 'receptionist', NULL, '2025-11-24 05:55:36'),
+(6, 'drbrown', '$2y$10$gJrXnXCdo.Xn.PLn63Oge.yEtQeHEg6hjGvCcyeXhHL1JI2I7IQPi', 'dr.brown@example.com', NULL, NULL, NULL, 'doctor', 2, '2025-11-24 05:55:41'),
+(7, 'drziabul', '$2y$10$atHpAweyVy8VDauEleb69./QEKN.41BBVqGE0fS2G0.J46xIGQyma', 'ziabul@duck.com', NULL, NULL, NULL, 'doctor', 3, '2025-11-24 06:01:54'),
+(8, 'ziabulislam222292', '$2y$10$821VfnI1y0a8gNS5rvqZTuq65GlbKPwVoRUPJu086gkUUL4beBs/S', 'ziabulislam2222@gmail.com', NULL, NULL, NULL, 'patient', NULL, '2025-11-24 08:11:20'),
+(9, 'ziabulislam222243', '$2y$10$6jqOmy0wSYtLoh763E/Fl.6SwS72vD8Df.xV6I6s0MDS2z2xCAdD6', 'ziabulislam2222@gmail.com', NULL, NULL, NULL, 'doctor', 4, '2025-11-24 09:11:35');
 
 -- --------------------------------------------------------
 
@@ -683,7 +685,7 @@ ALTER TABLE `ai_logs`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `appointment_counters`
