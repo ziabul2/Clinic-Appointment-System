@@ -343,6 +343,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Mobile Actions Toggle
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('actions-toggle')) {
+            const btn = e.target;
+            const collapse = btn.nextElementSibling;
+            if (collapse && collapse.classList.contains('actions-collapse')) {
+                const isCollapsed = btn.classList.contains('collapsed');
+                if (isCollapsed) {
+                    btn.classList.remove('collapsed');
+                    btn.setAttribute('aria-expanded', 'true');
+                    collapse.classList.add('show');
+                } else {
+                    btn.classList.add('collapsed');
+                    btn.setAttribute('aria-expanded', 'false');
+                    collapse.classList.remove('show');
+                }
+            }
+        }
+    });
+
     console.log('Clinic Appointment System JS loaded successfully');
 });
 

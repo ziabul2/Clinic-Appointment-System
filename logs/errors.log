@@ -289,3 +289,6 @@
 
 [23-Apr-2026 19:38:19 Asia/Dhaka] [2026-04-23 19:38:19] Uncaught Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'first_name' in 'field list' in C:\xampp\htdocs\clinicapp\pages\employees.php:6
 
+[2026-04-26 14:00:19] [PHPMailer_ERROR] Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30.
+[26-Apr-2026 14:00:19 Asia/Dhaka] [2026-04-26 14:00:19] Uncaught Exception: Class "PHPMailer\PHPMailer\PHPMailer" not found in C:\xampp\htdocs\clinicApp\includes\functions.php:15
+

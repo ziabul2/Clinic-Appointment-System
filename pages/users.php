@@ -88,13 +88,28 @@ try {
                                 <td><small><?php echo $u['doctor_first'] ? htmlspecialchars('Dr. ' . $u['doctor_first'] . ' ' . $u['doctor_last']) : '<span class="text-muted">-</span>'; ?></small></td>
                                 <td><small><?php echo date('M j, Y', strtotime($u['created_at'])); ?></small></td>
                                 <td>
-                                    <div class="d-none d-md-inline-flex btn-group btn-group-sm" role="group">
-                                        <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#resetModal" data-userid="<?php echo $u['user_id']; ?>" data-username="<?php echo htmlspecialchars($u['username']); ?>" title="Reset Password"><i class="fas fa-key"></i></button>
-                                    </div>
-
-                                    <button class="actions-toggle collapsed d-inline-block d-md-none" type="button" aria-expanded="false" aria-label="Toggle actions"></button>
-                                    <div class="actions-collapse d-md-none">
-                                        <button class="btn btn-outline-warning w-100" data-bs-toggle="modal" data-bs-target="#resetModal" data-userid="<?php echo $u['user_id']; ?>" data-username="<?php echo htmlspecialchars($u['username']); ?>"><i class="fas fa-key me-1"></i> Reset Password</button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                                            <li>
+                                                <a class="dropdown-item text-primary" href="edit_user.php?id=<?php echo $u['user_id']; ?>">
+                                                    <i class="fas fa-edit me-2"></i> Edit User
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-target="#resetModal" data-userid="<?php echo $u['user_id']; ?>" data-username="<?php echo htmlspecialchars($u['username']); ?>">
+                                                    <i class="fas fa-key me-2"></i> Reset Password
+                                                </button>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="../process.php?action=delete_user&id=<?php echo $u['user_id']; ?>" onclick="return confirm('Are you sure you want to delete this user?');">
+                                                    <i class="fas fa-trash me-2"></i> Delete User
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>
@@ -102,36 +117,79 @@ try {
                     </tbody>
                 </table>
             </div>
-        <?php endif; ?>
+<?php endif; ?>
     </div>
 </div>
 
 <!-- Reset Password Modal -->
-<div class="modal fade" id="resetModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div class="modal fade" id="resetModal" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
             <form method="POST" action="../process.php?action=reset_password">
                 <?php echo csrf_input(); ?>
-                <div class="modal-header"><h5 class="modal-title">Reset Password</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body">
-                    <input type="hidden" name="user_id" id="reset_user_id">
-                    <p>Reset password for <strong id="reset_username"></strong></p>
-                    <div class="mb-3"><label class="form-label">New Password</label><input class="form-control" type="password" name="new_password" required></div>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Reset Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary" type="submit">Reset Password</button></div>
+                <div class="modal-body py-4">
+                    <input type="hidden" name="user_id" id="reset_user_id">
+                    <p class="text-muted">You are about to reset the password for: <br><strong id="reset_username" class="text-dark"></strong></p>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="password" name="new_password" id="new_password" placeholder="New Password" required style="background: #f8f9fa; border-radius: 10px;">
+                        <label for="new_password">Enter New Password</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary px-4 btn-login" type="submit">Reset Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Import Users Modal -->
+<div class="modal fade" id="importUsersModal" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 15px;">
+            <form method="POST" action="../process.php?action=import_users" enctype="multipart/form-data">
+                <?php echo csrf_input(); ?>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Import Users (CSV)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <p class="text-muted small mb-4">Upload a CSV file with columns: <strong>username, email, role, doctor_id</strong>. Existing usernames will be updated if selected.</p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-uppercase">CSV File</label>
+                        <input type="file" name="csv_file" accept="text/csv" class="form-control" required style="border-radius: 10px;">
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" name="replace_existing" id="replace_existing">
+                        <label class="form-check-label small" for="replace_existing">Update existing users if username matches</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success px-4" type="submit" style="border-radius: 10px;">Start Import</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-var resetModal = document.getElementById('resetModal');
-resetModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget;
-    var userid = button.getAttribute('data-userid');
-    var username = button.getAttribute('data-username');
-    document.getElementById('reset_user_id').value = userid;
-    document.getElementById('reset_username').textContent = username;
+document.addEventListener('DOMContentLoaded', function() {
+    var rModal = document.getElementById('resetModal');
+    if (rModal) {
+        rModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userid = button.getAttribute('data-userid');
+            var username = button.getAttribute('data-username');
+            document.getElementById('reset_user_id').value = userid;
+            document.getElementById('reset_username').textContent = username;
+        });
+    }
 });
 </script>
 

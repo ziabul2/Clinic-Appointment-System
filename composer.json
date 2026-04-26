@@ -1,6 +1,9 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^7.0",
-        "google/apiclient": "^2.0"
+        "phpmailer/phpmailer": "^6.9",
+        "google/apiclient": "^2.15"
+    },
+    "config": {
+        "platform-check": false
     }
 }

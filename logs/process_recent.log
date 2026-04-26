@@ -1,3 +1,26 @@
+[2026-04-26 14:06:49] Guest | PAGE_ACCESS | Accessed: register.php
+[2026-04-26 14:06:47] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 14:06:47] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-26 14:06:41] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:06:23] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-26 14:06:23] Ziabul | USER_DELETED | User ID 5 deleted by Ziabul
+[2026-04-26 14:06:11] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-26 14:05:50] Ziabul | PAGE_ACCESS | Accessed: edit_user.php
+[2026-04-26 14:05:45] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-26 14:05:21] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:05:13] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:05:08] Ziabul | PAGE_ACCESS | Accessed: notifications.php
+[2026-04-26 14:04:58] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:04:58] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-26 14:04:55] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 14:04:51] Guest | PAGE_ACCESS | Accessed: register.php
+[2026-04-26 13:59:36] Guest | PAGE_ACCESS | Accessed: register.php
+[2026-04-26 13:59:30] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:59:30] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-26 13:58:01] Ziabul | PAGE_ACCESS | Accessed: users.php
+[2026-04-26 13:57:46] Ziabul | PAGE_ACCESS | Accessed: users.php
+[2026-04-26 13:57:11] Ziabul | PAGE_ACCESS | Accessed: users.php
+[2026-04-26 13:56:59] Ziabul | PAGE_ACCESS | Accessed: users.php
 [2026-04-26 13:52:55] Ziabul | PAGE_ACCESS | Accessed: users.php
 [2026-04-26 13:52:43] Ziabul | PAGE_ACCESS | Accessed: users.php
 [2026-04-26 13:52:25] Ziabul | PAGE_ACCESS | Accessed: users.php

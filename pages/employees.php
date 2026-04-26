@@ -57,15 +57,15 @@ $rows = $q->fetchAll(PDO::FETCH_ASSOC);
                     <td><span class="badge bg-info"><?php echo htmlspecialchars($r['role']); ?></span></td>
                     <td><?php echo htmlspecialchars($r['email']); ?></td>
                     <td>
-                        <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
-                            <a class="btn btn-sm btn-primary" href="edit_user.php?id=<?php echo $r['user_id']; ?>" title="Edit"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger" href="../process.php?action=delete_user&id=<?php echo $r['user_id']; ?>" title="Delete"><i class="fas fa-trash"></i></a>
-                        </div>
-
-                        <button class="actions-toggle collapsed d-inline-block d-md-none" type="button" aria-expanded="false" aria-label="Toggle actions"></button>
-                        <div class="actions-collapse d-md-none">
-                            <a class="btn btn-primary w-100 mb-1" href="edit_user.php?id=<?php echo $r['user_id']; ?>"><i class="fas fa-edit me-1"></i> Edit</a>
-                            <a class="btn btn-danger w-100" href="../process.php?action=delete_user&id=<?php echo $r['user_id']; ?>"><i class="fas fa-trash me-1"></i> Delete</a>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item text-primary" href="edit_user.php?id=<?php echo $r['user_id']; ?>"><i class="fas fa-edit me-2"></i> Edit</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="../process.php?action=delete_user&id=<?php echo $r['user_id']; ?>" onclick="return confirm('Delete this user?');"><i class="fas fa-trash me-2"></i> Delete</a></li>
+                            </ul>
                         </div>
                     </td>
                 </tr>
@@ -73,5 +73,11 @@ $rows = $q->fetchAll(PDO::FETCH_ASSOC);
         </tbody>
     </table>
 <?php endif; ?>
+    </div>
+</div>
+
+<script>
+// No specific JS needed for simple links, but kept for consistency
+</script>
 
 <?php require_once '../includes/footer.php'; ?>
