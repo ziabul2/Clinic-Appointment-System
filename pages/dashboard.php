@@ -71,7 +71,7 @@ try {
 
     // New patients today (if patients.created_at exists)
     try {
-        $q = $db->prepare("SELECT COUNT(*) as total FROM patients WHERE DATE(created_at) = CURDATE()");
+        $q = $db->prepare("SELECT COUNT(*) as total FROM patients WHERE DATE(admitted_at) = CURDATE()");
         $q->execute();
         $stats['new_patients_today'] = $q->fetch(PDO::FETCH_ASSOC)['total'];
     } catch (Exception $e) {

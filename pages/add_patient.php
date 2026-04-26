@@ -7,60 +7,7 @@ if (!isLoggedIn()) {
     redirect('../index.php');
 }
 
-// Handle form submission
-if ($_POST) {
-    try {
-        $first_name = sanitizeInput($_POST['first_name']);
-        $last_name = sanitizeInput($_POST['last_name']);
-        $email = sanitizeInput($_POST['email']);
-        $phone = sanitizeInput($_POST['phone']);
-        $address = sanitizeInput($_POST['address']);
-        $date_of_birth = sanitizeInput($_POST['date_of_birth']);
-        $gender = sanitizeInput($_POST['gender']);
-        $emergency_contact = sanitizeInput($_POST['emergency_contact']);
-        $medical_history = sanitizeInput($_POST['medical_history']);
 
-        // Check if email already exists
-        if (!empty($email)) {
-            $check_query = "SELECT patient_id FROM patients WHERE email = :email";
-            $check_stmt = $db->prepare($check_query);
-            $check_stmt->bindParam(':email', $email);
-            $check_stmt->execute();
-            
-            if ($check_stmt->rowCount() > 0) {
-                $error = "Email address already exists for another patient.";
-            }
-        }
-
-        if (!isset($error)) {
-            $query = "INSERT INTO patients (first_name, last_name, email, phone, address, date_of_birth, gender, emergency_contact, medical_history) 
-                     VALUES (:first_name, :last_name, :email, :phone, :address, :date_of_birth, :gender, :emergency_contact, :medical_history)";
-            
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(':first_name', $first_name);
-            $stmt->bindParam(':last_name', $last_name);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':phone', $phone);
-            $stmt->bindParam(':address', $address);
-            $stmt->bindParam(':date_of_birth', $date_of_birth);
-            $stmt->bindParam(':gender', $gender);
-            $stmt->bindParam(':emergency_contact', $emergency_contact);
-            $stmt->bindParam(':medical_history', $medical_history);
-            
-            if ($stmt->execute()) {
-                $patient_id = $db->lastInsertId();
-                logAction("PATIENT_ADDED", "New patient: $first_name $last_name (ID: $patient_id)");
-                $_SESSION['success'] = "Patient added successfully!";
-                redirect('patients.php');
-            } else {
-                throw new Exception("Failed to add patient");
-            }
-        }
-    } catch (PDOException $e) {
-        logAction("PATIENT_ADD_ERROR", "Database error: " . $e->getMessage());
-        $error = "System error. Please try again.";
-    }
-}
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

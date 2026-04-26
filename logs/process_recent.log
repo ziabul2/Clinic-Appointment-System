@@ -1,3 +1,61 @@
+[2026-04-26 14:51:58] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-26 14:51:55] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:51:53] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:51:22] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 14:51:16] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:50:50] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:50:50] Ziabul | PATIENT_ARCHIVED | Patient ID: 5 manually archived
+[2026-04-26 14:50:38] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:50:38] Ziabul | PATIENT_ARCHIVED | Patient ID: 4 manually archived
+[2026-04-26 14:50:34] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:50:34] Ziabul | PATIENT_ARCHIVED | Patient ID: 3 manually archived
+[2026-04-26 14:50:28] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:49:35] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:49:32] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:49:31] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:49:31] Ziabul | PATIENT_ARCHIVED | Patient ID: 2 manually archived
+[2026-04-26 14:49:22] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:47:21] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:46:45] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:46:44] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 14:46:39] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-26 14:46:38] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:46:35] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:46:31] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:46:30] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:46:28] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:44:46] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-26 14:44:45] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:43:01] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:42:53] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:42:31] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:42:29] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:42:25] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:42:23] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:42:13] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:41:52] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:33:42] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:33:25] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-26 14:33:17] Ziabul | APPOINTMENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 14:33:17] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:33:09] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 14:32:56] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:32:56] Ziabul | PATIENT_ADDED | New patient: jayed babu
+[2026-04-26 14:32:22] Ziabul | PAGE_ACCESS | Accessed: add_patient.php
+[2026-04-26 14:32:03] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:31:59] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:31:57] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:31:42] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:30:32] Ziabul | PAGE_ACCESS | Accessed: add_patient.php
+[2026-04-26 14:30:30] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:27:12] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:27:11] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:27:10] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:27:09] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:27:07] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:26:58] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:26:52] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
+[2026-04-26 14:25:39] Ziabul | PAGE_ACCESS | Accessed: add_patient.php
 [2026-04-26 14:18:51] Ziabul | PAGE_ACCESS | Accessed: patients.php
 [2026-04-26 14:18:42] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-26 14:18:41] Ziabul | USER_LOGIN | User logged in: Ziabul

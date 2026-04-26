@@ -46,9 +46,9 @@ function handle_add_patient($db) {
         if ($stmt->execute()) {
             logAction("PATIENT_ADDED", "New patient: $first_name $last_name");
                     // If AJAX caller, return JSON indicating success and that the client should show button success state
+                    // Detect AJAX (X-Requested-With or explicit application/json content-type)
                     $isAjax = (
                         (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') ||
-                        (isset($_SERVER['HTTP_ACCEPT']) && stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) ||
                         (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) ||
                         (isset($_GET['ajax']) && $_GET['ajax'] == '1')
                     );
@@ -107,8 +107,8 @@ try {
                 $emergency_contact = sanitizeInput($_POST['emergency_contact']);
                 $medical_history = sanitizeInput($_POST['medical_history']);
                 
-                $query = "INSERT INTO patients (first_name, last_name, email, phone, address, date_of_birth, gender, emergency_contact, medical_history) 
-                         VALUES (:first_name, :last_name, :email, :phone, :address, :date_of_birth, :gender, :emergency_contact, :medical_history)";
+                $query = "INSERT INTO patients (first_name, last_name, email, phone, address, date_of_birth, gender, emergency_contact, medical_history, admitted_at) 
+                         VALUES (:first_name, :last_name, :email, :phone, :address, :date_of_birth, :gender, :emergency_contact, :medical_history, CURRENT_TIMESTAMP)";
                 
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(':first_name', $first_name);
@@ -125,9 +125,9 @@ try {
                     logAction("PATIENT_ADDED", "New patient: $first_name $last_name");
                     $_SESSION['success'] = "Patient added successfully!";
                     // Detect AJAX and return JSON redirect when appropriate
+                    // Detect AJAX
                     $isAjax = (
                         (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') ||
-                        (isset($_SERVER['HTTP_ACCEPT']) && stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) ||
                         (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) ||
                         (isset($_GET['ajax']) && $_GET['ajax'] == '1')
                     );
@@ -152,6 +152,39 @@ try {
                     }
                 } else {
                     throw new Exception("Failed to add patient");
+                }
+            }
+            redirect('pages/patients.php');
+            break;
+
+        case 'readmit_patient':
+            if (!isLoggedIn()) { redirect('index.php'); }
+            $pid = isset($_GET['id']) ? sanitizeInput($_GET['id']) : null;
+            if ($pid) {
+                $q = $db->prepare("UPDATE patients SET admitted_at = CURRENT_TIMESTAMP WHERE patient_id = :id");
+                $q->bindParam(':id', $pid);
+                if ($q->execute()) {
+                    logAction("PATIENT_READMITTED", "Patient ID: $pid moved to today's list");
+                    $_SESSION['success'] = "Patient re-admitted successfully!";
+                } else {
+                    $_SESSION['error'] = "Failed to re-admit patient.";
+                }
+            }
+            redirect('pages/patients.php');
+            break;
+
+        case 'archive_patient':
+            if (!isLoggedIn()) { redirect('index.php'); }
+            $pid = isset($_GET['id']) ? sanitizeInput($_GET['id']) : null;
+            if ($pid) {
+                // Set admitted_at to yesterday to move out of today's list
+                $q = $db->prepare("UPDATE patients SET admitted_at = DATE_SUB(NOW(), INTERVAL 1 DAY) WHERE patient_id = :id");
+                $q->bindParam(':id', $pid);
+                if ($q->execute()) {
+                    logAction("PATIENT_ARCHIVED", "Patient ID: $pid manually archived");
+                    $_SESSION['success'] = "Patient moved to archive.";
+                } else {
+                    $_SESSION['error'] = "Failed to archive patient.";
                 }
             }
             redirect('pages/patients.php');

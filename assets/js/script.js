@@ -363,10 +363,109 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Global AJAX form handler for data-ajax="true" forms
+    document.addEventListener('submit', function(e) {
+        const form = e.target;
+        if (form.getAttribute('data-ajax') === 'true') {
+            e.preventDefault();
+            
+            // Basic validation check
+            if (form.classList.contains('needs-validation') && !form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+
+            const submitBtn = form.querySelector('[type="submit"]');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            }
+
+            const formData = new FormData(form);
+            const action = form.getAttribute('action') || window.location.href;
+
+            fetch(action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                }
+                throw new Error('Unexpected response format');
+            })
+            .then(data => {
+                if (data.ok) {
+                    if (window.flashNotify) {
+                        flashNotify('success', 'Success', data.message || 'Operation completed successfully');
+                    }
+                    if (data.redirect) {
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 1500);
+                    }
+                } else {
+                    if (window.flashNotify) {
+                        flashNotify('error', 'Error', data.error || data.message || 'An error occurred');
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnHtml;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Form submission error:', error);
+                if (window.flashNotify) {
+                    flashNotify('error', 'Connection Error', 'Failed to communicate with server');
+                }
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            });
+        }
+    });
+
     console.log('Clinic Appointment System JS loaded successfully');
 });
 
+// Premium notification system (Toasts)
+window.flashNotify = function(type, title, message) {
+    const container = document.querySelector('.float-notification-container') || (function() {
+        const c = document.createElement('div');
+        c.className = 'float-notification-container';
+        document.body.appendChild(c);
+        return c;
+    })();
+
+    const toast = document.createElement('div');
+    toast.className = `float-notification ${type}`;
+    toast.innerHTML = `
+        <div class="title">${title}</div>
+        <div class="msg">${message}</div>
+    `;
+
+    container.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 10);
+
+    // Remove after 5 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, 5000);
+};
+
 // AJAX handler for per-row send mail forms
+// ... rest of the file ...
+
 document.addEventListener('DOMContentLoaded', function() {
     var mailForms = document.querySelectorAll('form[action*="send_appointment_mail"]');
     mailForms.forEach(function(form) {

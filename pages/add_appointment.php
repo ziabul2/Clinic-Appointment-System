@@ -51,8 +51,12 @@ try {
         $appointment_datetime = $appointment_date . ' ' . $appointment_time;
         $current_datetime = date('Y-m-d H:i:s');
         
-        if (strtotime($appointment_datetime) < strtotime($current_datetime)) {
-            $error = "Appointment date and time cannot be in the past.";
+        if ($appointment_date !== date('Y-m-d')) {
+            $error = "Appointments can only be scheduled for TODAY (" . date('M j, Y') . ").";
+        }
+
+        if (!isset($error) && strtotime($appointment_datetime) < strtotime($current_datetime)) {
+            $error = "Appointment time cannot be in the past.";
         }
 
         // Check for scheduling conflicts
@@ -233,7 +237,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2"><i class="fas fa-calendar-plus"></i> Schedule New Appointment</h1>
+    <h1 class="h2"><i class="fas fa-calendar-plus"></i> Today's Appointment</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <a href="appointments.php" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> Back to Appointments
@@ -310,10 +314,10 @@ require_once __DIR__ . '/../includes/header.php';
                             <div class="mb-3">
                                 <label for="appointment_date" class="form-label">Appointment Date *</label>
                                 <input type="date" class="form-control" id="appointment_date" name="appointment_date" 
-                                       min="<?php echo date('Y-m-d'); ?>" required
-                                       value="<?php echo $_POST['appointment_date'] ?? ''; ?>">
-                                <div class="form-text" id="dateInfo">
-                                    Select an appointment date
+                                       min="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>" required
+                                       value="<?php echo date('Y-m-d'); ?>">
+                                <div class="form-text text-primary" id="dateInfo">
+                                    <i class="fas fa-info-circle"></i> Only today's appointments are accepted.
                                 </div>
                             </div>
                         </div>

@@ -31,8 +31,10 @@ try {
     $params = [];
 
     if (!empty($search)) {
-        $where_clause = "WHERE p.first_name LIKE :search OR p.last_name LIKE :search OR p.email LIKE :search OR p.phone LIKE :search";
+        $where_clause = "WHERE (p.first_name LIKE :search OR p.last_name LIKE :search OR p.email LIKE :search OR p.phone LIKE :search) AND DATE(p.admitted_at) = CURDATE()";
         $params[':search'] = "%$search%";
+    } else {
+        $where_clause = "WHERE DATE(p.admitted_at) = CURDATE()";
     }
 
     // Get total count for pagination
@@ -56,7 +58,7 @@ try {
                      (SELECT MAX(appointment_date) FROM appointments a WHERE a.patient_id = p.patient_id) as last_visit
               FROM patients p 
               $where_clause 
-              ORDER BY p.created_at DESC 
+              ORDER BY p.admitted_at DESC 
               LIMIT :offset, :per_page";
 
     $stmt = $db->prepare($query);
@@ -76,7 +78,10 @@ try {
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"><i class="fas fa-user-injured"></i> Patients Management</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+        <a href="old_patients.php" class="btn btn-outline-secondary">
+            <i class="fas fa-archive"></i> Old Patients Archive
+        </a>
         <a href="add_patient.php" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add New Patient
         </a>
@@ -131,26 +136,33 @@ try {
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th style="width:5%;">ID</th>
-                            <th style="width:20%;">Patient Name</th>
-                            <th style="width:20%;">Email & Phone</th>
-                            <th style="width:18%;">Date of Birth</th>
-                            <th style="width:12%;">Emergency Contact</th>
-                            <th style="width:10%;">Appointments</th>
-                            <th style="width:10%;">Last Visit</th>
-                            <th style="width:5%;">Actions</th>
+                             <th style="width:5%;">ID</th>
+                             <th style="width:15%;">Patient Name</th>
+                             <th style="width:10%;">Time</th>
+                             <th style="width:15%;">Email & Phone</th>
+                             <th style="width:15%;">Date of Birth</th>
+                             <th style="width:12%;">Emergency Contact</th>
+                             <th style="width:10%;">Appointments</th>
+                             <th style="width:10%;">Last Visit</th>
+                             <th style="width:5%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($patients as $patient): ?>
                             <tr>
                                 <td><span class="badge bg-secondary">#<?php echo $patient['patient_id']; ?></span></td>
-                                <td>
-                                    <strong><?php echo htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']); ?></strong>
-                                    <?php if ($patient['gender']): ?>
-                                        <br><small class="text-muted"><?php echo $patient['gender']; ?></small>
-                                    <?php endif; ?>
-                                </td>
+                                 <td>
+                                     <strong><?php echo htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']); ?></strong>
+                                     <?php if ($patient['gender']): ?>
+                                         <br><small class="text-muted"><?php echo $patient['gender']; ?></small>
+                                     <?php endif; ?>
+                                 </td>
+                                 <td>
+                                     <span class="badge bg-light text-dark border">
+                                         <i class="far fa-clock me-1"></i>
+                                         <?php echo date('g:i A', strtotime($patient['admitted_at'])); ?>
+                                     </span>
+                                 </td>
                                 <td>
                                     <small>
                                         <?php if ($patient['email']): ?>
@@ -190,17 +202,18 @@ try {
                                     </small>
                                 </td>
                                 <td>
-                                    <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
-                                        <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-sm btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
-                                        <a href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-sm btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>
-                                        <a href="patients.php?delete_id=<?php echo $patient['patient_id']; ?>" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></a>
-                                    </div>
-
-                                    <button class="actions-toggle collapsed d-inline-block d-md-none" type="button" aria-expanded="false" aria-label="Toggle actions"></button>
-                                    <div class="actions-collapse d-md-none">
-                                        <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary w-100 mb-1"><i class="fas fa-eye me-1"></i> View</a>
-                                        <a href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-warning w-100 mb-1"><i class="fas fa-edit me-1"></i> Edit</a>
-                                        <a href="patients.php?delete_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-danger w-100" onclick="return false;"><i class="fas fa-trash me-1"></i> Delete</a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                                            <li><a class="dropdown-item text-primary" href="view_patient.php?id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-eye me-2"></i> View Profile</a></li>
+                                            <li><a class="dropdown-item text-warning" href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-edit me-2"></i> Edit Patient</a></li>
+                                            <li><a class="dropdown-item text-info" href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-calendar-plus me-2"></i> New Appointment</a></li>
+                                            <li><a class="dropdown-item text-secondary" href="../process.php?action=archive_patient&id=<?php echo $patient['patient_id']; ?>" onclick="return confirm('Move this patient to archive?');"><i class="fas fa-archive me-2"></i> Move to Archive</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="patients.php?delete_id=<?php echo $patient['patient_id']; ?>" onclick="return confirm('Delete this patient?');"><i class="fas fa-trash me-2"></i> Delete</a></li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>

@@ -292,3 +292,6 @@
 [2026-04-26 14:00:19] [PHPMailer_ERROR] Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30.
 [26-Apr-2026 14:00:19 Asia/Dhaka] [2026-04-26 14:00:19] Uncaught Exception: Class "PHPMailer\PHPMailer\PHPMailer" not found in C:\xampp\htdocs\clinicApp\includes\functions.php:15
 
+[26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  Undefined variable $doctors in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 170
+[26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 170
+[26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  Undefined variable $total in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 194
