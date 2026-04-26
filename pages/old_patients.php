@@ -97,8 +97,8 @@ try {
             </div>
         <?php else: ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Patient Name</th>
@@ -124,19 +124,22 @@ try {
                                 <td><span class="badge bg-info"><?php echo $patient['total_appointments']; ?></span></td>
                                 <td><?php echo $patient['last_visit'] ? date('M j, Y', strtotime($patient['last_visit'])) : '-'; ?></td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <a class="dropdown-item text-success" href="../process.php?action=readmit_patient&id=<?php echo $patient['patient_id']; ?>">
-                                                    <i class="fas fa-user-check me-2"></i> Readmit (Move to Today)
-                                                </a>
-                                            </li>
-                                            <li><a class="dropdown-item text-primary" href="view_patient.php?id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-eye me-2"></i> View Profile</a></li>
-                                            <li><a class="dropdown-item text-info" href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-calendar-plus me-2"></i> New Appointment</a></li>
-                                        </ul>
+                                    <!-- Desktop Actions -->
+                                    <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
+                                        <a href="../process.php?action=readmit_patient&id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-success" title="Readmit"><i class="fas fa-user-check"></i></a>
+                                        <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
+                                        <a href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-info" title="New Appointment"><i class="fas fa-calendar-plus"></i></a>
+                                    </div>
+
+                                    <!-- Mobile Actions -->
+                                    <button class="actions-toggle collapsed d-inline-block d-md-none" type="button" aria-expanded="false" aria-label="Toggle actions"></button>
+                                    <div class="actions-collapse d-md-none">
+                                        <div class="collapse-details mb-2">
+                                            <strong><?php echo htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']); ?></strong>
+                                        </div>
+                                        <a href="../process.php?action=readmit_patient&id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-success w-100 mb-1"><i class="fas fa-user-check me-2"></i> Readmit</a>
+                                        <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary w-100 mb-1"><i class="fas fa-eye me-2"></i> View Profile</a>
+                                        <a href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-info w-100" title="New Appointment"><i class="fas fa-calendar-plus me-2"></i> New Appointment</a>
                                     </div>
                                 </td>
                             </tr>

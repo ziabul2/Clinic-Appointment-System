@@ -178,70 +178,110 @@ try {
 <?php endif; ?>
 
 <!-- Statistics Summary -->
-<div class="row g-2 mt-3 mb-4">
+<div class="row g-3 mt-3 mb-4">
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-primary">
-            <small class="text-muted d-block">Total Patients</small>
-            <h5 class="mb-0 mt-1"><?php echo $stats['total_patients']; ?></h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Total Patients</div>
+                <div class="value"><?php echo $stats['total_patients']; ?></div>
+            </div>
+            <div class="stat-icon bg-primary text-white">
+                <i class="fas fa-users"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-success">
-            <small class="text-muted d-block">Total Doctors</small>
-            <h5 class="mb-0 mt-1"><?php echo $stats['total_doctors']; ?></h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Total Doctors</div>
+                <div class="value"><?php echo $stats['total_doctors']; ?></div>
+            </div>
+            <div class="stat-icon bg-success text-white">
+                <i class="fas fa-user-md"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-info">
-            <small class="text-muted d-block">Today's Appointments</small>
-            <h5 class="mb-0 mt-1"><?php echo $stats['today_appointments']; ?></h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Today's Appointments</div>
+                <div class="value"><?php echo $stats['today_appointments']; ?></div>
+            </div>
+            <div class="stat-icon bg-info text-white">
+                <i class="fas fa-calendar-check"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-warning">
-            <small class="text-muted d-block">Pending</small>
-            <h5 class="mb-0 mt-1"><?php echo $stats['pending_appointments']; ?></h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Pending</div>
+                <div class="value"><?php echo $stats['pending_appointments']; ?></div>
+            </div>
+            <div class="stat-icon bg-warning text-white">
+                <i class="fas fa-clock"></i>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Secondary Metrics -->
-<div class="row g-2 mb-4">
+<div class="row g-3 mb-4">
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-info">
-            <small class="text-muted d-block">New Patients Today</small>
-            <h5 class="mb-0 mt-1"><?php echo intval($stats['new_patients_today']); ?></h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">New Patients Today</div>
+                <div class="value"><?php echo intval($stats['new_patients_today']); ?></div>
+            </div>
+            <div class="stat-icon bg-info text-white">
+                <i class="fas fa-user-plus"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-secondary">
-            <small class="text-muted d-block">Growth vs Yesterday</small>
-            <h5 class="mb-0 mt-1">
-                <?php
-                    $today = intval($stats['today_appointments']);
-                    $yesterday = intval($stats['yesterday_appointments']);
-                    if ($yesterday == 0) {
-                        echo $today > 0 ? '<span class="text-success">+100%</span>' : '0%';
-                    } else {
-                        $pct = round((($today - $yesterday) / max(1, $yesterday)) * 100, 1);
-                        echo ($pct >= 0 ? '<span class="text-success">+' . $pct . '%</span>' : '<span class="text-danger">' . $pct . '%</span>');
-                    }
-                ?>
-            </h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Growth vs Yesterday</div>
+                <div class="value">
+                    <?php
+                        $today = intval($stats['today_appointments']);
+                        $yesterday = intval($stats['yesterday_appointments']);
+                        if ($yesterday == 0) {
+                            echo $today > 0 ? '+100%' : '0%';
+                        } else {
+                            $pct = round((($today - $yesterday) / max(1, $yesterday)) * 100, 1);
+                            echo ($pct >= 0 ? '+' . $pct . '%' : $pct . '%');
+                        }
+                    ?>
+                </div>
+            </div>
+            <div class="stat-icon bg-secondary text-white">
+                <i class="fas fa-chart-line"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-dark">
-            <small class="text-muted d-block">Waitlist Pending</small>
-            <h5 class="mb-0 mt-1"><?php echo intval($stats['waitlist_pending']); ?></h5>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Waitlist Pending</div>
+                <div class="value"><?php echo intval($stats['waitlist_pending']); ?></div>
+            </div>
+            <div class="stat-icon bg-dark text-white">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-light rounded border-start border-4 border-primary">
-            <small class="text-muted d-block">Top Doctors</small>
-            <small class="mb-0 mt-1">
-                <?php foreach (array_slice($appointments_by_doctor, 0, 3) as $d) { echo '<div>' . htmlspecialchars('Dr. ' . $d['first_name'] . ' ' . $d['last_name']) . ' (' . intval($d['cnt']) . ')</div>'; } ?>
-            </small>
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="label">Top Doctors</div>
+                <div class="small mt-1">
+                    <?php foreach (array_slice($appointments_by_doctor, 0, 2) as $d) { echo '<div class="text-truncate" style="max-width:120px;">' . htmlspecialchars('Dr. ' . $d['first_name']) . ' (' . intval($d['cnt']) . ')</div>'; } ?>
+                </div>
+            </div>
+            <div class="stat-icon bg-primary text-white">
+                <i class="fas fa-award"></i>
+            </div>
         </div>
     </div>
 </div>
@@ -256,7 +296,7 @@ try {
             <div class="p-3 text-muted">No recent appointments found.</div>
         <?php else: ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th style="width:8%;">Serial</th>

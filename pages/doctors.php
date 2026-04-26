@@ -67,36 +67,37 @@ try {
     </div>
 </div>
 
-<div class="card shadow mb-4">
-    <div class="card-body">
+<div class="list-container mb-4">
+    <div class="list-header">
+        <h5 class="mb-0"><i class="fas fa-search"></i> Search Doctors</h5>
+        <span class="text-muted small">Total: <?php echo $total; ?> doctors</span>
+    </div>
+    <div class="list-body">
         <form method="GET" action="" class="row g-3">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" placeholder="Search doctors by name, email, or specialization..." value="<?php echo htmlspecialchars($search); ?>">
-                    <button class="btn btn-outline-primary" type="submit">
+                    <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search"></i> Search
                     </button>
+                    <?php if (!empty($search)): ?>
+                        <a href="doctors.php" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    <?php endif; ?>
                 </div>
-            </div>
-            <div class="col-md-4 text-end">
-                <?php if (!empty($search)): ?>
-                    <a href="doctors.php" class="btn btn-outline-secondary">
-                        <i class="fas fa-times"></i> Clear Search
-                    </a>
-                <?php endif; ?>
-                <span class="text-muted ms-2">Total: <?php echo $total; ?> doctors</span>
             </div>
         </form>
     </div>
 </div>
 
-<div class="card shadow">
-    <div class="card-header bg-light">
-        <h5 class="card-title mb-0"><i class="fas fa-list"></i> Doctors List</h5>
+<div class="list-container">
+    <div class="list-header">
+        <h5 class="mb-0"><i class="fas fa-list"></i> Doctors List</h5>
     </div>
-    <div class="card-body">
+    <div class="list-body">
         <?php if (empty($doctors)): ?>
-            <div class="text-center py-4">
+            <div class="text-center py-5">
                 <i class="fas fa-user-md fa-3x text-muted mb-3"></i>
                 <h5>No doctors found</h5>
                 <p class="text-muted">Add doctors to manage schedules and appointments.</p>
@@ -104,8 +105,8 @@ try {
             </div>
         <?php else: ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
                             <th style="width:5%;">ID</th>
                             <th style="width:25%;">Doctor</th>

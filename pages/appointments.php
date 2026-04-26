@@ -209,8 +209,8 @@ try {
             </div>
         <?php else: ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
                             <th style="width:6%;">ID</th>
                             <th style="width:28%;">Patient</th>

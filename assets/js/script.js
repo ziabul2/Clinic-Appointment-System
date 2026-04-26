@@ -512,3 +512,106 @@ window.formatDate = function(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
 };
+
+// =============================================================
+// Footer & Navbar Dynamic Scroll Logic
+// =============================================================
+window.initFooterLogic = function() {
+    const footer = document.querySelector('.footer');
+    const navEl = document.querySelector('.navbar-transparent');
+    if (!footer) return;
+
+    let lastScrollTop = 0;
+    const delta = 5;
+
+    // Dynamic Navbar & Footer Padding Adjustment
+    function adjustLayoutPadding() {
+        const body = document.body;
+        
+        // Navbar padding
+        if (navEl) {
+            const navH = Math.ceil(navEl.getBoundingClientRect().height);
+            body.style.setProperty('--navbar-height', navH + 'px');
+            if (body.classList.contains('has-fixed-navbar')) {
+                body.style.paddingTop = navH + 'px';
+            }
+        }
+        
+        // Footer padding: Ensure body has enough space for fixed footer
+        const footerH = Math.ceil(footer.getBoundingClientRect().height);
+        body.style.paddingBottom = (footerH + 40) + 'px';
+    }
+
+    window.addEventListener('scroll', function() {
+        const st = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // Handle negative scroll (iOS bounce)
+        const currentScroll = st < 0 ? 0 : st;
+
+        // If scroll is less than delta, ignore
+        if (Math.abs(lastScrollTop - currentScroll) <= delta) return;
+
+        // At the very top, always show
+        if (currentScroll <= 10) {
+            footer.classList.remove('footer-hidden');
+        } 
+        // Always show at the very bottom of the page
+        else if (currentScroll + windowHeight >= documentHeight - 50) {
+            footer.classList.remove('footer-hidden');
+            footer.classList.add('scrolled-bottom');
+        }
+        else {
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                // Scroll Down - Hide Footer
+                footer.classList.add('footer-hidden');
+            } else {
+                // Scroll Up - Show Footer
+                footer.classList.remove('footer-hidden');
+            }
+            footer.classList.remove('scrolled-bottom');
+        }
+
+        lastScrollTop = currentScroll;
+    }, { passive: true });
+
+    // Run initial adjustment
+    adjustLayoutPadding();
+    
+    // Auto-hide after 2 seconds if the page is small (not enough scrollable content)
+    setTimeout(() => {
+        const documentHeight = document.documentElement.scrollHeight;
+        const windowHeight = window.innerHeight;
+        const st = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // If the page is small OR we are at the top and haven't moved
+        if (documentHeight <= windowHeight + 150) {
+            footer.classList.add('footer-hidden');
+        }
+    }, 2000);
+
+    // Show footer if mouse moves to bottom of screen (for recovery)
+    document.addEventListener('mousemove', function(e) {
+        if (window.innerHeight - e.clientY <= 50) {
+            footer.classList.remove('footer-hidden');
+        }
+    });
+
+    // Listen for resize and other layout changes
+    window.addEventListener('resize', adjustLayoutPadding);
+    if (navEl && window.MutationObserver) {
+        const mo = new MutationObserver(() => adjustLayoutPadding());
+        mo.observe(navEl, { attributes: true, attributeFilter: ['class'] });
+    }
+    document.addEventListener('clinic:themeChanged', adjustLayoutPadding);
+};
+
+// Auto-init logic if footer exists
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.querySelector('.footer')) window.initFooterLogic();
+    });
+} else {
+    if (document.querySelector('.footer')) window.initFooterLogic();
+}

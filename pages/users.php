@@ -66,8 +66,8 @@ try {
             <div class="p-3 text-muted">No users found.</div>
         <?php else: ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
                             <th style="width:8%;">ID</th>
                             <th style="width:18%;">Username</th>
@@ -88,28 +88,23 @@ try {
                                 <td><small><?php echo $u['doctor_first'] ? htmlspecialchars('Dr. ' . $u['doctor_first'] . ' ' . $u['doctor_last']) : '<span class="text-muted">-</span>'; ?></small></td>
                                 <td><small><?php echo date('M j, Y', strtotime($u['created_at'])); ?></small></td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow">
-                                            <li>
-                                                <a class="dropdown-item text-primary" href="edit_user.php?id=<?php echo $u['user_id']; ?>">
-                                                    <i class="fas fa-edit me-2"></i> Edit User
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item text-warning" data-bs-toggle="modal" data-bs-target="#resetModal" data-userid="<?php echo $u['user_id']; ?>" data-username="<?php echo htmlspecialchars($u['username']); ?>">
-                                                    <i class="fas fa-key me-2"></i> Reset Password
-                                                </button>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item text-danger" href="../process.php?action=delete_user&id=<?php echo $u['user_id']; ?>" onclick="return confirm('Are you sure you want to delete this user?');">
-                                                    <i class="fas fa-trash me-2"></i> Delete User
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    <!-- Desktop Actions -->
+                                    <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
+                                        <a href="edit_user.php?id=<?php echo $u['user_id']; ?>" class="btn btn-outline-primary" title="Edit"><i class="fas fa-user-edit"></i></a>
+                                        <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#resetModal" data-userid="<?php echo $u['user_id']; ?>" data-username="<?php echo htmlspecialchars($u['username']); ?>" title="Reset Password"><i class="fas fa-key"></i></button>
+                                        <a href="../process.php?action=delete_user&id=<?php echo $u['user_id']; ?>" class="btn btn-outline-danger" onclick="return confirm('Delete user?');" title="Delete"><i class="fas fa-trash"></i></a>
+                                    </div>
+
+                                    <!-- Mobile Actions -->
+                                    <button class="actions-toggle collapsed d-inline-block d-md-none" type="button" aria-expanded="false" aria-label="Toggle actions"></button>
+                                    <div class="actions-collapse d-md-none">
+                                        <div class="collapse-details mb-2">
+                                            <strong><?php echo htmlspecialchars($u['username']); ?></strong>
+                                            <div class="text-muted small"><?php echo htmlspecialchars($u['role']); ?></div>
+                                        </div>
+                                        <a href="edit_user.php?id=<?php echo $u['user_id']; ?>" class="btn btn-outline-primary w-100 mb-1"><i class="fas fa-user-edit me-2"></i> Edit User</a>
+                                        <button class="btn btn-outline-warning w-100 mb-1" data-bs-toggle="modal" data-bs-target="#resetModal" data-userid="<?php echo $u['user_id']; ?>" data-username="<?php echo htmlspecialchars($u['username']); ?>"><i class="fas fa-key me-2"></i> Reset Password</button>
+                                        <a href="../process.php?action=delete_user&id=<?php echo $u['user_id']; ?>" class="btn btn-outline-danger w-100" onclick="return confirm('Delete user?');"><i class="fas fa-trash me-2"></i> Delete</a>
                                     </div>
                                 </td>
                             </tr>

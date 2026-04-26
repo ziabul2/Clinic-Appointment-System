@@ -84,47 +84,6 @@
         <!-- Scripts moved inside footer to prevent grid-item issues -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/script.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const footer = document.querySelector('.footer');
-                if (!footer) return;
-                
-                window.addEventListener('scroll', function() {
-                    const scrollPosition = window.scrollY;
-                    const windowHeight = window.innerHeight;
-                    const documentHeight = document.documentElement.scrollHeight;
-                    if (scrollPosition + windowHeight >= documentHeight - 50) {
-                        footer.style.borderTopColor = 'rgba(13, 110, 253, 0.5)';
-                        footer.style.boxShadow = '0 -10px 40px rgba(13, 110, 253, 0.15)';
-                    } else {
-                        footer.style.borderTopColor = 'rgba(255, 255, 255, 0.1)';
-                        footer.style.boxShadow = 'none';
-                    }
-                });
-            });
-            
-            // Dynamic Navbar Padding Adjustment
-            document.addEventListener('DOMContentLoaded', function() {
-                function adjustNavbarPadding() {
-                    const body = document.body;
-                    const navEl = document.querySelector('.navbar-transparent');
-                    if (!navEl) return;
-                    const h = Math.ceil(navEl.getBoundingClientRect().height);
-                    document.body.style.setProperty('--navbar-height', h + 'px');
-                    if (body.classList.contains('has-fixed-navbar')) {
-                        body.style.paddingTop = h + 'px';
-                    }
-                }
-                adjustNavbarPadding();
-                window.addEventListener('resize', adjustNavbarPadding);
-                const navEl = document.querySelector('.navbar-transparent');
-                if (navEl && window.MutationObserver) {
-                    const mo = new MutationObserver(() => adjustNavbarPadding());
-                    mo.observe(navEl, { attributes: true, attributeFilter: ['class'] });
-                }
-                document.addEventListener('clinic:themeChanged', adjustNavbarPadding);
-            });
-        </script>
     </footer>
 </body>
 </html>

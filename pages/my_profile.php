@@ -75,90 +75,119 @@ try {
 }
 ?>
 
-<div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2"><i class="fas fa-user"></i> My Profile</h1>
-    <div>
-        <a href="dashboard.php" class="btn btn-secondary">Back</a>
+<div class="list-container">
+    <div class="list-header">
+        <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i> My Profile Settings</h5>
+        <div>
+            <a href="dashboard.php" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
     </div>
-</div>
+    <div class="list-body">
+        <?php if ($error): ?><div class="alert alert-danger shadow-sm"><?php echo $error; ?></div><?php endif; ?>
+        <?php if ($success): ?><div class="alert alert-success shadow-sm"><?php echo $success; ?></div><?php endif; ?>
 
-<?php if ($error): ?><div class="alert alert-danger"><?php echo $error; ?></div><?php endif; ?>
-<?php if ($success): ?><div class="alert alert-success"><?php echo $success; ?></div><?php endif; ?>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="card shadow mb-3">
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
-                    <?php echo csrf_input(); ?>
-                    <div class="mb-3">
-                        <label class="form-label">Display Name</label>
-                        <input class="form-control" name="display_name" value="<?php echo htmlspecialchars($_SESSION['username'] ?? ''); ?>">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card shadow-sm border-0 mb-4" style="background: rgba(255,255,255,0.4); border-radius: 12px;">
+                    <div class="card-body p-4">
+                        <form method="post" enctype="multipart/form-data">
+                            <?php echo csrf_input(); ?>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small text-muted text-uppercase">Display Name</label>
+                                    <input class="form-control" name="display_name" value="<?php echo htmlspecialchars($_SESSION['username'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small text-muted text-uppercase">Phone Number</label>
+                                    <input class="form-control" name="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small text-muted text-uppercase">First Name</label>
+                                    <input class="form-control" name="first_name" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small text-muted text-uppercase">Last Name</label>
+                                    <input class="form-control" name="last_name" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-muted text-uppercase">Address</label>
+                                <textarea class="form-control" name="address" rows="2"><?php echo htmlspecialchars($user['address'] ?? ''); ?></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-muted text-uppercase">Profile Picture</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <?php if (!empty($user['profile_picture']) && file_exists(__DIR__ . '/../uploads/users/' . $user['profile_picture'])): ?>
+                                        <img src="../uploads/users/<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="Profile" class="rounded shadow-sm" style="width:80px;height:80px;object-fit:cover; border: 3px solid #fff;">
+                                    <?php else: ?>
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center shadow-sm" style="width:80px;height:80px; color: #ced4da;">
+                                            <i class="fas fa-user fa-2x"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="flex-grow-1">
+                                        <input type="file" class="form-control form-control-sm" name="profile_picture" accept="image/*">
+                                        <div class="small text-muted mt-1">Recommended size: 200x200px</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary px-4" type="submit">Update Information</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">First Name</label>
-                            <input class="form-control" name="first_name" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>">
+                </div>
+            </div>
+            
+            <div class="col-md-5">
+                <div class="card shadow-sm border-0 mb-4" style="background: rgba(255,255,255,0.4); border-radius: 12px;">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                        <h6 class="fw-bold mb-0 text-uppercase small text-primary"><i class="fas fa-info-circle me-1"></i> Account Details</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="text-muted small">Username:</span>
+                            <div class="fw-bold"><?php echo htmlspecialchars($user['username'] ?? ''); ?></div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Last Name</label>
-                            <input class="form-control" name="last_name" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>">
+                        <div class="mb-2">
+                            <span class="text-muted small">Access Role:</span>
+                            <div><span class="badge bg-info-soft text-info"><?php echo ucfirst(htmlspecialchars($user['role'] ?? '')); ?></span></div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone</label>
-                        <input class="form-control" name="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Address</label>
-                        <input class="form-control" name="address" value="<?php echo htmlspecialchars($user['address'] ?? ''); ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Profile Picture</label>
-                        <?php if (!empty($user['profile_picture']) && file_exists(__DIR__ . '/../uploads/users/' . $user['profile_picture'])): ?>
-                            <div class="mb-2"><img src="../uploads/users/<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="Profile" style="width:96px;height:96px;object-fit:cover;border-radius:6px;"></div>
+                        <?php if ($doctor): ?>
+                            <div>
+                                <span class="text-muted small">Linked Doctor Profile:</span>
+                                <div class="fw-bold text-primary">Dr. <?php echo htmlspecialchars($doctor['first_name'] . ' ' . $doctor['last_name']); ?></div>
+                            </div>
                         <?php endif; ?>
-                        <input type="file" class="form-control" name="profile_picture" accept="image/*">
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+
+                <div class="card shadow-sm border-0" style="background: rgba(255,255,255,0.4); border-radius: 12px;">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                        <h6 class="fw-bold mb-0 text-uppercase small text-warning"><i class="fas fa-shield-alt me-1"></i> Security</h6>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-header bg-light">Account Info</div>
-            <div class="card-body">
-                <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
-                <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role'] ?? ''); ?></p>
-                <?php if ($doctor): ?>
-                    <p><strong>Doctor:</strong> Dr. <?php echo htmlspecialchars($doctor['first_name'] . ' ' . $doctor['last_name']); ?></p>
-                <?php endif; ?>
-            </div>
-        </div>
-        <div class="card shadow mt-3">
-            <div class="card-header bg-light">Change Password</div>
-            <div class="card-body">
-                <form method="post" action="../process.php?action=change_password">
-                    <?php echo csrf_input(); ?>
-                    <div class="mb-3">
-                        <label class="form-label">Current Password</label>
-                        <input type="password" name="current_password" class="form-control" required>
+                    <div class="card-body">
+                        <form method="post" action="../process.php?action=change_password">
+                            <?php echo csrf_input(); ?>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted text-uppercase fw-bold">Current Password</label>
+                                <input type="password" name="current_password" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted text-uppercase fw-bold">New Password</label>
+                                <input type="password" name="new_password" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted text-uppercase fw-bold">Confirm Password</label>
+                                <input type="password" name="confirm_password" class="form-control form-control-sm" required>
+                            </div>
+                            <button class="btn btn-outline-warning btn-sm w-100" type="submit">Update Password</button>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">New Password</label>
-                        <input type="password" name="new_password" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Confirm New Password</label>
-                        <input type="password" name="confirm_password" class="form-control" required>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" type="submit">Change Password</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

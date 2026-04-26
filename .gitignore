@@ -1,0 +1,10 @@
+logs/
+vendor/
+.DS_Store
+*.log
+uploads/users/*
+!uploads/users/.gitkeep
+uploads/doctors/*
+!uploads/doctors/.gitkeep
+uploads/prescriptions/*
+!uploads/prescriptions/.gitkeep

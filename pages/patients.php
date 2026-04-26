@@ -133,8 +133,8 @@ try {
             </div>
         <?php else: ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
                              <th style="width:5%;">ID</th>
                              <th style="width:15%;">Patient Name</th>
@@ -202,18 +202,27 @@ try {
                                     </small>
                                 </td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow">
-                                            <li><a class="dropdown-item text-primary" href="view_patient.php?id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-eye me-2"></i> View Profile</a></li>
-                                            <li><a class="dropdown-item text-warning" href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-edit me-2"></i> Edit Patient</a></li>
-                                            <li><a class="dropdown-item text-info" href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>"><i class="fas fa-calendar-plus me-2"></i> New Appointment</a></li>
-                                            <li><a class="dropdown-item text-secondary" href="../process.php?action=archive_patient&id=<?php echo $patient['patient_id']; ?>" onclick="return confirm('Move this patient to archive?');"><i class="fas fa-archive me-2"></i> Move to Archive</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="patients.php?delete_id=<?php echo $patient['patient_id']; ?>" onclick="return confirm('Delete this patient?');"><i class="fas fa-trash me-2"></i> Delete</a></li>
-                                        </ul>
+                                    <!-- Desktop Actions -->
+                                    <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
+                                        <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
+                                        <a href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>
+                                        <a href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-info" title="New Appointment"><i class="fas fa-calendar-plus"></i></a>
+                                        <a href="../process.php?action=archive_patient&id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-secondary" onclick="return confirm('Archive patient?');" title="Archive"><i class="fas fa-archive"></i></a>
+                                        <a href="patients.php?delete_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-danger" onclick="return confirm('Delete patient?');" title="Delete"><i class="fas fa-trash"></i></a>
+                                    </div>
+
+                                    <!-- Mobile Actions -->
+                                    <button class="actions-toggle collapsed d-inline-block d-md-none" type="button" aria-expanded="false" aria-label="Toggle actions"></button>
+                                    <div class="actions-collapse d-md-none">
+                                        <div class="collapse-details mb-2">
+                                            <strong><?php echo htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']); ?></strong>
+                                            <div class="text-muted small"><?php echo htmlspecialchars($patient['phone'] ?? 'No phone'); ?></div>
+                                        </div>
+                                        <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary w-100 mb-1"><i class="fas fa-eye me-2"></i> View Profile</a>
+                                        <a href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-warning w-100 mb-1"><i class="fas fa-edit me-2"></i> Edit Patient</a>
+                                        <a href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-info w-100 mb-1"><i class="fas fa-calendar-plus me-2"></i> New Appointment</a>
+                                        <a href="../process.php?action=archive_patient&id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-secondary w-100 mb-1" onclick="return confirm('Archive patient?');"><i class="fas fa-archive me-2"></i> Archive</a>
+                                        <a href="patients.php?delete_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-danger w-100" onclick="return confirm('Delete patient?');"><i class="fas fa-trash me-2"></i> Delete</a>
                                     </div>
                                 </td>
                             </tr>
