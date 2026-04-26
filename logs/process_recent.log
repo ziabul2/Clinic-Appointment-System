@@ -1,3 +1,17 @@
+[2026-04-26 14:18:51] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:18:42] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 14:18:41] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-26 14:18:28] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 14:18:24] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 14:18:01] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 14:15:46] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 14:15:27] Guest | PAGE_ACCESS | Accessed: 404.php
+[2026-04-26 14:15:27] Guest | PAGE_ACCESS | Accessed: 404.php
+[2026-04-26 14:15:27] Guest | PAGE_ACCESS | Accessed: 404.php
+[2026-04-26 14:15:27] Guest | PAGE_ACCESS | Accessed: 404.php
+[2026-04-26 14:15:27] Guest | PAGE_ACCESS | Accessed: 404.php
+[2026-04-26 14:15:26] Guest | PAGE_ACCESS | Accessed: 404.php
+[2026-04-26 14:15:26] Guest | REGISTER_ERROR | SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'zamil@gmail.com' for key 'email'
 [2026-04-26 14:06:49] Guest | PAGE_ACCESS | Accessed: register.php
 [2026-04-26 14:06:47] Guest | PAGE_ACCESS | Accessed: login.php
 [2026-04-26 14:06:47] Ziabul | USER_LOGOUT | User logged out: Ziabul

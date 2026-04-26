@@ -56,10 +56,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <i class="fas fa-sign-in-alt me-2"></i> Sign In
             </button>
 
-            <div class="text-center">
-                <span class="text-muted small">Don't have an account?</span>
-                <a href="register.php" class="small text-decoration-none text-primary fw-bold">Contact Admin</a>
-            </div>
+
         </form>
     </div>
 </div>
