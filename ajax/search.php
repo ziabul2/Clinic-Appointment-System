@@ -36,7 +36,7 @@ try {
                        (SELECT MAX(appointment_date) FROM appointments a WHERE a.patient_id = p.patient_id) as last_visit
                 FROM patients p 
                 $where 
-                ORDER BY p.admitted_at DESC LIMIT 50";
+                ORDER BY " . (!empty($numeric_part) ? "(p.patient_id = :id_exact) DESC, " : "") . " p.admitted_at DESC LIMIT 50";
         
         $stmt = $db->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
@@ -134,7 +134,7 @@ try {
         }
         
         $sql = "SELECT d.*, (SELECT COUNT(*) FROM appointments a WHERE a.doctor_id = d.doctor_id) as total_appointments 
-                FROM doctors d $where ORDER BY d.created_at DESC LIMIT 50";
+                FROM doctors d $where ORDER BY " . (!empty($numeric_part) ? "(d.doctor_id = :id_exact) DESC, " : "") . " d.created_at DESC LIMIT 50";
         
         $stmt = $db->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
@@ -212,7 +212,7 @@ try {
                   LEFT JOIN patients p ON a.patient_id = p.patient_id
                   LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
                   $where 
-                  ORDER BY a.appointment_date DESC, a.appointment_time DESC LIMIT 50";
+                  ORDER BY " . (!empty($numeric_part) ? "(a.appointment_id = :id_exact) DESC, " : "") . " a.appointment_date DESC, a.appointment_time DESC LIMIT 50";
         
         $stmt = $db->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
