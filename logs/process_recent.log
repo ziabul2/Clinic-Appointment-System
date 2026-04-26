@@ -1,3 +1,73 @@
+[2026-04-26 13:52:55] Ziabul | PAGE_ACCESS | Accessed: users.php
+[2026-04-26 13:52:43] Ziabul | PAGE_ACCESS | Accessed: users.php
+[2026-04-26 13:52:25] Ziabul | PAGE_ACCESS | Accessed: users.php
+[2026-04-26 13:52:20] Ziabul | PAGE_ACCESS | Accessed: add_user.php
+[2026-04-26 13:52:12] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:51:50] Ziabul | APPOINTMENT_VIEWED | Appointment ID: 12 viewed
+[2026-04-26 13:51:50] Ziabul | PAGE_ACCESS | Accessed: appointment_view.php
+[2026-04-26 13:51:03] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 13:51:00] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 13:50:58] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 13:50:57] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:50:48] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:50:48] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-26 13:50:43] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:50:36] Guest | PAGE_ACCESS | Accessed: register.php
+[2026-04-26 13:50:31] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:50:31] Guest | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:50:18] Guest | PAGE_ACCESS | Accessed: register.php
+[2026-04-26 13:50:15] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:49:59] Guest | PAGE_ACCESS | Accessed: register.php
+[2026-04-26 13:49:53] Guest | PAGE_ACCESS | Accessed: password_reset_request.php
+[2026-04-26 13:49:48] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:49:48] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-26 13:49:45] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:49:45] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-26 13:49:36] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:46:38] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:46:01] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:43:12] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:41:39] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:41:39] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-26 13:41:23] Ziabul | PAGE_ACCESS | Accessed: admin_tools.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:20] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:41:17] Ziabul | PAGE_ACCESS | Accessed: admin_tools.php
+[2026-04-26 13:41:11] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:58] Ziabul | PAGE_ACCESS | Accessed: 403.php
+[2026-04-26 13:40:56] Ziabul | PAGE_ACCESS | Accessed: admin_tools.php
+[2026-04-26 13:40:51] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:39:05] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 13:39:04] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 13:39:02] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 13:39:00] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:38:58] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:38:49] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:37:18] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:37:18] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-26 13:37:04] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:37:04] Guest | LOGIN_FAILED | User not found: admin
+[2026-04-26 13:36:46] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 13:36:46] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-26 13:11:47] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 13:11:40] Ziabul | PAGE_ACCESS | Accessed: appointment_actions.php
+[2026-04-26 13:11:30] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 12:55:54] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 12:55:52] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 12:55:49] Ziabul | PAGE_ACCESS | Accessed: doctors.php
 [2026-04-26 12:53:05] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
 [2026-04-26 12:52:56] Ziabul | PAGE_ACCESS | Accessed: appointments.php
 [2026-04-26 12:52:52] Ziabul | PAGE_ACCESS | Accessed: patients.php

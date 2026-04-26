@@ -24,8 +24,9 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
     <!-- Custom CSS -->
     <link href="../assets/css/style.css" rel="stylesheet">
 </head>
-<body class="has-fixed-navbar">
+<body class="<?php echo ($hide_nav ?? false) ? '' : 'has-fixed-navbar'; ?>">
     <!-- Navigation -->
+    <?php if (!($hide_nav ?? false)): ?>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-transparent">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="../index.php">
@@ -175,9 +176,10 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
             </div>
         </div>
     </nav>
+    <?php endif; ?>
 
     <!-- Main Content -->
-    <div class="container mt-4 <?php echo function_exists('pageFadeIn') ? pageFadeIn() : ''; ?>">
+    <div class="<?php echo $container_class ?? 'container mt-4'; ?> <?php echo function_exists('pageFadeIn') ? pageFadeIn() : ''; ?>">
         <!-- Server flash injection disabled to avoid automatic toasts outside the bell dropdown -->
         <script>window.__CSRF_TOKEN = '<?php echo csrf_token(); ?>';</script>
         <script src="../assets/js/notifications.js"></script>
