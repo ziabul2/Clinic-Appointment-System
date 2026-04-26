@@ -295,3 +295,5 @@
 [26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  Undefined variable $doctors in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 170
 [26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 170
 [26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  Undefined variable $total in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 194
+[26-Apr-2026 14:55:00 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84
+[26-Apr-2026 14:55:21 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84

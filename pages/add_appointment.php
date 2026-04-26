@@ -16,8 +16,11 @@ try {
     $doctors_stmt->execute();
     $doctors = $doctors_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch patients for dropdown - using only basic columns that definitely exist
-    $patients_query = "SELECT patient_id, first_name, last_name, phone, email FROM patients ORDER BY first_name, last_name";
+    // Fetch ONLY today's admitted patients for dropdown
+    $patients_query = "SELECT patient_id, first_name, last_name, phone, email 
+                      FROM patients 
+                      WHERE DATE(admitted_at) = CURDATE() 
+                      ORDER BY first_name, last_name";
     $patients_stmt = $db->prepare($patients_query);
     $patients_stmt->execute();
     $patients = $patients_stmt->fetchAll(PDO::FETCH_ASSOC);

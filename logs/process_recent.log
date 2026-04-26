@@ -1,3 +1,12 @@
+[2026-04-26 14:55:25] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:55:21] Ziabul | OLD_PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 14:55:21] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:55:10] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:55:00] Ziabul | OLD_PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 14:55:00] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:54:50] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 14:54:43] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 14:54:33] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
 [2026-04-26 14:51:58] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
 [2026-04-26 14:51:55] Ziabul | PAGE_ACCESS | Accessed: appointments.php
 [2026-04-26 14:51:53] Ziabul | PAGE_ACCESS | Accessed: appointments.php

@@ -8797,3 +8797,19 @@ appointments.status exists
 [2026-04-26 14:51:55] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: appointments.php
 [2026-04-26 14:51:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
 [2026-04-26 14:51:58] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: add_appointment.php
+[2026-04-26 14:54:33] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:54:33] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: add_appointment.php
+[2026-04-26 14:54:43] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:54:43] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 14:54:50] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:54:50] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: old_patients.php
+[2026-04-26 14:55:00] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:55:00] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: old_patients.php
+[2026-04-26 14:55:00] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: OLD_PATIENTS_PAGE_ERROR | Details: Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 14:55:10] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:55:10] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: old_patients.php
+[2026-04-26 14:55:21] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:55:21] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: old_patients.php
+[2026-04-26 14:55:21] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: OLD_PATIENTS_PAGE_ERROR | Details: Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 14:55:25] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 14:55:25] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: old_patients.php
