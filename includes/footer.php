@@ -4,7 +4,7 @@
     </div> <!-- End container -->
 
     <!-- Modern Animated Footer -->
-    <footer class="footer mt-auto bg-dark text-light">
+    <footer class="footer bg-dark text-light">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
