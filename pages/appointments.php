@@ -151,7 +151,7 @@ try {
         <form method="GET" action="" class="row g-2">
             <div class="col-md-4">
                 <label class="form-label small">Search Patient</label>
-                <input type="text" class="form-control form-control-sm" name="search" placeholder="Name, email, phone..." value="<?php echo htmlspecialchars($search); ?>">
+                <input type="text" class="form-control form-control-sm realtime-search" name="search" data-type="appointments" placeholder="Search by ID, Name, Email, Phone..." value="<?php echo htmlspecialchars($search); ?>">
             </div>
             <div class="col-md-2">
                 <label class="form-label small">Status</label>
@@ -221,7 +221,7 @@ try {
                             <th style="width:18%;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="appointmentsTableBody">
                         <?php foreach ($appointments as $apt): ?>
                             <tr>
                                 <td><span class="badge bg-secondary">#<?php echo $apt['appointment_id']; ?></span></td>
@@ -289,7 +289,7 @@ try {
             <!-- Pagination -->
             <?php if ($total_pages > 1): ?>
                 <div class="list-footer">
-                    <nav aria-label="Appointments pagination">
+                    <nav aria-label="Appointments pagination" id="paginationContainer">
                         <ul class="pagination justify-content-center mb-0">
                             <?php if ($page > 1): ?>
                                 <li class="page-item">
@@ -314,90 +314,5 @@ try {
     </div>
 </div>
 
-<script src="../assets/js/notifications.js"></script>
-<script>
-    (function(){
-        // Handle send mail button animation (loading spinner -> checkmark)
-        var forms = document.querySelectorAll('.send-mail-form');
-        forms.forEach(function(form){
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
-                var btn = form.querySelector('.mail-btn');
-                if (!btn) return;
-                
-                var originalText = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
-                
-                var action = form.getAttribute('action');
-                var formData = new FormData(form);
-                
-                fetch(action, {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                }).then(function(resp){
-                    return resp.text().then(function(text){
-                        try {
-                            var j = JSON.parse(text);
-                            if (j && j.ok) {
-                                // Success: show checkmark
-                                btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-                                if (btn.classList.contains('btn-sm')) {
-                                    // Desktop (small icon button)
-                                    btn.classList.remove('btn-outline-secondary');
-                                    btn.classList.add('btn-success');
-                                } else {
-                                    // Mobile (full-width button)
-                                    btn.innerHTML = '<i class="fas fa-check-circle"></i> Email Sent';
-                                    btn.classList.remove('btn-outline-secondary');
-                                    btn.classList.add('btn-success');
-                                }
-                                if (j.toast === true && window.showFlashToast) {
-                                    window.showFlashToast({ success: j.message || 'Email sent successfully.' });
-                                }
-                                // Keep button disabled and showing checkmark
-                            } else if (j && j.error) {
-                                // Error: show error message
-                                if (btn.classList.contains('btn-sm')) {
-                                    btn.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                                } else {
-                                    btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Send Failed';
-                                }
-                                btn.classList.remove('btn-outline-secondary');
-                                btn.classList.add('btn-danger');
-                                setTimeout(function(){ btn.disabled = false; btn.innerHTML = originalText; btn.classList.remove('btn-danger'); btn.classList.add('btn-outline-secondary'); }, 3000);
-                            } else {
-                                // Unexpected response
-                                btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-                                btn.classList.remove('btn-outline-secondary');
-                                btn.classList.add('btn-success');
-                            }
-                        } catch (err) {
-                            // Not JSON response
-                            btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-                            btn.classList.remove('btn-outline-secondary');
-                            btn.classList.add('btn-success');
-                        }
-                    });
-                }).catch(function(err){
-                    console.error('Send mail error', err);
-                    if (btn.classList.contains('btn-sm')) {
-                        btn.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-                    } else {
-                        btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Send Failed';
-                    }
-                    btn.classList.remove('btn-outline-secondary');
-                    btn.classList.add('btn-danger');
-                    setTimeout(function(){ btn.disabled = false; btn.innerHTML = originalText; btn.classList.remove('btn-danger'); btn.classList.add('btn-outline-secondary'); }, 3000);
-                });
-            });
-        });
-    })();
-</script>
 
 <?php require_once '../includes/footer.php'; ?>

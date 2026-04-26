@@ -165,6 +165,23 @@ try {
                     </div>
                 </div>
 
+                <div class="card shadow-sm border-0 mb-4" style="background: rgba(255,255,255,0.4); border-radius: 12px;">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                        <h6 class="fw-bold mb-0 text-uppercase small text-success"><i class="fas fa-cog me-1"></i> Application Settings</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <div class="fw-bold small">Show Footer</div>
+                                <div class="text-muted smaller">Toggle the visibility of the bottom footer section.</div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="footerVisibilityToggle" checked>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card shadow-sm border-0" style="background: rgba(255,255,255,0.4); border-radius: 12px;">
                     <div class="card-header bg-transparent border-0 pt-4 pb-0">
                         <h6 class="fw-bold mb-0 text-uppercase small text-warning"><i class="fas fa-shield-alt me-1"></i> Security</h6>
@@ -192,5 +209,47 @@ try {
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const footerToggle = document.getElementById('footerVisibilityToggle');
+    
+    // Load current state from localStorage
+    const hideFooter = localStorage.getItem('hide_footer') === 'true';
+    footerToggle.checked = !hideFooter;
+
+    footerToggle.addEventListener('change', function() {
+        const isVisible = this.checked;
+        const hide = !isVisible;
+        
+        // Save to localStorage
+        localStorage.setItem('hide_footer', hide);
+        
+        // Trigger event for script.js to react immediately
+        document.dispatchEvent(new CustomEvent('clinic:footerVisibilityChanged', { detail: { hide: hide } }));
+
+        // Save to JSON database via AJAX
+        const formData = new FormData();
+        formData.append('name', 'hide_footer');
+        formData.append('value', hide);
+        formData.append('csrf_token', window.__CSRF_TOKEN);
+
+        fetch('../ajax/settings_handler.php?action=save', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.ok) {
+                if (window.flashNotify) flashNotify('success', 'Settings Updated', 'Footer visibility preference saved.');
+            } else {
+                console.error('Failed to save setting to server:', data.message);
+            }
+        })
+        .catch(error => console.error('Error saving setting:', error));
+    });
+});
+</script>
 
 <?php require_once '../includes/footer.php'; ?>

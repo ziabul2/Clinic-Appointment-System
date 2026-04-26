@@ -433,6 +433,59 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     console.log('Clinic Appointment System JS loaded successfully');
+
+    // Real-time AJAX Search Logic
+    const realtimeSearchInputs = document.querySelectorAll('.realtime-search');
+    realtimeSearchInputs.forEach(input => {
+        const type = input.getAttribute('data-type');
+        const targetBodyId = type + 'TableBody';
+        const targetBody = document.getElementById(targetBodyId);
+        const pagination = document.getElementById('paginationContainer');
+        const searchForm = input.closest('form');
+
+        // Prevent form submission when pressing Enter
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                return false;
+            });
+        }
+
+        if (targetBody) {
+            input.addEventListener('input', debounce(function(e) {
+                const query = e.target.value.trim();
+                
+                // Determine base path for AJAX
+                const currentPath = window.location.pathname;
+                const ajaxPath = currentPath.includes('/pages/') ? '../ajax/search.php' : 'ajax/search.php';
+                const url = `${ajaxPath}?type=${type}&query=${encodeURIComponent(query)}`;
+
+                // Show a subtle loading indicator
+                targetBody.style.opacity = '0.5';
+
+                fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(html => {
+                    targetBody.innerHTML = html;
+                    targetBody.style.opacity = '1';
+                    
+                    // Hide pagination when searching to avoid confusion
+                    if (pagination) {
+                        pagination.style.display = query.length > 0 ? 'none' : '';
+                    }
+                })
+                .catch(err => {
+                    console.error('Search error:', err);
+                    targetBody.style.opacity = '1';
+                });
+            }, 300)); // Slightly faster response
+        }
+    });
 });
 
 // Premium notification system (Toasts)
@@ -463,39 +516,69 @@ window.flashNotify = function(type, title, message) {
     }, 5000);
 };
 
-// AJAX handler for per-row send mail forms
-// ... rest of the file ...
+// Global handler for send-mail-form (supporting real-time search results via delegation)
+document.addEventListener('submit', function(e) {
+    const form = e.target;
+    if (form.classList.contains('send-mail-form') || (form.action && form.action.includes('send_appointment_mail'))) {
+        e.preventDefault();
+        const btn = form.querySelector('.mail-btn') || form.querySelector('button[type="submit"]');
+        if (!btn) return;
+        
+        if (!confirm('Send appointment email?')) return;
 
-document.addEventListener('DOMContentLoaded', function() {
-    var mailForms = document.querySelectorAll('form[action*="send_appointment_mail"]');
-    mailForms.forEach(function(form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!confirm('Send appointment email to patient and doctor?')) return;
-            var fd = new FormData(form);
-            fetch(form.action, {
-                method: 'POST',
-                body: fd,
-                credentials: 'same-origin',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        
+        const action = form.getAttribute('action');
+        const formData = new FormData(form);
+        
+        fetch(action, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.ok) {
+                btn.innerHTML = '<i class="fas fa-check-circle"></i>';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-success');
+                if (window.flashNotify) {
+                    flashNotify('success', 'Email Sent', data.message || 'Email sent successfully.');
                 }
-            }).then(function(resp) {
-                var ct = resp.headers.get('Content-Type') || '';
-                if (ct.indexOf('application/json') !== -1) return resp.json();
-                return resp.text().then(function(txt){ return { ok:false, message: 'Unexpected response from server' }; });
-            }).then(function(json) {
-                if (json && json.ok) {
-                    if (window.flashNotify) flashNotify('success', 'Mail Sent', json.message || 'Mail sent successfully');
-                } else {
-                    if (window.flashNotify) flashNotify('error', 'Mail Failed', json.message || 'Failed to send mail');
+            } else {
+                btn.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-danger');
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-secondary');
+                }, 3000);
+                if (data && data.error && window.flashNotify) {
+                    flashNotify('error', 'Failed', data.error);
                 }
-            }).catch(function(err) {
-                if (window.flashNotify) flashNotify('error', 'Mail Error', 'Network or server error');
-                console.error('Mail send error', err);
-            });
+            }
+        })
+        .catch(err => {
+            console.error('Send mail error:', err);
+            btn.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-danger');
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-outline-secondary');
+            }, 3000);
         });
-    });
+    }
 });
 
 // Utility functions
@@ -542,7 +625,56 @@ window.initFooterLogic = function() {
         body.style.paddingBottom = (footerH + 40) + 'px';
     }
 
+    let isManualOverride = false;
+
+    // Manual Toggle Logic
+    const toggleBtn = document.getElementById('footerToggleBtn');
+    
+    function applyVisibility(hide) {
+        if (hide) {
+            footer.classList.add('footer-hidden');
+            footer.style.display = 'none';
+        } else {
+            footer.style.display = '';
+            footer.classList.remove('footer-hidden');
+        }
+        
+        if (toggleBtn) {
+            const icon = toggleBtn.querySelector('i');
+            if (icon) {
+                icon.style.transform = hide ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        }
+        adjustLayoutPadding();
+    }
+
+    // Initial check from localStorage
+    const shouldHide = localStorage.getItem('hide_footer') === 'true';
+    if (shouldHide) {
+        applyVisibility(true);
+    }
+
+    if (toggleBtn) {
+        toggleBtn.onclick = function() {
+            isManualOverride = true; // Disable auto-logic once user takes control
+            const isHidden = footer.classList.contains('footer-hidden') || footer.style.display === 'none';
+            applyVisibility(!isHidden);
+            
+            // Sync with localStorage if manual toggle used
+            localStorage.setItem('hide_footer', !isHidden);
+        };
+    }
+
+    // Listen for external visibility changes (e.g. from Profile page)
+    document.addEventListener('clinic:footerVisibilityChanged', function(e) {
+        isManualOverride = true;
+        applyVisibility(e.detail.hide);
+    });
+
     window.addEventListener('scroll', function() {
+        if (isManualOverride) return; // Respect manual preference
+        if (localStorage.getItem('hide_footer') === 'true') return; // Do nothing if hidden by setting
+        
         const st = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
@@ -581,6 +713,8 @@ window.initFooterLogic = function() {
     
     // Auto-hide after 2 seconds if the page is small (not enough scrollable content)
     setTimeout(() => {
+        if (isManualOverride) return; // Respect manual preference
+        
         const documentHeight = document.documentElement.scrollHeight;
         const windowHeight = window.innerHeight;
         const st = window.pageYOffset || document.documentElement.scrollTop;
@@ -588,6 +722,11 @@ window.initFooterLogic = function() {
         // If the page is small OR we are at the top and haven't moved
         if (documentHeight <= windowHeight + 150) {
             footer.classList.add('footer-hidden');
+            // Sync icon if it exists
+            if (toggleBtn) {
+                const icon = toggleBtn.querySelector('i');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
         }
     }, 2000);
 

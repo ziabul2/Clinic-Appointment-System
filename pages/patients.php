@@ -94,7 +94,7 @@ try {
         <form method="GET" action="" class="row g-3">
             <div class="col-md-8">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Search patients by name, email, or phone..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" class="form-control realtime-search" name="search" data-type="patients" placeholder="Search patients by ID, name, email, or phone..." value="<?php echo htmlspecialchars($search); ?>">
                     <button class="btn btn-outline-primary" type="submit">
                         <i class="fas fa-search"></i> Search
                     </button>
@@ -147,7 +147,7 @@ try {
                              <th style="width:5%;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="patientsTableBody">
                         <?php foreach ($patients as $patient): ?>
                             <tr>
                                 <td><span class="badge bg-secondary">#<?php echo $patient['patient_id']; ?></span></td>
@@ -233,7 +233,7 @@ try {
 
             <!-- Pagination -->
             <?php if ($total_pages > 1): ?>
-                <nav aria-label="Patients pagination">
+                <nav aria-label="Patients pagination" id="paginationContainer">
                     <ul class="pagination justify-content-center">
                         <?php if ($page > 1): ?>
                             <li class="page-item">

@@ -1,3 +1,41 @@
+[2026-04-26 16:13:43] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:13:39] Ziabul | PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 16:13:39] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:13:32] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:13:29] Ziabul | PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 16:13:29] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:11:56] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:11:53] Ziabul | OLD_PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 16:11:53] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 16:11:47] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 16:11:42] Ziabul | OLD_PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
+[2026-04-26 16:11:42] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 16:11:38] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-26 16:11:37] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:09:54] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 16:09:40] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 16:09:01] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:05:25] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 16:05:20] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 16:05:15] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 16:05:07] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 16:05:05] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 16:04:56] Ziabul | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-26 16:04:52] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 16:04:52] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-26 16:02:48] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 16:02:48] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-26 15:55:27] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 15:53:22] Ziabul | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-26 15:53:03] Ziabul | PAGE_ACCESS | Accessed: view_doctor.php
+[2026-04-26 15:52:44] Ziabul | PAGE_ACCESS | Accessed: edit_doctor.php
+[2026-04-26 15:52:40] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 15:50:58] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 15:49:15] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 15:49:09] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 15:49:08] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 15:48:38] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 15:48:28] Ziabul | PAGE_ACCESS | Accessed: patients.php
 [2026-04-26 15:46:42] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-26 15:38:38] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-26 15:38:15] Ziabul | PAGE_ACCESS | Accessed: dashboard.php

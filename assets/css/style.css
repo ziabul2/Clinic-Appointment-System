@@ -991,6 +991,41 @@ body.has-fixed-navbar {
     border-top-color: rgba(13, 110, 253, 0.4);
 }
 
+/* Footer Toggle Button */
+.footer-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.footer-toggle:hover {
+    background: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.footer-toggle i {
+    transition: transform 0.4s ease;
+}
+
+.footer.footer-hidden ~ .footer-toggle i {
+    transform: rotate(180deg);
+}
+
 /* Add padding to body to prevent footer from covering content */
 body {
     padding-bottom: 250px; /* Base padding, will be adjusted by JS if needed */

@@ -297,3 +297,7 @@
 [26-Apr-2026 14:33:17 Asia/Dhaka] PHP Warning:  Undefined variable $total in C:\xampp\htdocs\clinicApp\pages\appointments.php on line 194
 [26-Apr-2026 14:55:00 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84
 [26-Apr-2026 14:55:21 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84
+[26-Apr-2026 16:11:42 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84
+[26-Apr-2026 16:11:53 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84
+[26-Apr-2026 16:13:29 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\patients.php on line 109
+[26-Apr-2026 16:13:39 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\patients.php on line 109

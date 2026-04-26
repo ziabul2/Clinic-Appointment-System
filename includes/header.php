@@ -182,5 +182,28 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
     <div class="<?php echo $container_class ?? 'container mt-4'; ?> <?php echo function_exists('pageFadeIn') ? pageFadeIn() : ''; ?>">
         <!-- Server flash injection disabled to avoid automatic toasts outside the bell dropdown -->
         <script>window.__CSRF_TOKEN = '<?php echo csrf_token(); ?>';</script>
+        <?php
+        // Inject user settings from JSON database
+        $user_settings_js = '{}';
+        if (isLoggedIn()) {
+            $settings_file = __DIR__ . '/../private/user_settings.json';
+            if (file_exists($settings_file)) {
+                $settings_data = json_decode(file_get_contents($settings_file), true);
+                $uid = $_SESSION['user_id'];
+                if (isset($settings_data[$uid])) {
+                    $user_settings_js = json_encode($settings_data[$uid]);
+                }
+            }
+        }
+        ?>
+        <script>
+            window.__USER_SETTINGS = <?php echo $user_settings_js; ?>;
+            // Sync localStorage with server settings on load
+            (function() {
+                for (let key in window.__USER_SETTINGS) {
+                    localStorage.setItem(key, window.__USER_SETTINGS[key]);
+                }
+            })();
+        </script>
         <script src="../assets/js/notifications.js"></script>
         
