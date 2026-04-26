@@ -9024,3 +9024,55 @@ appointments.status exists
 [2026-04-26 16:17:51] [INFO] [DATABASE_CONNECTION] Database connected successfully
 [2026-04-26 16:17:51] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
 [2026-04-26 16:17:55] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:43] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:44] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:44] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:22:49] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:53] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:53] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:22:57] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:22:58] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:23:01] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:08] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:08] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:23:16] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:17] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:24] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:24] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:23:29] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:32] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:23:32] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:36:33] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:36:33] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:36:35] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:36:35] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: doctors.php
+[2026-04-26 16:36:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:36:41] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:36:41] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: doctors.php
+[2026-04-26 16:36:46] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:13] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:13] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: appointments.php
+[2026-04-26 16:37:18] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:21] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:21] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 16:37:22] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:22] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:37:26] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:28] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:37:28] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:38:41] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:41] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:41] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 16:38:43] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:43] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:38:46] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:51] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:53] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:53] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 16:38:54] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:38:54] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: doctors.php
+[2026-04-26 16:38:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:39:00] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 16:39:00] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: appointments.php
+[2026-04-26 16:39:04] [INFO] [DATABASE_CONNECTION] Database connected successfully
