@@ -16,7 +16,6 @@ $numeric_part = preg_replace('/[^0-9]/', '', $clean_query);
 
 try {
     if ($type === 'patients') {
-        // Use unique placeholders to avoid HY093 error on some PDO configurations
         $where = "WHERE (p.first_name LIKE :s1 OR p.last_name LIKE :s2 OR p.email LIKE :s3 OR p.phone LIKE :s4 OR CAST(p.patient_id AS CHAR) LIKE :s5)";
         $params = [
             ':s1' => $search,
@@ -26,9 +25,12 @@ try {
             ':s5' => $search
         ];
         
+        $order_by = "p.admitted_at DESC";
         if (!empty($numeric_part)) {
-            $where = "WHERE (p.first_name LIKE :s1 OR p.last_name LIKE :s2 OR p.email LIKE :s3 OR p.phone LIKE :s4 OR CAST(p.patient_id AS CHAR) LIKE :s5 OR p.patient_id = :id_exact)";
-            $params[':id_exact'] = $numeric_part;
+            $where = "WHERE (p.first_name LIKE :s1 OR p.last_name LIKE :s2 OR p.email LIKE :s3 OR p.phone LIKE :s4 OR CAST(p.patient_id AS CHAR) LIKE :s5 OR p.patient_id = :id_exact1)";
+            $params[':id_exact1'] = $numeric_part;
+            $params[':id_exact2'] = $numeric_part;
+            $order_by = "(p.patient_id = :id_exact2) DESC, p.admitted_at DESC";
         }
         
         $sql = "SELECT p.*, 
@@ -36,7 +38,7 @@ try {
                        (SELECT MAX(appointment_date) FROM appointments a WHERE a.patient_id = p.patient_id) as last_visit
                 FROM patients p 
                 $where 
-                ORDER BY " . (!empty($numeric_part) ? "(p.patient_id = :id_exact) DESC, " : "") . " p.admitted_at DESC LIMIT 50";
+                ORDER BY $order_by LIMIT 50";
         
         $stmt = $db->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
@@ -128,13 +130,16 @@ try {
     } elseif ($type === 'doctors') {
         $where = "WHERE (first_name LIKE :s1 OR last_name LIKE :s2 OR specialization LIKE :s3 OR email LIKE :s4 OR CAST(doctor_id AS CHAR) LIKE :s5)";
         $params = [':s1' => $search, ':s2' => $search, ':s3' => $search, ':s4' => $search, ':s5' => $search];
+        $order_by = "d.created_at DESC";
         if (!empty($numeric_part)) {
-            $where = "WHERE (first_name LIKE :s1 OR last_name LIKE :s2 OR specialization LIKE :s3 OR email LIKE :s4 OR CAST(doctor_id AS CHAR) LIKE :s5 OR doctor_id = :id_exact)";
-            $params[':id_exact'] = $numeric_part;
+            $where = "WHERE (first_name LIKE :s1 OR last_name LIKE :s2 OR specialization LIKE :s3 OR email LIKE :s4 OR CAST(doctor_id AS CHAR) LIKE :s5 OR doctor_id = :id_exact1)";
+            $params[':id_exact1'] = $numeric_part;
+            $params[':id_exact2'] = $numeric_part;
+            $order_by = "(d.doctor_id = :id_exact2) DESC, d.created_at DESC";
         }
         
         $sql = "SELECT d.*, (SELECT COUNT(*) FROM appointments a WHERE a.doctor_id = d.doctor_id) as total_appointments 
-                FROM doctors d $where ORDER BY " . (!empty($numeric_part) ? "(d.doctor_id = :id_exact) DESC, " : "") . " d.created_at DESC LIMIT 50";
+                FROM doctors d $where ORDER BY $order_by LIMIT 50";
         
         $stmt = $db->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
@@ -192,9 +197,12 @@ try {
     } elseif ($type === 'appointments') {
         $where = "WHERE (p.first_name LIKE :s1 OR p.last_name LIKE :s2 OR p.email LIKE :s3 OR p.phone LIKE :s4 OR CAST(a.appointment_id AS CHAR) LIKE :s5)";
         $params = [':s1' => $search, ':s2' => $search, ':s3' => $search, ':s4' => $search, ':s5' => $search];
+        $order_by = "a.appointment_date DESC, a.appointment_time DESC";
         if (!empty($numeric_part)) {
-            $where = "WHERE (p.first_name LIKE :s1 OR p.last_name LIKE :s2 OR p.email LIKE :s3 OR p.phone LIKE :s4 OR CAST(a.appointment_id AS CHAR) LIKE :s5 OR a.appointment_id = :id_exact)";
-            $params[':id_exact'] = $numeric_part;
+            $where = "WHERE (p.first_name LIKE :s1 OR p.last_name LIKE :s2 OR p.email LIKE :s3 OR p.phone LIKE :s4 OR CAST(a.appointment_id AS CHAR) LIKE :s5 OR a.appointment_id = :id_exact1)";
+            $params[':id_exact1'] = $numeric_part;
+            $params[':id_exact2'] = $numeric_part;
+            $order_by = "(a.appointment_id = :id_exact2) DESC, a.appointment_date DESC, a.appointment_time DESC";
         }
         
         $sql = "SELECT a.*, 
@@ -212,7 +220,7 @@ try {
                   LEFT JOIN patients p ON a.patient_id = p.patient_id
                   LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
                   $where 
-                  ORDER BY " . (!empty($numeric_part) ? "(a.appointment_id = :id_exact) DESC, " : "") . " a.appointment_date DESC, a.appointment_time DESC LIMIT 50";
+                  ORDER BY $order_by LIMIT 50";
         
         $stmt = $db->prepare($sql);
         foreach ($params as $k => $v) $stmt->bindValue($k, $v);
