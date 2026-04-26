@@ -1,3 +1,5 @@
+[2026-04-26 16:17:12] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 16:17:05] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-26 16:13:43] Ziabul | PAGE_ACCESS | Accessed: patients.php
 [2026-04-26 16:13:39] Ziabul | PATIENTS_PAGE_ERROR | Database error: SQLSTATE[HY093]: Invalid parameter number
 [2026-04-26 16:13:39] Ziabul | PAGE_ACCESS | Accessed: patients.php

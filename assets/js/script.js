@@ -438,12 +438,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const realtimeSearchInputs = document.querySelectorAll('.realtime-search');
     realtimeSearchInputs.forEach(input => {
         const type = input.getAttribute('data-type');
-        const targetBodyId = type + 'TableBody';
-        const targetBody = document.getElementById(targetBodyId);
-        const pagination = document.getElementById('paginationContainer');
         const searchForm = input.closest('form');
 
-        // Prevent form submission when pressing Enter
+        // Prevent form submission when pressing Enter to stay on the same page
         if (searchForm) {
             searchForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -451,40 +448,43 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        if (targetBody) {
-            input.addEventListener('input', debounce(function(e) {
-                const query = e.target.value.trim();
+        input.addEventListener('input', debounce(function(e) {
+            const query = e.target.value.trim();
+            const targetBody = document.getElementById(type + 'TableBody');
+            const pagination = document.getElementById('paginationContainer');
+            
+            if (!targetBody) return;
+
+            // Determine base path for AJAX
+            const currentPath = window.location.pathname;
+            const ajaxPath = currentPath.includes('/pages/') ? '../ajax/search.php' : 'ajax/search.php';
+            const url = `${ajaxPath}?type=${type}&query=${encodeURIComponent(query)}`;
+
+            // Visual feedback: show searching state
+            targetBody.style.opacity = '0.4';
+            targetBody.style.transition = 'opacity 0.2s';
+
+            fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Search request failed');
+                return response.text();
+            })
+            .then(html => {
+                targetBody.innerHTML = html;
+                targetBody.style.opacity = '1';
                 
-                // Determine base path for AJAX
-                const currentPath = window.location.pathname;
-                const ajaxPath = currentPath.includes('/pages/') ? '../ajax/search.php' : 'ajax/search.php';
-                const url = `${ajaxPath}?type=${type}&query=${encodeURIComponent(query)}`;
-
-                // Show a subtle loading indicator
-                targetBody.style.opacity = '0.5';
-
-                fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.text();
-                })
-                .then(html => {
-                    targetBody.innerHTML = html;
-                    targetBody.style.opacity = '1';
-                    
-                    // Hide pagination when searching to avoid confusion
-                    if (pagination) {
-                        pagination.style.display = query.length > 0 ? 'none' : '';
-                    }
-                })
-                .catch(err => {
-                    console.error('Search error:', err);
-                    targetBody.style.opacity = '1';
-                });
-            }, 300)); // Slightly faster response
-        }
+                // Toggle pagination visibility
+                if (pagination) {
+                    pagination.style.display = query.length > 0 ? 'none' : '';
+                }
+            })
+            .catch(err => {
+                console.error('Real-time search error:', err);
+                targetBody.style.opacity = '1';
+            });
+        }, 250)); // Fast response for "real-time" feel
     });
 });
 
