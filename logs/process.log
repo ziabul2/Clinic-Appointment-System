@@ -8296,3 +8296,70 @@ appointments.status exists
 [2026-04-26 12:38:10] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
 [2026-04-26 12:38:10] [INFO] [DATABASE_CONNECTION] Database connected successfully
 [2026-04-26 12:38:10] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:40:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:38] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 12:40:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:38] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:40:40] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:40] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 12:40:40] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:41] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:40:42] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:42] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: doctors.php
+[2026-04-26 12:40:42] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:42] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:40:47] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:47] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: appointments.php
+[2026-04-26 12:40:47] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:40:47] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:41:25] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:25] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: appointments.php
+[2026-04-26 12:41:26] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:26] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:41:34] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:34] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:34] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 12:41:34] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:34] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:41:39] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:39] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 12:41:39] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:39] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:41:40] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:40] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 12:41:40] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:40] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:41:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:58] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 12:41:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:41:58] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:42:02] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:02] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
+[2026-04-26 12:42:02] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:02] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:42:05] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:05] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 12:42:05] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:05] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:42:10] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:10] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: patients.php
+[2026-04-26 12:42:10] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:10] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:42:12] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:12] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: doctors.php
+[2026-04-26 12:42:12] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:12] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:42:16] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:16] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: appointments.php
+[2026-04-26 12:42:16] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:16] [INFO] [USER_ACTION] User: admin | IP: ::1 | Action: NOTIF_COUNT_ERROR | Details: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:42:24] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:25] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:26] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:27] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:28] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:29] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:30] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:31] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-26 12:42:33] [INFO] [DATABASE_CONNECTION] Database connected successfully
