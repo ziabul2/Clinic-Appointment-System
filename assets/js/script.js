@@ -455,6 +455,18 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (!targetBody) return;
 
+            // If query is cleared, reload the page to restore original state and pagination
+            if (query.length === 0) {
+                const currentUrl = new URL(window.location.href);
+                if (currentUrl.searchParams.has('search')) {
+                    currentUrl.searchParams.delete('search');
+                    window.location.href = currentUrl.pathname;
+                } else {
+                    window.location.reload();
+                }
+                return;
+            }
+
             // Determine base path for AJAX
             const currentPath = window.location.pathname;
             const ajaxPath = currentPath.includes('/pages/') ? '../ajax/search.php' : 'ajax/search.php';
@@ -475,16 +487,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetBody.innerHTML = html;
                 targetBody.style.opacity = '1';
                 
-                // Toggle pagination visibility
+                // Hide pagination when searching to avoid confusion
                 if (pagination) {
-                    pagination.style.display = query.length > 0 ? 'none' : '';
+                    pagination.style.display = 'none';
                 }
             })
             .catch(err => {
                 console.error('Real-time search error:', err);
                 targetBody.style.opacity = '1';
             });
-        }, 250)); // Fast response for "real-time" feel
+        }, 300));
     });
 });
 
