@@ -107,6 +107,11 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
                             } catch (Throwable $e) { $profileFullName = $_SESSION['username']; }
                         }
                     ?>
+                        <li class="nav-item me-2">
+                            <button class="nav-link btn btn-link" id="testToastBtn" title="Test Toast Notification">
+                                <i class="fas fa-bullhorn"></i>
+                            </button>
+                        </li>
                         <li class="nav-item dropdown position-relative me-2">
                             <a class="nav-link position-relative" href="#" id="notificationBell" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
@@ -181,7 +186,16 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
     <!-- Main Content -->
     <div class="<?php echo $container_class ?? 'container mt-4'; ?> <?php echo function_exists('pageFadeIn') ? pageFadeIn() : ''; ?>">
         <!-- Server flash injection disabled to avoid automatic toasts outside the bell dropdown -->
-        <script>window.__CSRF_TOKEN = '<?php echo csrf_token(); ?>';</script>
+        <script>
+            window.__CSRF_TOKEN = '<?php echo csrf_token(); ?>';
+            <?php if (isset($_SESSION['success'])): ?>
+                window.__FLASH = { success: '<?php echo addslashes($_SESSION['success']); ?>', toast: true };
+                <?php unset($_SESSION['success']); ?>
+            <?php elseif (isset($_SESSION['error'])): ?>
+                window.__FLASH = { error: '<?php echo addslashes($_SESSION['error']); ?>', toast: true };
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        </script>
         <?php
         // Inject user settings from JSON database
         $user_settings_js = '{}';

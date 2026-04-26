@@ -87,12 +87,18 @@
         return base + '?action=' + action;
     }
 
-    /* Single server-side flash toast: DISABLED - toasts no longer shown at bottom of screen */
+    /* Single server-side flash toast: Now re-enabled and linked to script.js system */
     function showFlashToast(flash) {
-        // Toast notifications are disabled per user request
-        // The function exists for compatibility but does not display any visual feedback
-        console.debug('Toast suppressed:', flash);
-        return;
+        if (!flash) return;
+        var type = flash.success ? 'success' : (flash.error ? 'error' : 'info');
+        var message = flash.message || flash.success || flash.error || '';
+        var title = flash.success ? 'Success' : (flash.error ? 'Error' : 'Notification');
+        
+        if (window.flashNotify) {
+            window.flashNotify(type, title, message);
+        } else {
+            console.log('flashNotify not found, falling back to alert:', message);
+        }
     }
 
     // expose to global so pages without header can reuse the toast
@@ -161,6 +167,15 @@
                     .then(function(r){ return r.json(); })
                     .then(function(d){ if (d && d.ok) { var ids = (d.notifications||[]).filter(n=>parseInt(n.is_read,10)===0).map(n=>n.id); if (ids.length) markRead(ids); else { var c = document.getElementById('notifDropdownContent'); if(c) c.innerHTML = '<div class="text-center text-muted small p-3">No notifications</div>'; } } })
                     .catch(function(){ var c = document.getElementById('notifDropdownContent'); if(c) c.innerHTML = '<div class="text-center text-muted small p-3">No notifications</div>'; });
+            });
+        }
+
+        // Test Toast Button
+        var testBtn = document.getElementById('testToastBtn');
+        if (testBtn) {
+            testBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showFlashToast({ success: 'This is a test notification! System is working properly.', toast: true });
             });
         }
             // Intercept forms with data-ajax="true" and submit via fetch, showing a single toast result
