@@ -1353,7 +1353,7 @@ try {
             break;
 
         case 'run_tool':
-            // Run a maintenance/diagnostic script from tools/ via web (Admin only)
+            // Run a maintenance/diagnostic script from private/tools/ via web (Admin only)
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!verify_csrf()) {
                     header('Content-Type: application/json');
@@ -1369,7 +1369,7 @@ try {
                     header('Content-Type: application/json');
                     echo json_encode(['ok'=>false,'message'=>'No tool specified']); exit;
                 }
-                $toolsDir = realpath(__DIR__ . '/tools');
+                $toolsDir = realpath(__DIR__ . '/private/tools');
                 $candidate = $toolsDir . DIRECTORY_SEPARATOR . $file;
                 if (!$toolsDir || !file_exists($candidate) || strpos(realpath($candidate), $toolsDir) !== 0) {
                     header('Content-Type: application/json');

@@ -84,15 +84,6 @@ define('MAIL_SMTP_SECURE', 'tls');  // tls (you can also use ssl with port 465)
 // Set to false if you want to allow PHP's mail() fallback (requires local MTA).
 define('MAIL_FORCE_SMTP', true);
 
-// Google OAuth2 (set your credentials here)
-// NOTE: You should create an OAuth client in Google Cloud Console. Example client name: "Desktop client 1"
-// Example client id provided by user
-// Google OAuth2 removed per user request
-#define('GOOGLE_CLIENT_ID', '');
-#define('GOOGLE_CLIENT_SECRET', '');
-#define('GOOGLE_REDIRECT_URI', '');
-
-
 // Include shared helper functions
 if (file_exists(__DIR__ . '/../includes/functions.php')) {
     require_once __DIR__ . '/../includes/functions.php';

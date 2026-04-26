@@ -1,3 +1,52 @@
+[2026-04-26 11:54:20] admin | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 11:54:14] admin | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 11:54:10] admin | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:08] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:54:07] admin | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:18] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 11:32:17] admin | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 11:32:13] admin | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 11:32:08] admin | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 11:32:06] admin | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 11:31:49] admin | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 11:31:48] admin | USER_LOGIN | User logged in: admin
+[2026-04-26 11:31:41] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 11:31:41] Guest | LOGIN_FAILED | Invalid password for user: admin | hash_type: bcrypt | password_verify: false
+[2026-04-26 11:31:31] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 11:31:31] Guest | LOGIN_FAILED | User not found: admin@example.com
+[2026-04-26 11:31:27] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-26 11:31:27] Guest | LOGIN_FAILED | User not found: admin@example.com
+[2026-04-26 11:31:20] Guest | PAGE_ACCESS | Accessed: login.php
 [2026-04-23 19:54:15] admin | PAGE_ACCESS | Accessed: admin_tools.php
 [2026-04-23 19:54:05] admin | PAGE_ACCESS | Accessed: admin_tools.php
 [2026-04-23 19:53:59] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist

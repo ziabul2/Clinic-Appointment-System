@@ -19,16 +19,16 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                 <i class="fas fa-database"></i> Database & Schema
             </div>
             <div class="card-body">
-                <a href="../tools/db_check.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/db_check.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-heartbeat"></i> Database Health Check
                 </a>
-                <a href="../tools/repair_schema.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/repair_schema.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-wrench"></i> Repair Schema
                 </a>
-                <a href="../tools/apply_schema_fixes.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/apply_schema_fixes.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-tools"></i> Apply Schema Fixes
                 </a>
-                <a href="../tools/check_includes.php" class="btn btn-block btn-sm btn-outline-primary" style="width:100%;text-align:left;">
+                <a href="../private/tools/check_includes.php" class="btn btn-block btn-sm btn-outline-primary" style="width:100%;text-align:left;">
                     <i class="fas fa-list"></i> Check Includes
                 </a>
             </div>
@@ -42,13 +42,13 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                 <i class="fas fa-envelope"></i> Email & Communication
             </div>
             <div class="card-body">
-                <a href="../tools/send_test_mail.php" class="btn btn-block btn-sm btn-outline-success mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/send_test_mail.php" class="btn btn-block btn-sm btn-outline-success mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-envelope"></i> Send Test Email
                 </a>
-                <a href="../tools/send_set_passwords.php" class="btn btn-block btn-sm btn-outline-success mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/send_set_passwords.php" class="btn btn-block btn-sm btn-outline-success mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-key"></i> Send Set Password Links
                 </a>
-                <a href="../tools/send_prescription_test.php" class="btn btn-block btn-sm btn-outline-success" style="width:100%;text-align:left;">
+                <a href="../private/tools/send_prescription_test.php" class="btn btn-block btn-sm btn-outline-success" style="width:100%;text-align:left;">
                     <i class="fas fa-file-prescription"></i> Send Prescription Test
                 </a>
             </div>
@@ -62,10 +62,10 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                 <i class="fas fa-lock"></i> Security & Tokens
             </div>
             <div class="card-body">
-                <a href="../tools/purge_expired_tokens.php" class="btn btn-block btn-sm btn-outline-warning mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/purge_expired_tokens.php" class="btn btn-block btn-sm btn-outline-warning mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-trash"></i> Purge Expired Tokens
                 </a>
-                <a href="../tools/test_login.php" class="btn btn-block btn-sm btn-outline-warning" style="width:100%;text-align:left;">
+                <a href="../private/tools/test_login.php" class="btn btn-block btn-sm btn-outline-warning" style="width:100%;text-align:left;">
                     <i class="fas fa-sign-in-alt"></i> Test Login System
                 </a>
             </div>
@@ -79,7 +79,7 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                 <i class="fas fa-cogs"></i> Migration & Setup
             </div>
             <div class="card-body">
-                <a href="../tools/migrate_add_users_profile_columns.php" class="btn btn-block btn-sm btn-outline-secondary mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/migrate_add_users_profile_columns.php" class="btn btn-block btn-sm btn-outline-secondary mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-user-plus"></i> Add User Profile Columns
                 </a>
                 <a href="map_patients_users.php" class="btn btn-block btn-sm btn-outline-secondary" style="width:100%;text-align:left;">
@@ -96,7 +96,7 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                 <i class="fas fa-calendar"></i> Booking & Simulation
             </div>
             <div class="card-body">
-                <a href="../tools/simulate_booking.php" class="btn btn-block btn-sm btn-outline-primary" style="width:100%;text-align:left;">
+                <a href="../private/tools/simulate_booking.php" class="btn btn-block btn-sm btn-outline-primary" style="width:100%;text-align:left;">
                     <i class="fas fa-vial"></i> Simulate Appointment Booking
                 </a>
             </div>
@@ -110,10 +110,10 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                 <i class="fas fa-file"></i> Data Management
             </div>
             <div class="card-body">
-                <a href="../tools/auto_update_archive_refs.php" class="btn btn-block btn-sm btn-outline-danger mb-2" style="width:100%;text-align:left;">
+                <a href="../private/tools/auto_update_archive_refs.php" class="btn btn-block btn-sm btn-outline-danger mb-2" style="width:100%;text-align:left;">
                     <i class="fas fa-link"></i> Update Archive References
                 </a>
-                <a href="../tools/link_checker.php" class="btn btn-block btn-sm btn-outline-danger" style="width:100%;text-align:left;">
+                <a href="../private/tools/link_checker.php" class="btn btn-block btn-sm btn-outline-danger" style="width:100%;text-align:left;">
                     <i class="fas fa-link"></i> Check Links
                 </a>
             </div>

@@ -1,4 +1,0 @@
-<?php
-// Redirect stub: original `installer` moved to `archive/installer`
-// Some environments may invoke this script directly; forward to archived copy.
-require_once __DIR__ . '/archive/installer';
