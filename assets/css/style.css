@@ -15,11 +15,8 @@
     --navbar-rgba: 10,25,41; /* used with opacity */
 }
 
-html, body {
-    width: 100%;
+html {
     height: 100%;
-    margin: 0;
-    padding: 0;
 }
 
 body {
@@ -29,12 +26,13 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 /* Ensure the main content container fills the available space */
 body > .container {
     flex: 1 0 auto;
-    margin-bottom: 1rem; /* Ultra compact margin */
 }
 
 .card {
@@ -596,8 +594,7 @@ body.has-fixed-navbar {
     border-top: 1px solid #444;
     position: relative;
     overflow: hidden;
-    padding-top: 10px; /* Ultra compact */
-    padding-bottom: 10px;
+    padding: 8px 0; /* Extremely tight padding */
     margin-top: auto;
 }
 
