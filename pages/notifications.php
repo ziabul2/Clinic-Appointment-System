@@ -131,5 +131,3 @@ try {
 </div>
 
 <?php require_once '../includes/footer.php'; ?>
-
-<?php require_once '../includes/footer.php'; ?>

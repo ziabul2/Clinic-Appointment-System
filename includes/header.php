@@ -115,11 +115,8 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
                         <li class="nav-item dropdown position-relative me-2">
                             <a class="nav-link position-relative" href="#" id="notificationBell" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
-                                <?php if ($waitingCount > 0): ?>
-                                    <span class="badge bg-danger rounded-pill" style="position:absolute;top:4px;right:0;"><?php echo $waitingCount; ?></span>
-                                <?php endif; ?>
                                 <!-- Generic notification count (JS-updated) -->
-                                <span id="notifCountBadge" class="badge bg-danger rounded-pill" style="position:absolute;top:4px;right:18px;display:none;">0</span>
+                                <span id="notifCountBadge" class="badge bg-danger rounded-pill" style="position:absolute;top:4px;right:0;display:none;">0</span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="notificationBell" style="min-width:320px;max-width:420px;">
