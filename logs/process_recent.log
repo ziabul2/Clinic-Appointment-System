@@ -1,3 +1,20 @@
+[2026-04-26 12:53:05] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-26 12:52:56] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-26 12:52:52] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 12:52:19] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 12:52:16] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-26 12:52:14] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 12:52:07] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-26 12:52:05] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 12:51:39] Ziabul | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-26 12:51:36] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 12:51:26] admin | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-26 12:50:53] admin | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-26 12:50:50] admin | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-26 12:44:05] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:44:05] admin | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-26 12:43:44] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
+[2026-04-26 12:43:44] admin | PAGE_ACCESS | Accessed: my_profile.php
 [2026-04-26 12:42:16] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist
 [2026-04-26 12:42:16] admin | PAGE_ACCESS | Accessed: appointments.php
 [2026-04-26 12:42:12] admin | NOTIF_COUNT_ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'clinic_management.notifications' doesn't exist

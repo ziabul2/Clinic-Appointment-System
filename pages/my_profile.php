@@ -71,7 +71,7 @@ try {
     }
 
 } catch (Exception $e) {
-    $error = 'Failed to load profile.';
+    $error = 'Error: ' . $e->getMessage();
 }
 ?>
 
