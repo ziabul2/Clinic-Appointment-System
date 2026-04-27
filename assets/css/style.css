@@ -1118,3 +1118,158 @@ body {
     .footer-brand h5  { font-size: 1.1rem; }
     .hospital-icon    { font-size: 1.2rem; }
 }
+
+/* Doctor Dashboard Specific Styles */
+.dashboard-hero {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.9) 0%, rgba(10, 25, 41, 0.95) 100%);
+    border-radius: 24px;
+    padding: 3rem;
+    color: white;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(13, 110, 253, 0.15);
+}
+
+.dashboard-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.dashboard-hero .welcome-text h1 {
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-hero .welcome-text p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.quick-actions-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.quick-action-btn {
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+    border: 1px solid #edf2f7;
+}
+
+.quick-action-btn:last-child {
+    margin-bottom: 0;
+}
+
+.quick-action-btn i {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+}
+
+.quick-action-btn:hover {
+    transform: translateX(5px);
+    background: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.quick-action-btn:hover i {
+    transform: scale(1.1);
+}
+
+.btn-qa-primary i { background: rgba(13, 110, 253, 0.1); color: var(--primary-color); }
+.btn-qa-success i { background: rgba(25, 135, 84, 0.1); color: var(--success-color); }
+.btn-qa-info i { background: rgba(13, 202, 240, 0.1); color: var(--info-color); }
+.btn-qa-warning i { background: rgba(255, 193, 7, 0.1); color: var(--warning-color); }
+
+.doctor-stat-card {
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.doctor-stat-card .icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.doctor-stat-card .stat-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.doctor-stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+.stat-card-blue { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+.stat-card-green { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+.stat-card-purple { background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); }
+.stat-card-orange { background: linear-gradient(135deg, #fffaf0 0%, #ffedd5 100%); }
+
+.theme-dark .quick-actions-card {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark .quick-action-btn {
+    background: #0f172a;
+    border-color: #1e293b;
+    color: #f8fafc;
+}
+
+.theme-dark .quick-action-btn:hover {
+    background: #1e293b;
+}
+
+.theme-dark .stat-card-blue { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); }
+.theme-dark .stat-card-green { background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); }
+.theme-dark .stat-card-purple { background: linear-gradient(135deg, #581c87 0%, #3b0764 100%); }
+.theme-dark .stat-card-orange { background: linear-gradient(135deg, #7c2d12 0%, #431407 100%); }
+
+.theme-dark .doctor-stat-card .stat-value { color: white; }
+.theme-dark .doctor-stat-card .stat-label { color: #94a3b8; }

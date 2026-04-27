@@ -1,3 +1,46 @@
+[2026-04-27 16:35:02] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:33:03] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:32:36] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:26:29] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:26:21] Dr.ziabul | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:26:21] ziabulislam222243 | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-27 16:25:41] ziabulislam222243 | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:25:41] ziabulislam222243 | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-27 16:25:37] ziabulislam222243 | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:25:37] ziabulislam222243 | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-27 16:25:22] ziabulislam222243 | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:25:22] ziabulislam222243 | PAGE_ACCESS | Accessed: session_details.php
+[2026-04-27 16:25:20] ziabulislam222243 | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:25:20] ziabulislam222243 | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:25:18] ziabulislam222243 | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:25:17] ziabulislam222243 | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-27 16:24:57] ziabulislam222243 | PAGE_ACCESS | Accessed: 404.php
+[2026-04-27 16:24:57] ziabulislam222243 | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:24:57] ziabulislam222243 | USER_LOGIN | User logged in: ziabulislam222243
+[2026-04-27 16:24:50] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-27 16:24:50] Guest | LOGIN_FAILED | Invalid password for user: ziabulislam222243 | hash_type: bcrypt | password_verify: false
+[2026-04-27 16:24:42] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-27 16:24:42] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-27 16:24:27] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:27] Ziabul | USER_DELETED | User ID 8 deleted by Ziabul
+[2026-04-27 16:24:22] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:22] Ziabul | USER_DELETED | User ID 10 deleted by Ziabul
+[2026-04-27 16:24:19] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:19] Ziabul | USER_DELETED | User ID 4 deleted by Ziabul
+[2026-04-27 16:24:16] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:16] Ziabul | USER_DELETED | User ID 6 deleted by Ziabul
+[2026-04-27 16:24:13] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:12] Ziabul | USER_DELETED | User ID 7 deleted by Ziabul
+[2026-04-27 16:24:09] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:09] Ziabul | USER_DELETED | User ID 3 deleted by Ziabul
+[2026-04-27 16:24:06] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:24:06] Ziabul | USER_DELETED | User ID 2 deleted by Ziabul
+[2026-04-27 16:23:58] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:23:43] Ziabul | PAGE_ACCESS | Accessed: edit_user.php
+[2026-04-27 16:23:25] Ziabul | PAGE_ACCESS | Accessed: employees.php
+[2026-04-27 16:23:12] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:23:12] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-27 16:23:08] Guest | PAGE_ACCESS | Accessed: login.php
 [2026-04-26 16:50:41] Guest | PAGE_ACCESS | Accessed: login.php
 [2026-04-26 16:50:41] Ziabul | USER_LOGOUT | User logged out: Ziabul
 [2026-04-26 16:50:13] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
