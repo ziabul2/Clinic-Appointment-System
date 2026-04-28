@@ -1702,18 +1702,24 @@ try {
                     $alternatives = $altStmt->fetchAll(PDO::FETCH_ASSOC);
                 }
 
-                // 3. Merge results: Primary first, then their alternatives
+                // 3. Merge results: Primary first, then their alternatives, with deduplication
                 $finalResults = [];
+                $seenIds = [];
+                
                 foreach ($primaryResults as $p) {
+                    if (in_array($p['id'], $seenIds)) continue;
                     $p['type'] = 'primary';
                     $finalResults[] = $p;
+                    $seenIds[] = $p['id'];
                     
                     // Find alternatives for THIS specific primary result
                     $count = 0;
                     foreach ($alternatives as $alt) {
+                        if (in_array($alt['id'], $seenIds)) continue;
                         if ($alt['generic_name'] === $p['generic_name'] && $count < 2) {
                             $alt['type'] = 'related';
                             $finalResults[] = $alt;
+                            $seenIds[] = $alt['id'];
                             $count++;
                         }
                     }
@@ -1771,22 +1777,25 @@ try {
                     header('Content-Type: application/json');
                     echo json_encode(['ok'=>false,'message'=>'Tool not found']); exit;
                 }
-                // Execute using CLI PHP binary if available
-                $phpBin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
-                $cmd = escapeshellcmd($phpBin) . ' -f ' . escapeshellarg($candidate) . ' 2>&1';
-                $output = null;
-                $retval = null;
-                // set a reasonable timeout
-                $descriptors = [];
+
+                // To avoid Apache "generation" errors on Windows, we'll try to find the real PHP binary
+                // or use a more robust execution method.
+                $phpBin = 'php';
+                if (file_exists('C:\\xampp\\php\\php.exe')) {
+                    $phpBin = 'C:\\xampp\\php\\php.exe';
+                }
+
+                $cmd = '"' . $phpBin . '" -f "' . $candidate . '" 2>&1';
+                
                 try {
                     $output = shell_exec($cmd);
                     logAction('RUN_TOOL', "Tool executed: $file by user " . ($_SESSION['username'] ?? 'unknown'));
                     header('Content-Type: application/json');
-                    echo json_encode(['ok'=>true,'output'=>$output]); exit;
+                    echo json_encode(['ok'=>true, 'output'=>$output]); exit;
                 } catch (Exception $e) {
                     logAction('RUN_TOOL_ERROR', $e->getMessage());
                     header('Content-Type: application/json');
-                    echo json_encode(['ok'=>false,'message'=>'Execution failed','error'=>$e->getMessage()]); exit;
+                    echo json_encode(['ok'=>false, 'message'=>'Execution failed', 'error'=>$e->getMessage()]); exit;
                 }
             }
             header('Content-Type: application/json'); echo json_encode(['ok'=>false,'message'=>'Invalid request']); exit;

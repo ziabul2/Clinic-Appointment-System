@@ -6,14 +6,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 echo "ClinicApp DB Check - " . date('Y-m-d H:i:s') . PHP_EOL;
 echo "PHP SAPI: " . PHP_SAPI . PHP_EOL;
 
 if (!class_exists('Database')) {
     // Try to include database.php directly
-    $dbfile = __DIR__ . '/../config/database.php';
+    $dbfile = __DIR__ . '/../../config/database.php';
     if (file_exists($dbfile)) require_once $dbfile;
 }
 

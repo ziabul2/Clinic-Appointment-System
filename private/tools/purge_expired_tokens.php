@@ -3,7 +3,7 @@
  * Admin tool to purge expired password reset tokens.
  * Can be run via web (admin only) or CLI.
  */
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 // Allow CLI execution
 if (php_sapi_name() === 'cli') {
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Show a small confirmation form
 $page_title = 'Purge Expired Tokens';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../../includes/header.php';
 ?>
 <div class="pt-3">
     <h1 class="h3">Purge Expired Password Reset Tokens</h1>
@@ -59,4 +59,4 @@ require_once __DIR__ . '/../includes/header.php';
         <a class="btn btn-secondary" href="../pages/tools.php">Cancel</a>
     </form>
 </div>
-<?php require_once __DIR__ . '/../includes/footer.php';
+<?php require_once __DIR__ . '/../../includes/footer.php';

@@ -3,8 +3,8 @@
 // Usage: php send_prescription_test.php
 // Sends the latest prescription (DB or file) for appointment_id=5 to ziabul@duck.com
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../includes/functions.php';
 
 $appointment_id = 5;
 $to = 'ziabul@duck.com';

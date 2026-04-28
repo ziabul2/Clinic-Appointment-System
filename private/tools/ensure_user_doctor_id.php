@@ -2,7 +2,7 @@
 // Ensure users.doctor_id column exists and optionally add FK to doctors
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 if (!defined('DB_OK') || DB_OK === false) {
     echo "Database not available.\n";

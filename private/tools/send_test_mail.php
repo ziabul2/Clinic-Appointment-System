@@ -1,9 +1,10 @@
 <?php
 // Send a single test email using application's mail helper.
-require_once __DIR__ . '/../config/config.php';
-if (!function_exists('sendSMTPMail') && file_exists(__DIR__ . '/../includes/functions.php')) {
-    require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../../config/config.php';
+if (!function_exists('sendSMTPMail') && file_exists(__DIR__ . '/../../includes/functions.php')) {
+    require_once __DIR__ . '/../../includes/functions.php';
 }
+
 
 $to = ADMIN_EMAIL;
 $subject = SITE_NAME . ' - Test Email from Clinic App';

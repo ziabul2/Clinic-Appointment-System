@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 $argv = $_SERVER['argv'];
 if (count($argv) < 3) {
     echo "Usage: php test_login.php <username_or_email> <password>\n";

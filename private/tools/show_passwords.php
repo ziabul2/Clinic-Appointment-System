@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 header_remove();
 echo "User passwords (for debugging only)\n";
 try {

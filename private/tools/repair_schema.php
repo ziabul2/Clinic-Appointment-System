@@ -6,7 +6,7 @@
  * Run from project root: php tools/repair_schema.php
  */
 
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 function existsTable($db, $table) {
     $q = $db->prepare("SELECT COUNT(*) as cnt FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :tbl");

@@ -4,7 +4,7 @@
  * Scans `users` for rows with non-bcrypt passwords and sends a set-password token email.
  * Usage: php send_set_passwords.php
  */
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 function out($s) { echo $s . PHP_EOL; }
 

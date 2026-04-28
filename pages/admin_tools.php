@@ -65,6 +65,15 @@ try {
                                 <small class="text-muted">Check database connectivity and integrity.</small>
                             </div>
                         </a>
+                        <a href="logs.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center">
+                            <div class="icon-box bg-light-danger text-danger me-3 rounded-3 p-2">
+                                <i class="fas fa-file-medical-alt"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">System Logs</h6>
+                                <small class="text-muted">View application and error logs smoothly.</small>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -74,58 +83,108 @@ try {
         <div class="col-xl-4 col-md-6">
             <div class="card h-100 border-0 shadow-sm hover-up">
                 <div class="card-header bg-info text-white border-0 py-3">
-                    <h5 class="card-title mb-0"><i class="fas fa-wrench me-2"></i>Maintenance Tools</h5>
+                    <h5 class="card-title mb-0"><i class="fas fa-database me-2"></i>Database & Schema</h5>
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="repair_schema.php">
-                            <div class="icon-box bg-light-warning text-warning me-3 rounded-3 p-2">
-                                <i class="fas fa-magic"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">Repair Schema</h6>
-                                <small class="text-muted">Fix missing tables or columns automatically.</small>
-                            </div>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="db_check.php">
+                            <div class="icon-box bg-light-info text-info me-3 rounded-3 p-2"><i class="fas fa-check-double"></i></div>
+                            <div><h6 class="mb-0">Check Connectivity</h6><small class="text-muted">Verify DB link and latency.</small></div>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="purge_expired_tokens.php">
-                            <div class="icon-box bg-light-danger text-danger me-3 rounded-3 p-2">
-                                <i class="fas fa-broom"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">Purge Tokens</h6>
-                                <small class="text-muted">Clear expired security and reset tokens.</small>
-                            </div>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="repair_schema.php">
+                            <div class="icon-box bg-light-warning text-warning me-3 rounded-3 p-2"><i class="fas fa-tools"></i></div>
+                            <div><h6 class="mb-0">Repair Schema</h6><small class="text-muted">Fix missing tables or columns.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="inspect_schema.php">
+                            <div class="icon-box bg-light-secondary text-secondary me-3 rounded-3 p-2"><i class="fas fa-search"></i></div>
+                            <div><h6 class="mb-0">Inspect Schema</h6><small class="text-muted">View raw table structures.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="apply_schema_fixes.php">
+                            <div class="icon-box bg-light-success text-success me-3 rounded-3 p-2"><i class="fas fa-patch-check"></i></div>
+                            <div><h6 class="mb-0">Apply Fixes</h6><small class="text-muted">Run pending migrations.</small></div>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Communication & Testing -->
+        <!-- User & Security Management -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-danger text-white border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-user-shield me-2"></i>User & Security</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="purge_expired_tokens.php">
+                            <div class="icon-box bg-light-danger text-danger me-3 rounded-3 p-2"><i class="fas fa-broom"></i></div>
+                            <div><h6 class="mb-0">Purge Tokens</h6><small class="text-muted">Clear expired reset tokens.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="dump_users.php">
+                            <div class="icon-box bg-light-dark text-dark me-3 rounded-3 p-2"><i class="fas fa-users-viewfinder"></i></div>
+                            <div><h6 class="mb-0">Dump Users</h6><small class="text-muted">Export user list with roles.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="send_set_passwords.php">
+                            <div class="icon-box bg-light-warning text-warning me-3 rounded-3 p-2"><i class="fas fa-key"></i></div>
+                            <div><h6 class="mb-0">Reset Invites</h6><small class="text-muted">Send password set links to users.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="set_password.php">
+                            <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2"><i class="fas fa-user-lock"></i></div>
+                            <div><h6 class="mb-0">Set Password</h6><small class="text-muted">Force update a user password.</small></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer & Code Utilities -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-dark text-white border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-code me-2"></i>Developer Utilities</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="check_includes.php">
+                            <div class="icon-box bg-light-secondary text-secondary me-3 rounded-3 p-2"><i class="fas fa-file-import"></i></div>
+                            <div><h6 class="mb-0">Check Includes</h6><small class="text-muted">Verify file dependency integrity.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="find_refs.php">
+                            <div class="icon-box bg-light-info text-info me-3 rounded-3 p-2"><i class="fas fa-search-location"></i></div>
+                            <div><h6 class="mb-0">Find References</h6><small class="text-muted">Scan codebase for specific calls.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="check_braces.php">
+                            <div class="icon-box bg-light-danger text-danger me-3 rounded-3 p-2"><i class="fas fa-code-branch"></i></div>
+                            <div><h6 class="mb-0">Syntax Check</h6><small class="text-muted">Verify brace levels and balance.</small></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+</div>
+
+        <!-- Communication & Diagnostics -->
         <div class="col-xl-4 col-md-6">
             <div class="card h-100 border-0 shadow-sm hover-up">
                 <div class="card-header bg-success text-white border-0 py-3">
-                    <h5 class="card-title mb-0"><i class="fas fa-paper-plane me-2"></i>Communication</h5>
+                    <h5 class="card-title mb-0"><i class="fas fa-vial me-2"></i>Diagnostics & Comms</h5>
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="send_test_mail.php">
-                            <div class="icon-box bg-light-success text-success me-3 rounded-3 p-2">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">Test Email System</h6>
-                                <small class="text-muted">Verify SMTP settings by sending a test mail.</small>
-                            </div>
+                            <div class="icon-box bg-light-success text-success me-3 rounded-3 p-2"><i class="fas fa-paper-plane"></i></div>
+                            <div><h6 class="mb-0">Test Email</h6><small class="text-muted">Verify SMTP configuration.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="send_prescription_test.php">
+                            <div class="icon-box bg-light-info text-info me-3 rounded-3 p-2"><i class="fas fa-file-prescription"></i></div>
+                            <div><h6 class="mb-0">Test Rx Delivery</h6><small class="text-muted">Simulate Rx email to patient.</small></div>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="simulate_booking.php">
-                            <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2">
-                                <i class="fas fa-vials"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">Simulate Booking</h6>
-                                <small class="text-muted">Run a test script to simulate patient activity.</small>
-                            </div>
+                            <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2"><i class="fas fa-robot"></i></div>
+                            <div><h6 class="mb-0">Simulate Booking</h6><small class="text-muted">Run automated appointment tests.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="link_checker.php">
+                            <div class="icon-box bg-light-secondary text-secondary me-3 rounded-3 p-2"><i class="fas fa-link"></i></div>
+                            <div><h6 class="mb-0">Link Checker</h6><small class="text-muted">Audit system internal routes.</small></div>
                         </a>
                     </div>
                 </div>

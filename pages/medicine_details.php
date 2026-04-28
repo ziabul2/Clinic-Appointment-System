@@ -27,6 +27,19 @@ function clean_clinical_text($text) {
     $cleaned = html_entity_decode($cleaned);
     return trim($cleaned);
 }
+
+function get_dosage_icon($form) {
+    $f = strtolower($form);
+    if (strpos($f, 'tablet') !== false) return '<i class="fas fa-tablets fa-3x text-primary"></i>';
+    if (strpos($f, 'capsule') !== false) return '<i class="fas fa-capsules fa-3x text-success"></i>';
+    if (strpos($f, 'injection') !== false || strpos($f, 'vial') !== false || strpos($f, 'ampoule') !== false) return '<i class="fas fa-syringe fa-3x text-danger"></i>';
+    if (strpos($f, 'syrup') !== false || strpos($f, 'liquid') !== false || strpos($f, 'suspension') !== false) return '<i class="fas fa-prescription-bottle fa-3x text-warning"></i>';
+    if (strpos($f, 'drop') !== false) return '<i class="fas fa-eye-dropper fa-3x text-info"></i>';
+    if (strpos($f, 'inhaler') !== false || strpos($f, 'spray') !== false) return '<i class="fas fa-wind fa-3x text-secondary"></i>';
+    if (strpos($f, 'cream') !== false || strpos($f, 'ointment') !== false || strpos($f, 'gel') !== false) return '<i class="fas fa-pump-medical fa-3x text-dark"></i>';
+    if (strpos($f, 'saline') !== false || strpos($f, 'infusion') !== false || strpos($f, 'i/v') !== false) return '<i class="fas fa-vial fa-3x text-info"></i>';
+    return '<i class="fas fa-pills fa-3x text-muted"></i>';
+}
 ?>
 
 <div class="container-fluid py-4">
@@ -47,7 +60,7 @@ function clean_clinical_text($text) {
             <div class="card shadow-sm border-0 rounded-4 mb-4">
                 <div class="card-body p-4 text-center">
                     <div class="p-4 bg-primary-soft rounded-pill d-inline-block mb-3">
-                        <i class="fas fa-pills fa-3x text-primary"></i>
+                        <?php echo get_dosage_icon($medicine['dosage_form']); ?>
                     </div>
                     <h3 class="fw-bold mb-1"><?php echo htmlspecialchars($medicine['brand_name']); ?></h3>
                     <p class="badge bg-light text-dark border px-3 py-2 rounded-pill fs-6"><?php echo clean_clinical_text($medicine['generic_name']); ?></p>

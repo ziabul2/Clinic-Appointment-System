@@ -160,6 +160,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const form = cleanText(med.dosage_form);
             const manufacturer = cleanText(med.manufacturer);
 
+            function getDosageIcon(form) {
+                const f = form.toLowerCase();
+                if (f.includes('tablet')) return '<i class="fas fa-tablets text-primary"></i>';
+                if (f.includes('capsule')) return '<i class="fas fa-capsules text-success"></i>';
+                if (f.includes('injection') || f.includes('vial') || f.includes('ampoule')) return '<i class="fas fa-syringe text-danger"></i>';
+                if (f.includes('syrup') || f.includes('liquid') || f.includes('suspension')) return '<i class="fas fa-prescription-bottle text-warning"></i>';
+                if (f.includes('drop')) return '<i class="fas fa-eye-dropper text-info"></i>';
+                if (f.includes('inhaler') || f.includes('spray')) return '<i class="fas fa-wind text-secondary"></i>';
+                if (f.includes('cream') || f.includes('ointment') || f.includes('gel')) return '<i class="fas fa-pump-medical text-dark"></i>';
+                if (f.includes('saline') || f.includes('infusion') || f.includes('i/v')) return '<i class="fas fa-vial text-info"></i>';
+                return '<i class="fas fa-pills text-muted"></i>';
+            }
+
+            const dosageIcon = getDosageIcon(form);
+
             html += `
             <div class="col-md-6 col-lg-4" style="animation-delay: ${index * 0.05}s">
                 <div class="card h-100 shadow-sm border-0 med-card ${isRelated ? 'related' : ''}">
@@ -171,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span class="badge generic-badge px-2 py-1 rounded-pill">${generic}</span>
                             </div>
                             <div class="text-end">
+                                <div class="fs-4 mb-1">${dosageIcon}</div>
                                 <span class="text-primary fw-bold small d-block">${strength === 'N/A' ? '' : strength}</span>
                                 <small class="text-muted" style="font-size: 11px;">${form === 'N/A' ? '' : form}</small>
                             </div>

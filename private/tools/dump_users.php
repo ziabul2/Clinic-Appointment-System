@@ -2,7 +2,7 @@
 // Dump users for debugging (CLI only)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 echo "Users dump - " . date('Y-m-d H:i:s') . PHP_EOL;
 $q = $db->query('SELECT user_id, username, email, role, password FROM users');

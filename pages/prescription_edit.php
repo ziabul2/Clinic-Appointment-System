@@ -302,19 +302,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             let html = '';
+
+            function getDosageIcon(form) {
+                const f = form.toLowerCase();
+                if (f.includes('tablet')) return '<i class="fas fa-tablets text-primary"></i>';
+                if (f.includes('capsule')) return '<i class="fas fa-capsules text-success"></i>';
+                if (f.includes('injection') || f.includes('vial') || f.includes('ampoule')) return '<i class="fas fa-syringe text-danger"></i>';
+                if (f.includes('syrup') || f.includes('liquid') || f.includes('suspension')) return '<i class="fas fa-prescription-bottle text-warning"></i>';
+                if (f.includes('drop')) return '<i class="fas fa-eye-dropper text-info"></i>';
+                if (f.includes('inhaler') || f.includes('spray')) return '<i class="fas fa-wind text-secondary"></i>';
+                if (f.includes('cream') || f.includes('ointment') || f.includes('gel')) return '<i class="fas fa-pump-medical text-dark"></i>';
+                if (f.includes('saline') || f.includes('infusion') || f.includes('i/v')) return '<i class="fas fa-vial text-info"></i>';
+                return '<i class="fas fa-pills text-muted"></i>';
+            }
+
             data.forEach(med => {
                 const brand = cleanText(med.brand_name);
                 const generic = cleanText(med.generic_name);
                 const strength = cleanText(med.strength);
                 const form = cleanText(med.dosage_form);
                 const isRelated = med.type === 'related';
+                const dosageIcon = getDosageIcon(form);
 
                 html += `
                 <div class="list-group-item p-2 border-start-0 border-end-0 ${isRelated ? 'bg-light' : ''}">
                     <div class="d-flex justify-content-between align-items-center">
                         <div style="max-width: 80%;">
-                            ${isRelated ? '<span class="badge bg-info text-white mb-1" style="font-size: 8px;">ALTERNATIVE</span>' : ''}
-                            <h6 class="mb-0 fw-bold text-dark text-truncate small">${brand}</h6>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span style="font-size: 14px;">${dosageIcon}</span>
+                                <h6 class="mb-0 fw-bold text-dark text-truncate small">${brand}</h6>
+                                ${isRelated ? '<span class="badge bg-info text-white" style="font-size: 8px;">ALT</span>' : ''}
+                            </div>
                             <p class="mb-0 text-muted text-truncate" style="font-size: 10px;">${generic}</p>
                             <div class="d-flex gap-2 mt-1" style="font-size: 9px;">
                                 <span class="text-primary">${strength}</span>

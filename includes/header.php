@@ -3,7 +3,8 @@
 require_once __DIR__ . '/../config/config.php';
 
 // Log page access
-logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
+$current_page = basename($_SERVER['PHP_SELF']);
+logAction("PAGE_ACCESS", "Accessed: " . $current_page);
 
 // Update last activity for logged in user
 if (isLoggedIn() && isset($_SESSION['user_id'])) {
@@ -74,26 +75,26 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a class="nav-link <?php echo $current_page == 'dashboard.php' ? 'active' : ''; ?>" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
                         
                         <?php if ($role === 'receptionist'): ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                                <a class="nav-link <?php echo $current_page == 'patients.php' ? 'active' : ''; ?>" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
+                                <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
                             </li>
                         <?php else: ?>
                             <!-- Admin and other roles: full access -->
                             <li class="nav-item">
-                                <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                                <a class="nav-link <?php echo $current_page == 'patients.php' ? 'active' : ''; ?>" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
+                                <a class="nav-link <?php echo $current_page == 'doctors.php' ? 'active' : ''; ?>" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
+                                <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
                             </li>
                         <?php endif; ?>
                     <?php endif; ?>

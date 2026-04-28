@@ -8,7 +8,7 @@ if ($argc < 3) {
 }
 $username = $argv[1];
 $newpw = $argv[2];
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 try {
     $hash = password_hash($newpw, PASSWORD_DEFAULT);

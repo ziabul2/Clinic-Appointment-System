@@ -1,6 +1,6 @@
 <?php
 // Simulate booking flow non-destructively: starts a transaction, performs the booking and serial allocation, then rolls back.
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../../config/config.php';
 
 function out($s) { echo $s . PHP_EOL; }
 
