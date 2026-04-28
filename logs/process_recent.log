@@ -1,3 +1,26 @@
+[2026-04-28 11:47:56] Ziabul | PAGE_ACCESS | Accessed: session_history.php
+[2026-04-28 11:47:55] Ziabul | PAGE_ACCESS | Accessed: admin_tools.php
+[2026-04-28 11:47:51] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:47:51] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-28 11:47:47] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:47:47] Ziabul | USER_LOGOUT | User logged out: Ziabul
+[2026-04-28 11:47:39] Ziabul | PAGE_ACCESS | Accessed: session_history.php
+[2026-04-28 11:44:38] Ziabul | PAGE_ACCESS | Accessed: session_history.php
+[2026-04-28 11:44:37] Ziabul | PAGE_ACCESS | Accessed: admin_tools.php
+[2026-04-28 11:43:52] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:43:44] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 11:43:38] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:43:38] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
+[2026-04-28 11:43:33] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:42:54] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:42:54] Dr.ziabul | USER_LOGOUT | User logged out: Dr.ziabul
+[2026-04-28 11:42:46] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:38:27] Ziabul | PAGE_ACCESS | Accessed: session_history.php
+[2026-04-28 11:38:15] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:38:15] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
+[2026-04-28 11:38:03] Ziabul | PAGE_ACCESS | Accessed: session_history.php
+[2026-04-28 11:37:59] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:37:59] Dr.ziabul | USER_LOGOUT | User logged out: Dr.ziabul
 [2026-04-28 11:35:32] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-28 11:35:31] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
 [2026-04-28 11:34:57] Ziabul | PAGE_ACCESS | Accessed: session_history.php

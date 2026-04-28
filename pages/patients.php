@@ -205,6 +205,7 @@ try {
                                     <!-- Desktop Actions -->
                                     <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
                                         <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
+                                        <a href="consultation_history.php?patient_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary" title="Consultation History"><i class="fas fa-notes-medical"></i></a>
                                         <a href="edit_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>
                                         <a href="add_appointment.php?patient_id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-info" title="New Appointment"><i class="fas fa-calendar-plus"></i></a>
                                         <a href="../process.php?action=archive_patient&id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-secondary" onclick="return confirm('Archive patient?');" title="Archive"><i class="fas fa-archive"></i></a>

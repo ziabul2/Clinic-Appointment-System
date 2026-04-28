@@ -1448,13 +1448,53 @@ try {
                     $msg = "Appointment for " . $pat['first_name'] . " " . $pat['last_name'] . " updated to " . ucfirst($status) . ".";
                     notifyRoles($db, ['admin', 'receptionist'], 'status', 'Status Update', $msg, ['appointment_id' => $id, 'status' => $status]);
                 }
-
                 logAction('STATUS_UPDATE', "Appointment $id status set to $status");
                 echo json_encode(['ok'=>true, 'message'=>'Status updated to ' . ucfirst($status)]);
             } catch (Exception $e) {
                 echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
             }
             exit;
+            break;
+
+        case 'save_consultation':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (!verify_csrf()) { $_SESSION['error'] = 'Invalid CSRF token.'; redirect('pages/dashboard.php'); }
+                
+                $patient_id = intval($_POST['patient_id'] ?? 0);
+                $main_symptom = sanitizeInput($_POST['main_symptom'] ?? '');
+                $additional = sanitizeInput($_POST['additional_symptoms'] ?? '');
+                $severity = sanitizeInput($_POST['severity'] ?? 'Low');
+                $specialty = sanitizeInput($_POST['recommended_specialty'] ?? '');
+                $confidence = floatval($_POST['ai_confidence'] ?? 0.0);
+                $notes = sanitizeInput($_POST['notes'] ?? '');
+
+                // Get current doctor id
+                $doctor_id = null;
+                if (strtolower($_SESSION['role'] ?? '') === 'doctor') {
+                    $q = $db->prepare("SELECT doctor_id FROM users WHERE user_id = :uid");
+                    $q->execute(['uid' => $_SESSION['user_id']]);
+                    $doctor_id = $q->fetchColumn() ?: null;
+                }
+
+                try {
+                    $ins = $db->prepare("INSERT INTO consultation_history (patient_id, doctor_id, main_symptom, additional_symptoms, severity, recommended_specialty, ai_confidence, notes) VALUES (:pid, :did, :ms, :as, :sev, :spec, :conf, :notes)");
+                    $ins->execute([
+                        'pid' => $patient_id,
+                        'did' => $doctor_id,
+                        'ms'  => $main_symptom,
+                        'as'  => $additional,
+                        'sev' => $severity,
+                        'spec' => $specialty,
+                        'conf' => $confidence,
+                        'notes' => $notes
+                    ]);
+                    $_SESSION['success'] = 'Consultation history saved successfully.';
+                    redirect('pages/consultation_history.php?patient_id=' . $patient_id);
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Failed to save: ' . $e->getMessage();
+                    redirect('pages/consultation_history.php?patient_id=' . $patient_id);
+                }
+            }
             break;
 
         case 'call_next_patient':
