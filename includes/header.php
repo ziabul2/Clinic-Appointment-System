@@ -122,11 +122,13 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                             } catch (Throwable $e) { $profileFullName = $_SESSION['username']; }
                         }
                     ?>
+                        <?php if (in_array($role, ['admin', 'root'])): ?>
                         <li class="nav-item me-2">
-                            <button class="nav-link btn btn-link" id="testToastBtn" title="Test Toast Notification">
+                            <a class="nav-link" href="../pages/manage_announcements.php" title="Manage Announcements">
                                 <i class="fas fa-bullhorn"></i>
-                            </button>
+                            </a>
                         </li>
+                        <?php endif; ?>
                         <li class="nav-item dropdown position-relative me-2">
                             <a class="nav-link position-relative" href="#" id="notificationBell" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
@@ -176,6 +178,7 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                                 <?php if (in_array($role, ['admin','root'])): ?>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="../pages/admin_tools.php"><i class="fas fa-tools"></i> Tools</a></li>
+                                    <li><a class="dropdown-item" href="../pages/manage_announcements.php"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                                     <li><a class="dropdown-item" href="../pages/employees.php"><i class="fas fa-users"></i> Employees</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>

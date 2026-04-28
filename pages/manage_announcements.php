@@ -18,9 +18,9 @@ $announcements = $db->query("SELECT a.*, u.username FROM announcements a LEFT JO
             <h2 class="fw-bold mb-0"><i class="fas fa-bullhorn text-primary me-2"></i>System Announcements</h2>
             <p class="text-muted">Broadcast important updates to Doctors and Receptionists.</p>
         </div>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAnnModal">
+        <a href="add_announcement.php" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>New Announcement
-        </button>
+        </a>
     </div>
 
     <div class="row">
@@ -53,44 +53,6 @@ $announcements = $db->query("SELECT a.*, u.username FROM announcements a LEFT JO
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
-    </div>
-</div>
-
-<!-- Add Announcement Modal -->
-<div class="modal fade" id="addAnnModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content border-0 shadow">
-            <form action="../process.php?action=save_announcement" method="POST">
-                <?php echo csrf_input(); ?>
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Create Announcement</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Title</label>
-                        <input type="text" name="title" class="form-control" required placeholder="Announcement Subject">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Broadcast To</label>
-                        <select name="target_role" class="form-select">
-                            <option value="all">All Staff</option>
-                            <option value="doctor">Doctors Only</option>
-                            <option value="receptionist">Receptionists Only</option>
-                            <option value="admin">Admins Only</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Message</label>
-                        <textarea name="message" class="form-control" rows="4" required placeholder="Type your announcement here..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Post & Notify</button>
-                </div>
-            </form>
-        </div>
     </div>
 </div>
 
