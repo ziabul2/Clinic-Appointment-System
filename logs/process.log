@@ -1,4 +1,270 @@
 --------------------------------------------------
+TIME: 2026-04-28 11:35:32
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:35:31
+USER: Dr.ziabul (IP: ::1)
+ACTION: USER_LOGIN
+DETAILS: User logged in: Dr.ziabul
+--------------------------------------------------
+
+==================================================
+AUTH EVENT: LOGIN
+TIME: 2026-04-28 11:35:31
+USER: Dr.ziabul (ID: 9)
+IP ADDRESS: ::1
+==================================================
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:57
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:54
+USER: Guest (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: login.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:54
+USER: Dr.ziabul (IP: ::1)
+ACTION: USER_LOGOUT
+DETAILS: User logged out: Dr.ziabul
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:41
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:36
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:36
+USER: Dr.ziabul (IP: ::1)
+ACTION: USER_LOGIN
+DETAILS: User logged in: Dr.ziabul
+--------------------------------------------------
+
+==================================================
+AUTH EVENT: LOGIN
+TIME: 2026-04-28 11:34:36
+USER: Dr.ziabul (ID: 9)
+IP ADDRESS: ::1
+==================================================
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:24
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:11
+USER: Guest (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: login.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:34:11
+USER: Dr.ziabul (IP: ::1)
+ACTION: USER_LOGOUT
+DETAILS: User logged out: Dr.ziabul
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:33:59
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: my_profile.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:33:53
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_details.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:33:47
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:28:47
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:28:40
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: appointments.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:28:29
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:28:29
+USER: Dr.ziabul (IP: ::1)
+ACTION: VITALS_SAVED
+DETAILS: Vitals saved for appointment 14
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:28:18
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: vitals_edit.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:28:03
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:59
+USER: Dr.ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:59
+USER: Dr.ziabul (IP: ::1)
+ACTION: USER_LOGIN
+DETAILS: User logged in: Dr.ziabul
+--------------------------------------------------
+
+==================================================
+AUTH EVENT: LOGIN
+TIME: 2026-04-28 11:27:59
+USER: Dr.ziabul (ID: 9)
+IP ADDRESS: ::1
+==================================================
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:46
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_history.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:35
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: admin_tools.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:32
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: employees.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:16
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: employees.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:10
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:04
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: my_profile.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:27:02
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: my_profile.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:26:38
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: session_details.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:26:11
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: appointments.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:26:04
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: doctors.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:26:00
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: patients.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:25:58
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
+TIME: 2026-04-28 11:25:56
+USER: Ziabul (IP: ::1)
+ACTION: PAGE_ACCESS
+DETAILS: Accessed: dashboard.php
+--------------------------------------------------
+
+--------------------------------------------------
 TIME: 2026-04-28 11:19:26
 USER: Guest (IP: ::1)
 ACTION: PAGE_ACCESS
@@ -9748,3 +10014,52 @@ appointments.status exists
 [2026-04-28 11:16:54] [INFO] [USER_ACTION] User: Ziabul | IP: ::1 | Action: PAGE_ACCESS | Details: Accessed: dashboard.php
 [2026-04-28 11:19:26] [INFO] [DATABASE_CONNECTION] Database connected successfully
 [2026-04-28 11:24:01] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:25:56] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:25:56] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:25:58] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:00] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:04] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:11] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:17] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:18] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:19] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:24] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:24] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:24] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:32] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:32] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:26:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:02] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:04] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:10] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:16] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:32] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:35] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:46] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:59] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:27:59] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:03] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:18] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:29] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:29] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:37] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:38] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:40] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:28:47] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:33:47] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:33:53] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:33:59] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:11] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:11] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:24] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:36] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:36] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:41] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:54] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:54] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:34:57] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:35:31] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:35:32] [INFO] [DATABASE_CONNECTION] Database connected successfully
+[2026-04-28 11:37:41] [INFO] [DATABASE_CONNECTION] Database connected successfully

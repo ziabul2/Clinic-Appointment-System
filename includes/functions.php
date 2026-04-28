@@ -297,6 +297,7 @@ function sendMailReport($to, $subject, $htmlBody, $isHtml = true) {
  * Notifications helpers
  */
 function createNotification($db, $user_id, $type, $title, $message, $meta = null) {
+    if (!$db) return false;
     try {
         $ins = $db->prepare('INSERT INTO notifications (user_id, type, title, message, meta, created_at) VALUES (:uid, :type, :title, :message, :meta, NOW())');
         $metaJson = is_null($meta) ? null : json_encode($meta);
@@ -308,9 +309,38 @@ function createNotification($db, $user_id, $type, $title, $message, $meta = null
         $ins->execute();
         return $db->lastInsertId();
     } catch (Exception $e) {
-        // log but don't throw
         logAction('NOTIF_CREATE_ERROR', $e->getMessage());
         return false;
+    }
+}
+
+/**
+ * Send notification to all users of a specific role
+ */
+function notifyRole($db, $role, $type, $title, $message, $meta = null) {
+    if (!$db) return false;
+    try {
+        // Find all users with this role
+        $q = $db->prepare("SELECT user_id FROM users WHERE LOWER(role) = LOWER(:role)");
+        $q->execute(['role' => $role]);
+        $users = $q->fetchAll(PDO::FETCH_COLUMN);
+        
+        foreach ($users as $uid) {
+            createNotification($db, $uid, $type, $title, $message, $meta);
+        }
+        return true;
+    } catch (Exception $e) {
+        logAction('NOTIF_ROLE_ERROR', $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Send notification to all users of multiple roles
+ */
+function notifyRoles($db, $roles, $type, $title, $message, $meta = null) {
+    foreach ($roles as $role) {
+        notifyRole($db, $role, $type, $title, $message, $meta);
     }
 }
 

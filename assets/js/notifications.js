@@ -143,10 +143,77 @@
             .then(function(r){ return r.json(); })
             .then(function(j){ if (j && j.ok) fetchNotifications(); })
             .catch(function(e){ console.error('Mark read error:', e); });
+       var lastNotifId = 0;
+    var isPolling = false;
+
+    function pollNotifications() {
+        if (isPolling) return;
+        isPolling = true;
+
+        var path = apiPath('notifications_poll') + '&after_id=' + lastNotifId;
+        fetch(path, { credentials: 'same-origin' })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data && data.ok && Array.isArray(data.notifications) && data.notifications.length > 0) {
+                    data.notifications.forEach(function(n) {
+                        // Update last ID
+                        var nid = parseInt(n.id, 10);
+                        if (nid > lastNotifId) lastNotifId = nid;
+
+                        // Show toast
+                        var type = 'info';
+                        if (n.type === 'auth') type = 'warning';
+                        if (n.type === 'queue') type = 'success';
+                        if (n.type === 'status') type = 'info';
+
+                        if (window.flashNotify) {
+                            window.flashNotify(type, n.title || 'Notification', n.message || '');
+                        }
+                    });
+                    // Refresh unread count badge
+                    updateUnreadCount();
+                }
+            })
+            .catch(function(err) { console.error('Poll error:', err); })
+            .finally(function() {
+                isPolling = false;
+            });
+    }
+
+    function updateUnreadCount() {
+        var path = apiPath('notifications_unread_count');
+        fetch(path, { credentials: 'same-origin' })
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                var badge = document.getElementById('notifCountBadge');
+                if (badge && data && data.ok) {
+                    var cnt = parseInt(data.count, 10) || 0;
+                    if (cnt > 0) {
+                        badge.textContent = cnt;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            });
     }
 
     // Fetch notifications only when the dropdown is opened (user action)
     document.addEventListener('DOMContentLoaded', function(){
+        // Initial fetch to get the current state and set lastNotifId
+        var path = apiPath('notifications_fetch') + '&limit=1';
+        fetch(path, { credentials: 'same-origin' })
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                if (data && data.ok && data.notifications && data.notifications.length > 0) {
+                    lastNotifId = parseInt(data.notifications[0].id, 10);
+                }
+                updateUnreadCount();
+            });
+
+        // Start polling every 10 seconds
+        setInterval(pollNotifications, 10000);
+
         // show single server-side flash toast if provided by server
         try { if (window.__FLASH && window.__FLASH.toast === true) { showFlashToast(window.__FLASH); } } catch (e) { console.error('flash-toast error', e); }
         var bell = document.getElementById('notificationBell');
@@ -198,7 +265,7 @@
                             body: formData
                         }).then(function(resp){ return resp.text(); })
                           .then(function(text){
-                              try { var j = JSON.parse(text); } catch(e) { j = null; }
+                               try { var j = JSON.parse(text); } catch(e) { j = null; }
                             if (j && j.ok) {
                                 // If server requested a button success visual, apply it
                                 if (j.button_success) {
@@ -236,6 +303,6 @@
                           .finally(function(){ if (btn) { if (!ajaxResult.button_success && !ajaxResult.redirect) { setTimeout(function(){ btn.disabled = false; btn.innerHTML = original; }, 600); } } });
                     });
                 });
-            } catch (e) { console.error('bind-ajax-forms failed', e); }
+        } catch (e) { console.error('bind-ajax-forms failed', e); }
     });
 })();

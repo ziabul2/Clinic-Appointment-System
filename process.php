@@ -979,6 +979,10 @@ try {
                     } catch (Exception $e) { /* ignore */ }
 
                     logAuth('LOGIN', $_SESSION['username'], $_SESSION['user_id']);
+                    
+                    // Notify Admins and Receptionists
+                    $loginMsg = "User " . $_SESSION['username'] . " (" . $_SESSION['role'] . ") has logged into the system.";
+                    notifyRoles($db, ['admin', 'receptionist'], 'auth', 'Staff Login', $loginMsg, ['user_id' => $_SESSION['user_id']]);
                     logAction('USER_LOGIN', 'User logged in: ' . $_SESSION['username']);
 
                     // Redirect to dashboard or based on role
@@ -1232,24 +1236,45 @@ try {
             break;
 
         case 'notifications_unread_count':
-            // Return unread notification count for current user (AJAX)
             $user_id = $_SESSION['user_id'] ?? null;
             header('Content-Type: application/json');
             if (!$user_id) { echo json_encode(['ok'=>false,'count'=>0]); exit; }
             try {
-                $cnt = 0;
-                if (function_exists('getUnreadNotificationCount')) {
-                    $cnt = getUnreadNotificationCount($db, $user_id);
-                }
+                $cnt = function_exists('getUnreadNotificationCount') ? getUnreadNotificationCount($db, $user_id) : 0;
                 echo json_encode(['ok'=>true,'count'=>intval($cnt)]);
-            } catch (Exception $e) {
-                echo json_encode(['ok'=>false,'count'=>0,'error'=>$e->getMessage()]);
-            }
+            } catch (Exception $e) { echo json_encode(['ok'=>false,'count'=>0,'error'=>$e->getMessage()]); }
+            exit;
+            break;
+
+        case 'notifications_fetch':
+            $user_id = $_SESSION['user_id'] ?? null;
+            header('Content-Type: application/json');
+            if (!$user_id) { echo json_encode(['ok'=>false,'notifications'=>[]]); exit; }
+            try {
+                $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 50;
+                $notifs = function_exists('getNotifications') ? getNotifications($db, $user_id, $limit) : [];
+                $unread = function_exists('getUnreadNotificationCount') ? getUnreadNotificationCount($db, $user_id) : 0;
+                echo json_encode(['ok'=>true, 'notifications'=>$notifs, 'unread'=>$unread]);
+            } catch (Exception $e) { echo json_encode(['ok'=>false, 'error'=>$e->getMessage()]); }
+            exit;
+            break;
+
+        case 'notifications_poll':
+            // Long-polling or frequent-polling helper: get only unread notifications after a certain ID
+            $user_id = $_SESSION['user_id'] ?? null;
+            header('Content-Type: application/json');
+            if (!$user_id) { echo json_encode(['ok'=>false,'notifications'=>[]]); exit; }
+            try {
+                $after_id = isset($_GET['after_id']) ? intval($_GET['after_id']) : 0;
+                $q = $db->prepare("SELECT id, type, title, message, meta, is_read, created_at FROM notifications WHERE user_id = :uid AND id > :after AND is_read = 0 ORDER BY id ASC");
+                $q->execute(['uid'=>$user_id, 'after'=>$after_id]);
+                $new = $q->fetchAll(PDO::FETCH_ASSOC);
+                echo json_encode(['ok'=>true, 'notifications'=>$new]);
+            } catch (Exception $e) { echo json_encode(['ok'=>false, 'error'=>$e->getMessage()]); }
             exit;
             break;
 
         case 'notifications_mark_read':
-            // Mark notification(s) read
             $user_id = $_SESSION['user_id'] ?? null;
             header('Content-Type: application/json');
             if (!$user_id) { echo json_encode(['ok'=>false]); exit; }
@@ -1261,14 +1286,13 @@ try {
             }
             if (empty($ids)) { echo json_encode(['ok'=>false,'message'=>'No ids']); exit; }
             try {
-                $in = implode(',', array_map('intval', $ids));
-                $q = $db->prepare("UPDATE notifications SET is_read = 1 WHERE id IN ($in) AND user_id = :uid");
-                $q->bindParam(':uid', $user_id);
-                $q->execute();
+                $ids_clean = array_map('intval', $ids);
+                $placeholders = implode(',', array_fill(0, count($ids_clean), '?'));
+                $q = $db->prepare("UPDATE notifications SET is_read = 1 WHERE id IN ($placeholders) AND user_id = ?");
+                $params = array_merge($ids_clean, [$user_id]);
+                $q->execute($params);
                 echo json_encode(['ok'=>true]);
-            } catch (Exception $e) {
-                echo json_encode(['ok'=>false,'error'=>$e->getMessage()]);
-            }
+            } catch (Exception $e) { echo json_encode(['ok'=>false,'error'=>$e->getMessage()]); }
             exit;
             break;
 
@@ -1415,6 +1439,16 @@ try {
             try {
                 $up = $db->prepare('UPDATE appointments SET status = :s, updated_at = NOW() WHERE appointment_id = :id');
                 $up->execute(['s'=>$status, 'id'=>$id]);
+
+                // Notify Admins and Receptionists
+                $infoQ = $db->prepare("SELECT p.first_name, p.last_name FROM appointments a JOIN patients p ON a.patient_id = p.patient_id WHERE a.appointment_id = :id");
+                $infoQ->execute(['id'=>$id]);
+                $pat = $infoQ->fetch(PDO::FETCH_ASSOC);
+                if ($pat) {
+                    $msg = "Appointment for " . $pat['first_name'] . " " . $pat['last_name'] . " updated to " . ucfirst($status) . ".";
+                    notifyRoles($db, ['admin', 'receptionist'], 'status', 'Status Update', $msg, ['appointment_id' => $id, 'status' => $status]);
+                }
+
                 logAction('STATUS_UPDATE', "Appointment $id status set to $status");
                 echo json_encode(['ok'=>true, 'message'=>'Status updated to ' . ucfirst($status)]);
             } catch (Exception $e) {
@@ -1439,6 +1473,19 @@ try {
                 }
                 $up = $db->prepare("UPDATE appointments SET status = 'visiting', updated_at = NOW() WHERE appointment_id = :id");
                 $up->execute(['id'=>$id]);
+                
+                // Fetch info for notification
+                $infoQ = $db->prepare("SELECT a.appointment_serial, p.first_name as pfn, p.last_name as pln, d.first_name as dfn, d.last_name as dln FROM appointments a JOIN patients p ON a.patient_id = p.patient_id JOIN doctors d ON a.doctor_id = d.doctor_id WHERE a.appointment_id = :id");
+                $infoQ->execute(['id'=>$id]);
+                $info = $infoQ->fetch(PDO::FETCH_ASSOC);
+                
+                if ($info) {
+                    $docName = "Dr. " . $info['dfn'] . " " . $info['dln'];
+                    $patName = $info['pfn'] . " " . $info['pln'];
+                    $notifMsg = "$docName is now visiting $patName (Serial #" . $info['appointment_serial'] . ")";
+                    notifyRoles($db, ['admin', 'receptionist'], 'queue', 'Next Patient Called', $notifMsg, ['appointment_id' => $id, 'doctor_id' => $doctor_id]);
+                }
+
                 logAction('CALL_NEXT', "Doctor $doctor_id called appointment $id");
                 echo json_encode(['ok'=>true, 'appointment_id'=>$id, 'message'=>'Calling next patient...']);
             } catch (Exception $e) {
@@ -1974,6 +2021,13 @@ try {
                 } catch (Exception $e) { /* ignore */ }
             }
             logAction("USER_LOGOUT", "User logged out: " . ($_SESSION['username'] ?? 'Unknown'));
+            
+            // Notify Admins and Receptionists
+            if (isset($_SESSION['username'])) {
+                $logoutMsg = "User " . $_SESSION['username'] . " has logged out.";
+                notifyRoles($db, ['admin', 'receptionist'], 'auth', 'Staff Logout', $logoutMsg);
+            }
+
             session_destroy();
             redirect('pages/login.php');
             break;
