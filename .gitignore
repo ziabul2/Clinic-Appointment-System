@@ -8,3 +8,4 @@ uploads/doctors/*
 !uploads/doctors/.gitkeep
 uploads/prescriptions/*
 !uploads/prescriptions/.gitkeep
+private/
