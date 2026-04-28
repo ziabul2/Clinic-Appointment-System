@@ -1659,9 +1659,11 @@ try {
             
             try {
                 // 1. Find primary matches (up to 30 to keep it fast)
-                $stmt = $db->prepare("SELECT brand_name, generic_name, dosage_form, strength, manufacturer, drug_class, indication, id 
+                // Use GROUP BY to avoid identical brand+generic+strength+form combinations from different manufacturers/IDs
+                $stmt = $db->prepare("SELECT MIN(id) as id, brand_name, generic_name, dosage_form, strength, manufacturer, drug_class, indication 
                                     FROM medicine_master_data 
                                     WHERE brand_name LIKE :q1 OR generic_name LIKE :q2 OR indication LIKE :q3
+                                    GROUP BY brand_name, generic_name, strength, dosage_form
                                     ORDER BY (brand_name LIKE :eq1) DESC, (generic_name LIKE :eq2) DESC 
                                     LIMIT 30");
                 $search = "%$q%";
@@ -1691,10 +1693,11 @@ try {
                     $genPlaceholders = implode(',', array_fill(0, count($generics), '?'));
                     $brandPlaceholders = implode(',', array_fill(0, count($brandNames), '?'));
                     
-                    $altStmt = $db->prepare("SELECT brand_name, generic_name, dosage_form, strength, manufacturer, id 
+                    $altStmt = $db->prepare("SELECT MIN(id) as id, brand_name, generic_name, dosage_form, strength, manufacturer 
                                            FROM medicine_master_data 
                                            WHERE generic_name IN ($genPlaceholders) 
                                            AND brand_name NOT IN ($brandPlaceholders)
+                                           GROUP BY brand_name, generic_name, strength, dosage_form
                                            LIMIT 60");
                     
                     $params = array_merge(array_values($generics), array_values($brandNames));

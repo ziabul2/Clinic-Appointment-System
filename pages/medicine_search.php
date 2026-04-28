@@ -70,6 +70,40 @@ if (!isLoggedIn()) redirect('../index.php');
     </div>
 </div>
 
+<div class="row mb-4" id="filterSection" style="display: none;">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 bg-white">
+            <div class="card-body p-3">
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        <span class="text-muted small fw-bold"><i class="fas fa-filter me-2"></i>FILTER BY:</span>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filterForm" class="form-select form-select-sm rounded-pill border-light">
+                            <option value="">All Dosage Forms</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filterType" class="form-select form-select-sm rounded-pill border-light">
+                            <option value="">All Types</option>
+                            <option value="Essential">Essential</option>
+                            <option value="Allopathic">Allopathic</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filterClass" class="form-select form-select-sm rounded-pill border-light">
+                            <option value="">All Drug Classes</option>
+                        </select>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <button id="resetFilters" class="btn btn-link btn-sm text-decoration-none text-muted">Clear All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="directoryResults" class="row g-4">
     <div class="col-12 text-center py-5">
         <div class="py-5">
@@ -87,17 +121,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('directorySearchInput');
     const btn = document.getElementById('directorySearchBtn');
     const results = document.getElementById('directoryResults');
+    const filterSection = document.getElementById('filterSection');
+    const filterForm = document.getElementById('filterForm');
+    const filterType = document.getElementById('filterType');
+    const filterClass = document.getElementById('filterClass');
+    const resetBtn = document.getElementById('resetFilters');
 
     let allData = [];
 
-    // Check for saved search on load
-    const savedSearch = localStorage.getItem('last_med_search');
-    const savedData = localStorage.getItem('last_med_results');
-    
-    if (savedSearch && savedData) {
-        input.value = savedSearch;
-        allData = JSON.parse(savedData);
-        renderResults(allData);
+    // Helper to clean text in JS
+    function cleanText(text) {
+        if (!text) return 'N/A';
+        const div = document.createElement('div');
+        div.innerHTML = text;
+        return div.textContent || div.innerText || '';
+    }
+
+    function populateFilters(data) {
+        const forms = [...new Set(data.map(m => cleanText(m.dosage_form)).filter(f => f && f !== 'N/A'))].sort();
+        const classes = [...new Set(data.map(m => cleanText(m.drug_class)).filter(c => c && c !== 'N/A'))].sort();
+
+        filterForm.innerHTML = '<option value="">All Dosage Forms</option>' + 
+            forms.map(f => `<option value="${f}">${f}</option>`).join('');
+        
+        filterClass.innerHTML = '<option value="">All Drug Classes</option>' + 
+            classes.map(c => `<option value="${c}">${c}</option>`).join('');
+        
+        filterSection.style.display = data.length > 0 ? 'flex' : 'none';
+    }
+
+    function applyFilters() {
+        const formVal = filterForm.value;
+        const typeVal = filterType.value;
+        const classVal = filterClass.value;
+
+        const filtered = allData.filter(med => {
+            const matchesForm = !formVal || cleanText(med.dosage_form) === formVal;
+            const matchesType = !typeVal || (med.type && med.type.toLowerCase().includes(typeVal.toLowerCase()));
+            const matchesClass = !classVal || cleanText(med.drug_class) === classVal;
+            return matchesForm && matchesType && matchesClass;
+        });
+
+        renderResults(filtered, false); // false = don't repopulate filters
     }
 
     function search() {
@@ -109,48 +174,52 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="spinner-grow text-primary" role="status"></div>
             <p class="mt-3 text-muted fw-bold">Analyzing pharmaceutical data...</p>
         </div>`;
+        filterSection.style.display = 'none';
 
         fetch(`../process.php?action=search_medicine&q=${encodeURIComponent(q)}`, {credentials: 'same-origin'})
-        .then(r => {
-            if (!r.ok) throw new Error('Server responded with ' + r.status);
-            return r.json();
-        })
+        .then(r => r.json())
         .then(data => {
-            if (data && data.ok === false) {
-                throw new Error(data.message || 'Unknown server error');
-            }
+            if (data && data.ok === false) throw new Error(data.message || 'Server error');
             
             if (!Array.isArray(data) || data.length === 0) {
-                results.innerHTML = '<div class="col-12"><div class="alert alert-info rounded-4 border-0 shadow-sm p-4 text-center">No clinical matches found for your search. Try a different keyword.</div></div>';
+                results.innerHTML = '<div class="col-12"><div class="alert alert-info rounded-4 border-0 shadow-sm p-4 text-center">No clinical matches found.</div></div>';
                 localStorage.removeItem('last_med_search');
                 localStorage.removeItem('last_med_results');
                 return;
             }
             
             allData = data;
-            // Save to localStorage
             localStorage.setItem('last_med_search', q);
             localStorage.setItem('last_med_results', JSON.stringify(data));
             
+            populateFilters(data);
             renderResults(data);
         })
         .catch(err => {
             console.error(err);
-            results.innerHTML = `<div class="col-12"><div class="alert alert-danger rounded-4 border-0 shadow-sm p-4 text-center">
-                <i class="fas fa-exclamation-triangle me-2"></i> Search failed: ${err.message}. Please try again.
-            </div></div>`;
+            results.innerHTML = `<div class="col-12"><div class="alert alert-danger rounded-4 border-0 shadow-sm p-4 text-center">Search failed: ${err.message}</div></div>`;
         });
     }
 
-    // Helper to clean text in JS (equivalent to the PHP one)
-    function cleanText(text) {
-        if (!text) return 'N/A';
-        const div = document.createElement('div');
-        div.innerHTML = text;
-        return div.textContent || div.innerText || '';
+    function getDosageIcon(form) {
+        const f = form.toLowerCase();
+        if (f.includes('tablet')) return '<i class="fas fa-tablets text-primary"></i>';
+        if (f.includes('capsule')) return '<i class="fas fa-capsules text-success"></i>';
+        if (f.includes('injection') || f.includes('vial') || f.includes('ampoule')) return '<i class="fas fa-syringe text-danger"></i>';
+        if (f.includes('syrup') || f.includes('liquid') || f.includes('suspension')) return '<i class="fas fa-prescription-bottle text-warning"></i>';
+        if (f.includes('drop')) return '<i class="fas fa-eye-dropper text-info"></i>';
+        if (f.includes('inhaler') || f.includes('spray')) return '<i class="fas fa-wind text-secondary"></i>';
+        if (f.includes('cream') || f.includes('ointment') || f.includes('gel')) return '<i class="fas fa-pump-medical text-dark"></i>';
+        if (f.includes('saline') || f.includes('infusion') || f.includes('i/v')) return '<i class="fas fa-vial text-info"></i>';
+        return '<i class="fas fa-pills text-muted"></i>';
     }
 
-    function renderResults(data) {
+    function renderResults(data, resetFilterVisibility = true) {
+        if (data.length === 0) {
+            results.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No medicines match your current filters.</p></div>';
+            return;
+        }
+
         let html = '';
         data.forEach((med, index) => {
             const isRelated = med.type === 'related';
@@ -159,20 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const strength = cleanText(med.strength);
             const form = cleanText(med.dosage_form);
             const manufacturer = cleanText(med.manufacturer);
-
-            function getDosageIcon(form) {
-                const f = form.toLowerCase();
-                if (f.includes('tablet')) return '<i class="fas fa-tablets text-primary"></i>';
-                if (f.includes('capsule')) return '<i class="fas fa-capsules text-success"></i>';
-                if (f.includes('injection') || f.includes('vial') || f.includes('ampoule')) return '<i class="fas fa-syringe text-danger"></i>';
-                if (f.includes('syrup') || f.includes('liquid') || f.includes('suspension')) return '<i class="fas fa-prescription-bottle text-warning"></i>';
-                if (f.includes('drop')) return '<i class="fas fa-eye-dropper text-info"></i>';
-                if (f.includes('inhaler') || f.includes('spray')) return '<i class="fas fa-wind text-secondary"></i>';
-                if (f.includes('cream') || f.includes('ointment') || f.includes('gel')) return '<i class="fas fa-pump-medical text-dark"></i>';
-                if (f.includes('saline') || f.includes('infusion') || f.includes('i/v')) return '<i class="fas fa-vial text-info"></i>';
-                return '<i class="fas fa-pills text-muted"></i>';
-            }
-
             const dosageIcon = getDosageIcon(form);
 
             html += `
@@ -206,16 +261,31 @@ document.addEventListener('DOMContentLoaded', function() {
         results.innerHTML = html;
     }
 
+    // Events
     btn.addEventListener('click', search);
     input.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); search(); } });
     
-    let timeout;
-    input.addEventListener('input', () => {
-        clearTimeout(timeout);
-        if (input.value.length >= 3) {
-            timeout = setTimeout(search, 1000);
-        }
+    filterForm.addEventListener('change', applyFilters);
+    filterType.addEventListener('change', applyFilters);
+    filterClass.addEventListener('change', applyFilters);
+    
+    resetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        filterForm.value = '';
+        filterType.value = '';
+        filterClass.value = '';
+        renderResults(allData);
     });
+
+    // Load saved data
+    const savedSearch = localStorage.getItem('last_med_search');
+    const savedData = localStorage.getItem('last_med_results');
+    if (savedSearch && savedData) {
+        input.value = savedSearch;
+        allData = JSON.parse(savedData);
+        populateFilters(allData);
+        renderResults(allData);
+    }
 });
 </script>
 
