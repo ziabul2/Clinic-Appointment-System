@@ -87,18 +87,17 @@ if ($patient_id) {
                             <thead class="bg-light">
                                 <tr>
                                     <th class="ps-4">Date</th>
-                                    <th>Main Symptom</th>
-                                    <th>Specialty Rec.</th>
-                                    <th>Severity</th>
+                                    <th>Patient Info & Vitals</th>
+                                    <th>Findings & Diagnosis</th>
+                                    <th>Plan & Notes</th>
                                     <th>Doctor</th>
-                                    <th>AI Conf.</th>
                                     <th class="text-end pe-4">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php if (empty($history)): ?>
                                     <tr>
-                                        <td colspan="7" class="text-center py-5 text-muted">
+                                        <td colspan="6" class="text-center py-5 text-muted">
                                             <i class="fas fa-notes-medical fa-2x mb-3"></i><br>
                                             No consultation history found.
                                         </td>
@@ -111,34 +110,45 @@ if ($patient_id) {
                                                 <small class="text-muted"><?php echo date('H:i', strtotime($h['consultation_date'])); ?></small>
                                             </td>
                                             <td>
-                                                <span class="fw-bold"><?php echo htmlspecialchars($h['main_symptom']); ?></span>
-                                                <?php if ($h['additional_symptoms']): ?>
-                                                    <i class="fas fa-info-circle text-info ms-1" title="<?php echo htmlspecialchars($h['additional_symptoms']); ?>"></i>
+                                                <div class="small">
+                                                    <?php if ($h['bp']): ?><div><strong>BP:</strong> <?php echo htmlspecialchars($h['bp']); ?></div><?php endif; ?>
+                                                    <?php if ($h['pulse']): ?><div><strong>Pulse:</strong> <?php echo htmlspecialchars($h['pulse']); ?></div><?php endif; ?>
+                                                    <?php if ($h['weight']): ?><div><strong>Weight:</strong> <?php echo htmlspecialchars($h['weight']); ?>kg</div><?php endif; ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="mb-1">
+                                                    <span class="fw-bold"><?php echo htmlspecialchars($h['main_symptom']); ?></span>
+                                                    <?php
+                                                    $sevClass = 'bg-success';
+                                                    if (strtolower($h['severity']) == 'medium') $sevClass = 'bg-warning text-dark';
+                                                    if (strtolower($h['severity']) == 'high') $sevClass = 'bg-danger';
+                                                    if (strtolower($h['severity']) == 'critical') $sevClass = 'bg-dark';
+                                                    ?>
+                                                    <span class="badge <?php echo $sevClass; ?> ms-1" style="font-size: 0.7rem;"><?php echo ucfirst($h['severity']); ?></span>
+                                                </div>
+                                                <?php if ($h['diagnosis']): ?>
+                                                    <div class="small text-muted text-truncate" style="max-width: 200px;" title="<?php echo htmlspecialchars($h['diagnosis']); ?>">
+                                                        <strong>Diag:</strong> <?php echo htmlspecialchars($h['diagnosis']); ?>
+                                                    </div>
                                                 <?php endif; ?>
                                             </td>
                                             <td>
-                                                <span class="badge bg-light text-primary border"><?php echo htmlspecialchars($h['recommended_specialty'] ?: 'N/A'); ?></span>
-                                            </td>
-                                            <td>
-                                                <?php
-                                                $sevClass = 'bg-success';
-                                                if (strtolower($h['severity']) == 'medium') $sevClass = 'bg-warning text-dark';
-                                                if (strtolower($h['severity']) == 'high') $sevClass = 'bg-danger';
-                                                ?>
-                                                <span class="badge <?php echo $sevClass; ?>"><?php echo ucfirst($h['severity']); ?></span>
+                                                <?php if ($h['treatment_plan']): ?>
+                                                    <div class="small text-truncate" style="max-width: 200px;" title="<?php echo htmlspecialchars($h['treatment_plan']); ?>">
+                                                        <strong>Plan:</strong> <?php echo htmlspecialchars($h['treatment_plan']); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <?php if ($h['notes']): ?>
+                                                    <div class="small text-muted italic">"<?php echo htmlspecialchars($h['notes']); ?>"</div>
+                                                <?php endif; ?>
                                             </td>
                                             <td>
                                                 <?php if ($h['dfn']): ?>
-                                                    Dr. <?php echo htmlspecialchars($h['dfn'] . ' ' . $h['dln']); ?>
+                                                    <small>Dr. <?php echo htmlspecialchars($h['dfn'] . ' ' . $h['dln']); ?></small>
                                                 <?php else: ?>
                                                     <span class="text-muted">-</span>
                                                 <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <div class="progress" style="height: 6px; width: 60px;">
-                                                    <div class="progress-bar" role="progressbar" style="width: <?php echo ($h['ai_confidence']*100); ?>%;"></div>
-                                                </div>
-                                                <small><?php echo ($h['ai_confidence']*100); ?>%</small>
                                             </td>
                                             <td class="text-end pe-4">
                                                 <button class="btn btn-sm btn-outline-info" onclick="viewDetails(<?php echo $h['id']; ?>)">
@@ -180,19 +190,28 @@ if ($patient_id) {
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
+                                <option value="Critical">Critical</option>
                             </select>
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small">BP</label>
+                            <input type="text" name="bp" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small">Pulse</label>
+                            <input type="text" name="pulse" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small">Weight</label>
+                            <input type="text" name="weight" class="form-control form-control-sm">
+                        </div>
                         <div class="col-12">
-                            <label class="form-label fw-bold">Additional Symptoms</label>
-                            <textarea name="additional_symptoms" class="form-control" rows="3" placeholder="List other symptoms..."></textarea>
+                            <label class="form-label fw-bold">Diagnosis</label>
+                            <textarea name="diagnosis" class="form-control" rows="2"></textarea>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Recommended Specialty</label>
-                            <input type="text" name="recommended_specialty" class="form-control" placeholder="e.g. Cardiology">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">AI Confidence Score (0.0 - 1.0)</label>
-                            <input type="number" step="0.1" min="0" max="1" name="ai_confidence" class="form-control" value="0.9">
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Treatment Plan</label>
+                            <textarea name="treatment_plan" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-bold">Doctor's Notes</label>

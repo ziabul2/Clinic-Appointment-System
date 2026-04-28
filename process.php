@@ -1461,12 +1461,20 @@ try {
                 if (!verify_csrf()) { $_SESSION['error'] = 'Invalid CSRF token.'; redirect('pages/dashboard.php'); }
                 
                 $patient_id = intval($_POST['patient_id'] ?? 0);
+                $appointment_id = intval($_POST['appointment_id'] ?? 0);
                 $main_symptom = sanitizeInput($_POST['main_symptom'] ?? '');
                 $additional = sanitizeInput($_POST['additional_symptoms'] ?? '');
                 $severity = sanitizeInput($_POST['severity'] ?? 'Low');
                 $specialty = sanitizeInput($_POST['recommended_specialty'] ?? '');
                 $confidence = floatval($_POST['ai_confidence'] ?? 0.0);
                 $notes = sanitizeInput($_POST['notes'] ?? '');
+                $bp = sanitizeInput($_POST['bp'] ?? '');
+                $pulse = sanitizeInput($_POST['pulse'] ?? '');
+                $weight = sanitizeInput($_POST['weight'] ?? '');
+                $temp = sanitizeInput($_POST['temperature'] ?? '');
+                $spo2 = sanitizeInput($_POST['spo2'] ?? '');
+                $diagnosis = sanitizeInput($_POST['diagnosis'] ?? '');
+                $plan = sanitizeInput($_POST['treatment_plan'] ?? '');
 
                 // Get current doctor id
                 $doctor_id = null;
@@ -1477,18 +1485,44 @@ try {
                 }
 
                 try {
-                    $ins = $db->prepare("INSERT INTO consultation_history (patient_id, doctor_id, main_symptom, additional_symptoms, severity, recommended_specialty, ai_confidence, notes) VALUES (:pid, :did, :ms, :as, :sev, :spec, :conf, :notes)");
-                    $ins->execute([
-                        'pid' => $patient_id,
-                        'did' => $doctor_id,
-                        'ms'  => $main_symptom,
-                        'as'  => $additional,
-                        'sev' => $severity,
-                        'spec' => $specialty,
-                        'conf' => $confidence,
-                        'notes' => $notes
-                    ]);
-                    $_SESSION['success'] = 'Consultation history saved successfully.';
+                    // Check if record exists for this appointment
+                    $check = $db->prepare("SELECT id FROM consultation_history WHERE appointment_id = ?");
+                    $check->execute([$appointment_id]);
+                    $existing_id = $check->fetchColumn();
+
+                    if ($existing_id) {
+                        $sql = "UPDATE consultation_history SET 
+                                main_symptom = :ms, additional_symptoms = :as, severity = :sev, 
+                                recommended_specialty = :spec, ai_confidence = :conf, notes = :notes,
+                                bp = :bp, pulse = :pulse, weight = :weight, temperature = :temp, spo2 = :spo2,
+                                diagnosis = :diag, treatment_plan = :plan
+                                WHERE id = :id";
+                        $stmt = $db->prepare($sql);
+                        $stmt->execute([
+                            'ms'=>$main_symptom, 'as'=>$additional, 'sev'=>$severity, 'spec'=>$specialty,
+                            'conf'=>$confidence, 'notes'=>$notes, 'bp'=>$bp, 'pulse'=>$pulse,
+                            'weight'=>$weight, 'temp'=>$temp, 'spo2'=>$spo2, 'diag'=>$diagnosis,
+                            'plan'=>$plan, 'id'=>$existing_id
+                        ]);
+                    } else {
+                        $sql = "INSERT INTO consultation_history (patient_id, doctor_id, appointment_id, main_symptom, additional_symptoms, severity, recommended_specialty, ai_confidence, notes, bp, pulse, weight, temperature, spo2, diagnosis, treatment_plan) 
+                                VALUES (:pid, :did, :aid, :ms, :as, :sev, :spec, :conf, :notes, :bp, :pulse, :weight, :temp, :spo2, :diag, :plan)";
+                        $stmt = $db->prepare($sql);
+                        $stmt->execute([
+                            'pid'=>$patient_id, 'did'=>$doctor_id, 'aid'=>$appointment_id, 'ms'=>$main_symptom,
+                            'as'=>$additional, 'sev'=>$severity, 'spec'=>$specialty, 'conf'=>$confidence,
+                            'notes'=>$notes, 'bp'=>$bp, 'pulse'=>$pulse, 'weight'=>$weight,
+                            'temp'=>$temp, 'spo2'=>$spo2, 'diag'=>$diagnosis, 'plan'=>$plan
+                        ]);
+                    }
+
+                    // Update appointment status to completed if requested
+                    if (isset($_POST['complete_appointment']) && $_POST['complete_appointment'] == '1') {
+                        $db->prepare("UPDATE appointments SET status = 'completed', updated_at = NOW() WHERE appointment_id = ?")->execute([$appointment_id]);
+                        notifyRoles($db, ['admin', 'receptionist'], 'status', 'Consultation Completed', "Consultation for appointment #$appointment_id has been completed.");
+                    }
+
+                    $_SESSION['success'] = 'Consultation record saved successfully.';
                     redirect('pages/consultation_history.php?patient_id=' . $patient_id);
                 } catch (Exception $e) {
                     $_SESSION['error'] = 'Failed to save: ' . $e->getMessage();

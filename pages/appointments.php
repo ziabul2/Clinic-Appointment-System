@@ -131,11 +131,13 @@ try {
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"><i class="fas fa-calendar-check"></i> Appointments Management</h1>
+    <?php if (in_array(strtolower($_SESSION['role'] ?? ''), ['admin', 'receptionist'])): ?>
     <div class="btn-toolbar mb-2 mb-md-0">
         <a href="add_appointment.php" class="btn btn-primary">
             <i class="fas fa-plus"></i> New Appointment
         </a>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php if (isset($error)): ?>

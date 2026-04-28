@@ -290,14 +290,7 @@ try {
                     <i class="fas fa-file-prescription"></i>
                     <span>Write Prescription</span>
                 </a>
-                <a href="add_patient.php" class="quick-action-btn btn-qa-success">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Register New Patient</span>
-                </a>
-                <a href="appointments.php" class="quick-action-btn btn-qa-info">
-                    <i class="fas fa-calendar-plus"></i>
-                    <span>Book Appointment</span>
-                </a>
+                <!-- Removed Register Patient and Book Appointment for Doctors -->
                 <div class="mt-4 pt-3 border-top">
                     <form action="patients.php" method="GET" class="position-relative">
                         <input type="text" name="search" class="form-control ps-5" placeholder="Search patient...">
@@ -376,6 +369,16 @@ try {
                                      </td>
                                     <td class="text-end">
                                         <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-info consultation-trigger" 
+                                                    data-id="<?php echo $ap['appointment_id']; ?>" 
+                                                    data-pid="<?php echo $ap['patient_id']; ?>" 
+                                                    data-pname="<?php echo htmlspecialchars($ap['first_name'] . ' ' . $ap['last_name']); ?>"
+                                                    data-bp="<?php echo htmlspecialchars($ap['bp'] ?? ''); ?>"
+                                                    data-pulse="<?php echo htmlspecialchars($ap['pulse'] ?? ''); ?>"
+                                                    data-weight="<?php echo htmlspecialchars($ap['weight'] ?? ''); ?>"
+                                                    title="Medical Consultation">
+                                                <i class="fas fa-stethoscope"></i>
+                                            </button>
                                             <a href="view_patient.php?id=<?php echo $ap['patient_id']; ?>" class="btn btn-sm btn-outline-secondary" title="View Patient Profile"><i class="fas fa-user"></i></a>
                                             <a href="prescription_edit.php?appointment_id=<?php echo $ap['appointment_id']; ?>" class="btn btn-sm btn-outline-primary" title="Prescribe"><i class="fas fa-prescription"></i></a>
                                             <a href="prescription_print.php?appointment_id=<?php echo $ap['appointment_id']; ?>" target="_blank" class="btn btn-sm btn-outline-dark" title="Print"><i class="fas fa-print"></i></a>
@@ -730,6 +733,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Consultation Modal Trigger
+    const consTriggers = document.querySelectorAll('.consultation-trigger');
+    const consModalElement = document.getElementById('consultationModal');
+    if (consModalElement) {
+        const consModal = new bootstrap.Modal(consModalElement);
+        consTriggers.forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('cons_appointment_id').value = this.dataset.id;
+                document.getElementById('cons_patient_id').value = this.dataset.pid;
+                document.getElementById('cons_patient_name').textContent = this.dataset.pname;
+                document.getElementById('cons_bp').value = this.dataset.bp;
+                document.getElementById('cons_pulse').value = this.dataset.pulse;
+                document.getElementById('cons_weight').value = this.dataset.weight;
+                consModal.show();
+            });
+        });
+    }
+
     // Update Status Dropdown
     document.querySelectorAll('.status-updater').forEach(select => {
         select.addEventListener('change', function() {
@@ -750,13 +771,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(res => {
                 if (res.ok) {
                     this.dataset.status = newStatus;
-                    // Small toast-like feedback
-                    const toast = document.createElement('div');
-                    toast.className = 'alert alert-success position-fixed bottom-0 end-0 m-3 shadow';
-                    toast.style.zIndex = '9999';
-                    toast.innerHTML = '<i class="fas fa-check-circle"></i> ' + res.message;
-                    document.body.appendChild(toast);
-                    setTimeout(() => { toast.remove(); if (newStatus === 'visiting' || newStatus === 'completed') location.reload(); }, 2000);
+                    if (window.flashNotify) {
+                        flashNotify('success', 'Status Updated', res.message);
+                    }
+                    if (newStatus === 'visiting' || newStatus === 'completed') setTimeout(() => location.reload(), 1500);
                 } else {
                     alert(res.message);
                     location.reload();
@@ -770,5 +788,109 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<!-- Consultation Modal -->
+<div class="modal fade" id="consultationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <form action="../process.php?action=save_consultation" method="POST">
+                <?php echo csrf_input(); ?>
+                <input type="hidden" name="appointment_id" id="cons_appointment_id">
+                <input type="hidden" name="patient_id" id="cons_patient_id">
+                
+                <div class="modal-header bg-info text-white py-3">
+                    <h5 class="modal-title"><i class="fas fa-stethoscope me-2"></i> Medical Consultation: <span id="cons_patient_name"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <!-- Vitals Section -->
+                        <div class="col-12">
+                            <h6 class="fw-bold border-bottom pb-2 mb-3"><i class="fas fa-heartbeat me-2"></i> Patient Vitals</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Blood Pressure</label>
+                                    <input type="text" name="bp" id="cons_bp" class="form-control" placeholder="120/80">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Pulse (BPM)</label>
+                                    <input type="text" name="pulse" id="cons_pulse" class="form-control" placeholder="72">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Weight (kg)</label>
+                                    <input type="text" name="weight" id="cons_weight" class="form-control" placeholder="70">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Temperature (°C)</label>
+                                    <input type="text" name="temperature" class="form-control" placeholder="36.5">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">SpO2 (%)</label>
+                                    <input type="text" name="spo2" class="form-control" placeholder="98">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Findings Section -->
+                        <div class="col-12">
+                            <h6 class="fw-bold border-bottom pb-2 mb-3"><i class="fas fa-notes-medical me-2"></i> Clinical Findings</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Main Symptom</label>
+                                    <input type="text" name="main_symptom" class="form-control" required placeholder="Primary complaint">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Severity</label>
+                                    <select name="severity" class="form-select">
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Critical">Critical</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Additional Symptoms / History</label>
+                                    <textarea name="additional_symptoms" class="form-control" rows="3" placeholder="Detailed symptoms..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Diagnosis & Plan -->
+                        <div class="col-12">
+                            <h6 class="fw-bold border-bottom pb-2 mb-3"><i class="fas fa-diagnoses me-2"></i> Diagnosis & Plan</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Diagnosis</label>
+                                    <textarea name="diagnosis" class="form-control" rows="2" placeholder="Primary diagnosis..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Treatment Plan</label>
+                                    <textarea name="treatment_plan" class="form-control" rows="2" placeholder="Next steps, lifestyle advice..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Private Notes</label>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Internal notes..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-check form-switch p-3 bg-light rounded">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" name="complete_appointment" value="1" id="completeCheck" checked>
+                                <label class="form-check-label fw-bold" for="completeCheck">Mark appointment as COMPLETED</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                    <button type="submit" class="btn btn-info text-white px-4">
+                        <i class="fas fa-save me-2"></i> Save Medical Record
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <?php require_once '../includes/footer.php'; ?>

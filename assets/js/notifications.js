@@ -151,7 +151,9 @@
             .then(function(r){ return r.json(); })
             .then(function(j){ if (j && j.ok) fetchNotifications(); })
             .catch(function(e){ console.error('Mark read error:', e); });
-       var lastNotifId = 0;
+    }
+    
+    var lastNotifId = 0;
     var isPolling = false;
 
     function pollNotifications() {
@@ -173,6 +175,7 @@
                         if (n.type === 'auth') type = 'warning';
                         if (n.type === 'queue') type = 'success';
                         if (n.type === 'status') type = 'info';
+                        if (n.type === 'announcement') type = 'announcement';
 
                         if (window.flashNotify) {
                             window.flashNotify(type, n.title || 'Notification', n.message || '');

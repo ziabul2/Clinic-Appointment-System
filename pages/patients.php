@@ -78,6 +78,7 @@ try {
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"><i class="fas fa-user-injured"></i> Patients Management</h1>
+    <?php if (in_array(strtolower($_SESSION['role'] ?? ''), ['admin', 'receptionist'])): ?>
     <div class="btn-toolbar mb-2 mb-md-0 gap-2">
         <a href="old_patients.php" class="btn btn-outline-secondary">
             <i class="fas fa-archive"></i> Old Patients Archive
@@ -86,6 +87,7 @@ try {
             <i class="fas fa-plus"></i> Add New Patient
         </a>
     </div>
+    <?php endif; ?>
 </div>
 
 <!-- Search and Filter Section -->
