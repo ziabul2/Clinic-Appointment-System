@@ -1272,4 +1272,78 @@ body {
 .theme-dark .stat-card-orange { background: linear-gradient(135deg, #7c2d12 0%, #431407 100%); }
 
 .theme-dark .doctor-stat-card .stat-value { color: white; }
-.theme-dark .doctor-stat-card .stat-label { color: #94a3b8; }
+.theme-dark .doctor-stat-card .stat-label { color: #94a3b8; }/* Premium Floating Notifications */
+.float-notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.float-notification {
+    min-width: 280px;
+    max-width: 350px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: translateX(120%);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: auto;
+}
+
+.float-notification.show {
+    transform: translateX(0);
+}
+
+.float-notification .title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.float-notification .title::before {
+    content: '\f05a';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 10px;
+}
+
+.float-notification .msg {
+    font-size: 0.85rem;
+    color: #4b5563;
+    line-height: 1.4;
+}
+
+/* Notification Types */
+.float-notification.success { border-left: 5px solid #10b981; }
+.float-notification.success .title { color: #059669; }
+.float-notification.success .title::before { content: '\f058'; }
+
+.float-notification.error { border-left: 5px solid #ef4444; }
+.float-notification.error .title { color: #dc2626; }
+.float-notification.error .title::before { content: '\f06a'; }
+
+.float-notification.warning { border-left: 5px solid #f59e0b; }
+.float-notification.warning .title { color: #d97706; }
+.float-notification.warning .title::before { content: '\f071'; }
+
+.float-notification.info { border-left: 5px solid #3b82f6; }
+.float-notification.info .title { color: #2563eb; }
+
+/* Dark Mode Overrides for Toasts */
+.theme-dark .float-notification {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: #f1f5f9;
+}
+.theme-dark .float-notification .msg { color: #94a3b8; }

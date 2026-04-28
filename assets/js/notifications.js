@@ -76,8 +76,16 @@
             container.appendChild(item);
         });
 
-        // Do NOT display numeric unread badge in header as per user request
-        if (badge) { badge.style.display = 'none'; }
+        // Display numeric unread badge in header
+        if (badge) {
+            var unread = (notifs || []).filter(n => parseInt(n.is_read, 10) === 0).length;
+            if (unread > 0) {
+                badge.textContent = unread;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
     }
 
     function apiPath(action) {

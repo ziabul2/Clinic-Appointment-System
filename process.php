@@ -1497,6 +1497,49 @@ try {
             }
             break;
 
+        case 'save_announcement':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (!verify_csrf()) { $_SESSION['error'] = 'Invalid CSRF token.'; redirect('pages/dashboard.php'); }
+                if (!in_array(strtolower($_SESSION['role'] ?? ''), ['admin', 'root'])) { redirect('pages/dashboard.php'); }
+
+                $title = sanitizeInput($_POST['title'] ?? '');
+                $msg = sanitizeInput($_POST['message'] ?? '');
+                $target = sanitizeInput($_POST['target_role'] ?? 'all');
+                $uid = $_SESSION['user_id'];
+
+                try {
+                    $ins = $db->prepare("INSERT INTO announcements (title, message, target_role, created_by) VALUES (:t, :m, :tr, :cb)");
+                    $ins->execute(['t'=>$title, 'm'=>$msg, 'tr'=>$target, 'cb'=>$uid]);
+                    
+                    // Broadcast notification
+                    $notifMsg = "New Announcement: " . $title;
+                    if ($target === 'all') {
+                        notifyRoles($db, ['admin', 'receptionist', 'doctor'], 'announcement', 'System Announcement', $msg);
+                    } else {
+                        notifyRole($db, $target, 'announcement', 'System Announcement', $msg);
+                    }
+
+                    $_SESSION['success'] = 'Announcement posted and notifications sent.';
+                    redirect('pages/manage_announcements.php');
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Failed: ' . $e->getMessage();
+                    redirect('pages/manage_announcements.php');
+                }
+            }
+            break;
+
+        case 'delete_announcement':
+            if (!in_array(strtolower($_SESSION['role'] ?? ''), ['admin', 'root'])) { redirect('pages/dashboard.php'); }
+            $id = intval($_GET['id'] ?? 0);
+            if ($id) {
+                try {
+                    $db->prepare("DELETE FROM announcements WHERE id = ?")->execute([$id]);
+                    $_SESSION['success'] = 'Announcement deleted.';
+                } catch (Exception $e) { $_SESSION['error'] = $e->getMessage(); }
+            }
+            redirect('pages/manage_announcements.php');
+            break;
+
         case 'call_next_patient':
             header('Content-Type: application/json');
             if (!isLoggedIn()) { echo json_encode(['ok'=>false,'message'=>'Unauthorized']); exit; }
