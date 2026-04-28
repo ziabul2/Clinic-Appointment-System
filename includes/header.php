@@ -4,6 +4,16 @@ require_once __DIR__ . '/../config/config.php';
 
 // Log page access
 logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
+
+// Update last activity for logged in user
+if (isLoggedIn() && isset($_SESSION['user_id'])) {
+    try {
+        $up_act = $db->prepare("UPDATE users SET last_activity = CURRENT_TIMESTAMP WHERE user_id = :uid");
+        $up_act->execute(['uid' => $_SESSION['user_id']]);
+    } catch (Exception $e) {
+        // Silent fail
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +64,7 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
                     
                     <?php if ($role === 'doctor'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/doctor_dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a class="nav-link" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/prescriptions.php"><i class="fas fa-file-prescription"></i> Prescriptions</a>

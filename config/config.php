@@ -135,23 +135,33 @@ function logAction($action, $details = "") {
     $log_file = $log_dir . "process.log";
     $timestamp = date("Y-m-d H:i:s");
     $user = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
     
     if (!is_dir($log_dir)) {
         mkdir($log_dir, 0777, true);
     }
     
-    $log_entry = "[$timestamp] [INFO] [USER_ACTION] User: $user | IP: $ip | Action: $action | Details: $details" . PHP_EOL;
-    file_put_contents($log_file, $log_entry, FILE_APPEND | LOCK_EX);
+    $log_entry = "--------------------------------------------------\n";
+    $log_entry .= "TIME: $timestamp\n";
+    $log_entry .= "USER: $user (IP: $ip)\n";
+    $log_entry .= "ACTION: $action\n";
+    $log_entry .= "DETAILS: $details\n";
+    $log_entry .= "--------------------------------------------------\n\n";
 
-    // Also maintain a small newest-first recent log for quick view (prepend)
+    if (file_exists($log_file)) {
+        $existing = file_get_contents($log_file);
+        file_put_contents($log_file, $log_entry . $existing, LOCK_EX);
+    } else {
+        file_put_contents($log_file, $log_entry, LOCK_EX);
+    }
+
+    // Also update recent log
     $recent_file = $log_dir . 'process_recent.log';
-    $recent_entry = "[$timestamp] $user | $action | $details" . PHP_EOL;
     if (file_exists($recent_file)) {
         $existing = file_get_contents($recent_file);
-        file_put_contents($recent_file, $recent_entry . $existing, LOCK_EX);
+        file_put_contents($recent_file, "[$timestamp] $user | $action | $details\n" . $existing, LOCK_EX);
     } else {
-        file_put_contents($recent_file, $recent_entry, LOCK_EX);
+        file_put_contents($recent_file, "[$timestamp] $user | $action | $details\n", LOCK_EX);
     }
 }
 
@@ -163,19 +173,29 @@ function logAuth($event, $username = '', $user_id = null) {
     $timestamp = date("Y-m-d H:i:s");
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
 
-    // Write to process.log
-    $process_entry = "[$timestamp] [AUTH] Event: $event | User: $username | ID: " . ($user_id ?? 'N/A') . " | IP: $ip" . PHP_EOL;
-    file_put_contents($log_dir . 'process.log', $process_entry, FILE_APPEND | LOCK_EX);
+    $auth_entry = "==================================================\n";
+    $auth_entry .= "AUTH EVENT: $event\n";
+    $auth_entry .= "TIME: $timestamp\n";
+    $auth_entry .= "USER: $username (ID: " . ($user_id ?? 'N/A') . ")\n";
+    $auth_entry .= "IP ADDRESS: $ip\n";
+    $auth_entry .= "==================================================\n\n";
 
-    // Write to active_users.log (newest entries at top: prepend)
+    // Write to process.log (prepend)
+    $log_file = $log_dir . "process.log";
+    if (file_exists($log_file)) {
+        $existing = file_get_contents($log_file);
+        file_put_contents($log_file, $auth_entry . $existing, LOCK_EX);
+    } else {
+        file_put_contents($log_file, $auth_entry, LOCK_EX);
+    }
+
+    // Write to active_users.log (prepend)
     $active_file = $log_dir . 'active_users.log';
-    $active_entry = "[$timestamp] User: $username | ID: " . ($user_id ?? 'N/A') . " | Event: $event | IP: $ip" . PHP_EOL;
-    // Prepend so newest entries appear first
     if (file_exists($active_file)) {
         $existing = file_get_contents($active_file);
-        file_put_contents($active_file, $active_entry . $existing, LOCK_EX);
+        file_put_contents($active_file, $auth_entry . $existing, LOCK_EX);
     } else {
-        file_put_contents($active_file, $active_entry, LOCK_EX);
+        file_put_contents($active_file, $auth_entry, LOCK_EX);
     }
 }
 

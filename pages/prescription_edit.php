@@ -135,72 +135,72 @@ document.getElementById('loadTemplate')?.addEventListener('click', function() {
         const clinicName = "<?php echo addslashes(SITE_NAME); ?>";
 
         let template = `
-<div style="width: 100%; max-width: 800px; margin: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; padding: 40px; min-height: 1000px; position: relative;">
+<div style="width: 100%; max-width: 800px; margin: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; padding: 20px; position: relative;">
     <!-- Header -->
-    <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 15px;">
         <div style="flex: 1;">
-            <h2 style="margin: 0; color: #1a73e8;">Dr. ${doctorName}</h2>
-            <p style="margin: 2px 0; font-size: 14px; font-weight: 600;">${doctorSpec}</p>
-            <p style="margin: 2px 0; font-size: 12px; color: #555;">Phone: ${doctorPhone}</p>
+            <h2 style="margin: 0; color: #1a73e8; font-size: 20px;">Dr. ${doctorName}</h2>
+            <p style="margin: 2px 0; font-size: 13px; font-weight: 600;">${doctorSpec}</p>
+            <p style="margin: 2px 0; font-size: 11px; color: #555;">Phone: ${doctorPhone}</p>
         </div>
         <div style="flex: 1; text-align: right;">
-            <h3 style="margin: 0; color: #333;">${clinicName}</h3>
-            <p style="margin: 2px 0; font-size: 12px; color: #555;">Medical Services & Care</p>
+            <h3 style="margin: 0; color: #333; font-size: 18px;">${clinicName}</h3>
+            <p style="margin: 2px 0; font-size: 11px; color: #555;">Medical Services & Care</p>
         </div>
     </div>
 
     <!-- Patient Compact Info -->
-    <div style="background: #f8f9fa; padding: 10px 15px; border-radius: 5px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; border: 1px solid #eee;">
+    <div style="background: #f8f9fa; padding: 8px 12px; border-radius: 5px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 15px; font-size: 12px; border: 1px solid #eee;">
         <span><strong>Patient:</strong> ${patientName}</span>
         <span><strong>Age/Sex:</strong> ${patientAge} / ${patientGender}</span>
         <span><strong>Date:</strong> ${today}</span>
     </div>
 
-    <div style="display: flex; min-height: 700px;">
+    <div style="display: flex; min-height: 600px;">
         <!-- Left Sidebar (Vitals/Notes) -->
-        <div style="width: 25%; border-right: 1px solid #eee; padding-right: 15px; font-size: 13px;">
-            <div style="margin-bottom: 20px;">
-                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 14px;">VITALS</h4>
-                <p style="margin: 8px 0;">BP: ___________</p>
-                <p style="margin: 8px 0;">Pulse: _________</p>
-                <p style="margin: 8px 0;">Weight: ________</p>
+        <div style="width: 25%; border-right: 1px solid #eee; padding-right: 12px; font-size: 12px;">
+            <div style="margin-bottom: 15px;">
+                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 3px; font-size: 13px; margin-bottom: 8px;">VITALS</h4>
+                <p style="margin: 4px 0;">BP: ${"<?php echo $row['bp'] ?? ''; ?>"} ________</p>
+                <p style="margin: 4px 0;">Pulse: ${"<?php echo $row['pulse'] ?? ''; ?>"} ____</p>
+                <p style="margin: 4px 0;">Weight: ${"<?php echo $row['weight'] ?? ''; ?>"} ___</p>
             </div>
-            <div style="margin-bottom: 20px;">
-                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 14px;">SYMPTOMS</h4>
-                <p style="color: #ccc;">(Write here...)</p>
-                <br><br>
+            <div style="margin-bottom: 15px;">
+                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 3px; font-size: 13px; margin-bottom: 8px;">SYMPTOMS</h4>
+                <p style="color: #ccc; font-style: italic;">(Write here...)</p>
+                <br>
             </div>
             <div>
-                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 14px;">DIAGNOSIS</h4>
-                <p style="color: #ccc;">(Write here...)</p>
+                <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 3px; font-size: 13px; margin-bottom: 8px;">DIAGNOSIS</h4>
+                <p style="color: #ccc; font-style: italic;">(Write here...)</p>
             </div>
         </div>
 
         <!-- Right Main Area (Rx) -->
-        <div style="width: 75%; padding-left: 25px;">
-            <div style="font-size: 24px; font-weight: bold; margin-bottom: 15px; color: #1a73e8;">Rx</div>
+        <div style="width: 75%; padding-left: 20px;">
+            <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #1a73e8;">Rx</div>
             
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                 <thead>
-                    <tr style="border-bottom: 2px solid #eee; text-align: left; font-size: 13px;">
-                        <th style="padding: 10px 5px; width: 50%;">Medicine Name</th>
-                        <th style="padding: 10px 5px; width: 25%;">Dosage</th>
-                        <th style="padding: 10px 5px; width: 25%;">Duration</th>
+                    <tr style="border-bottom: 2px solid #eee; text-align: left; font-size: 12px;">
+                        <th style="padding: 8px 5px; width: 50%;">Medicine Name</th>
+                        <th style="padding: 8px 5px; width: 25%;">Dosage</th>
+                        <th style="padding: 8px 5px; width: 25%;">Duration</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${Array(7).fill(0).map(() => `
+                    ${Array(6).fill(0).map(() => `
                     <tr style="border-bottom: 1px solid #f9f9f9;">
-                        <td style="padding: 12px 5px;">&nbsp;</td>
-                        <td style="padding: 12px 5px;">&nbsp;</td>
-                        <td style="padding: 12px 5px;">&nbsp;</td>
+                        <td style="padding: 10px 5px;">&nbsp;</td>
+                        <td style="padding: 10px 5px;">&nbsp;</td>
+                        <td style="padding: 10px 5px;">&nbsp;</td>
                     </tr>`).join('')}
                 </tbody>
             </table>
 
-            <div style="margin-top: 30px; font-size: 14px;">
-                <h4 style="border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px;">ADVICE / INSTRUCTIONS</h4>
-                <ul style="padding-left: 20px; color: #555;">
+            <div style="margin-top: 20px; font-size: 12px;">
+                <h4 style="border-bottom: 1px solid #eee; padding-bottom: 3px; margin-bottom: 8px;">ADVICE / INSTRUCTIONS</h4>
+                <ul style="padding-left: 15px; color: #555;">
                     <li></li>
                     <li></li>
                 </ul>
@@ -209,15 +209,15 @@ document.getElementById('loadTemplate')?.addEventListener('click', function() {
     </div>
 
     <!-- Footer -->
-    <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #eee; pt-20px; font-size: 12px; color: #888;">
+    <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #eee; padding-top: 15px; font-size: 11px; color: #888;">
         <div>
             <p style="margin: 0;">This is a computer-generated prescription.</p>
             <p style="margin: 0;">Powered by ${clinicName}</p>
         </div>
-        <div style="text-align: center; width: 200px;">
-            <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
+        <div style="text-align: center; width: 180px;">
+            <div style="border-bottom: 1px solid #333; margin-bottom: 3px;"></div>
             <p style="margin: 0; color: #333; font-weight: bold;">Dr. ${doctorName}</p>
-            <p style="margin: 0; font-size: 10px;">Signature & Seal</p>
+            <p style="margin: 0; font-size: 9px;">Signature & Seal</p>
         </div>
     </div>
 </div>`;

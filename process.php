@@ -962,6 +962,13 @@ try {
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['role'] = strtolower($row['role']);
                     $_SESSION['doctor_id'] = $row['doctor_id'] ?? null;
+                    
+                    // Update last_login
+                    try {
+                        $up_login = $db->prepare("UPDATE users SET last_login = NOW() WHERE user_id = :uid");
+                        $up_login->execute(['uid' => $row['user_id']]);
+                    } catch (Exception $e) { /* ignore */ }
+
                     logAuth('LOGIN', $_SESSION['username'], $_SESSION['user_id']);
                     logAction('USER_LOGIN', 'User logged in: ' . $_SESSION['username']);
 
@@ -1427,6 +1434,43 @@ try {
                 echo json_encode(['ok'=>true, 'appointment_id'=>$id, 'message'=>'Calling next patient...']);
             } catch (Exception $e) {
                 echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+            }
+            exit;
+            break;
+
+        case 'save_vitals':
+            header('Content-Type: application/json');
+            if (!isLoggedIn()) { echo json_encode(['ok'=>false,'message'=>'Unauthorized']); exit; }
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['ok'=>false,'message'=>'Invalid method']); exit; }
+            if (!verify_csrf()) { echo json_encode(['ok'=>false,'message'=>'Invalid CSRF token']); exit; }
+            
+            $id = isset($_POST['appointment_id']) ? intval($_POST['appointment_id']) : 0;
+            $bp = sanitizeInput($_POST['bp'] ?? '');
+            $pulse = sanitizeInput($_POST['pulse'] ?? '');
+            $weight = sanitizeInput($_POST['weight'] ?? '');
+            
+            if (!$id) { echo json_encode(['ok'=>false,'message'=>'Appointment ID required']); exit; }
+            
+            try {
+                $up = $db->prepare('UPDATE appointments SET bp = :bp, pulse = :p, weight = :w, updated_at = NOW() WHERE appointment_id = :id');
+                $up->execute(['bp'=>$bp, 'p'=>$pulse, 'w'=>$weight, 'id'=>$id]);
+                logAction('VITALS_SAVED', "Vitals saved for appointment $id");
+                
+                $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+                if ($isAjax) {
+                    echo json_encode(['ok'=>true, 'message'=>'Vitals saved successfully']);
+                } else {
+                    $_SESSION['success'] = 'Vitals saved successfully.';
+                    redirect('pages/dashboard.php');
+                }
+            } catch (Exception $e) {
+                $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+                if ($isAjax) {
+                    echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+                } else {
+                    $_SESSION['error'] = 'Error: ' . $e->getMessage();
+                    redirect('pages/dashboard.php');
+                }
             }
             exit;
             break;
@@ -1908,7 +1952,13 @@ try {
             break;
             
         case 'logout':
-            logAction("USER_LOGOUT", "User logged out: " . $_SESSION['username']);
+            if (isset($_SESSION['user_id'])) {
+                try {
+                    $up_logout = $db->prepare("UPDATE users SET last_logout = NOW(), last_activity = NULL WHERE user_id = :uid");
+                    $up_logout->execute(['uid' => $_SESSION['user_id']]);
+                } catch (Exception $e) { /* ignore */ }
+            }
+            logAction("USER_LOGOUT", "User logged out: " . ($_SESSION['username'] ?? 'Unknown'));
             session_destroy();
             redirect('pages/login.php');
             break;

@@ -111,9 +111,16 @@ try {
         }
 
         if (!isset($error)) {
-            // Use only columns that definitely exist in your appointments table
-            $query = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, consultation_type, symptoms, notes, status) 
-                     VALUES (:patient_id, :doctor_id, :appointment_date, :appointment_time, :consultation_type, :symptoms, :notes, :status)";
+            // Calculate next serial number for this doctor and date
+            $serial_query = "SELECT MAX(appointment_serial) as max_serial FROM appointments 
+                            WHERE doctor_id = :doctor_id AND appointment_date = :appointment_date";
+            $serial_stmt = $db->prepare($serial_query);
+            $serial_stmt->execute([':doctor_id' => $doctor_id, ':appointment_date' => $appointment_date]);
+            $max_serial = $serial_stmt->fetch(PDO::FETCH_ASSOC)['max_serial'] ?? 0;
+            $appointment_serial = $max_serial + 1;
+
+            $query = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, consultation_type, symptoms, notes, status, appointment_serial) 
+                     VALUES (:patient_id, :doctor_id, :appointment_date, :appointment_time, :consultation_type, :symptoms, :notes, :status, :serial)";
             
             $stmt = $db->prepare($query);
             $stmt->bindParam(':patient_id', $patient_id);
@@ -124,6 +131,7 @@ try {
             $stmt->bindParam(':symptoms', $symptoms);
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':serial', $appointment_serial);
             
             if ($stmt->execute()) {
                 $appointment_id = $db->lastInsertId();

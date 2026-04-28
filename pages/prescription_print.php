@@ -34,22 +34,59 @@ if (empty($prescription_html)) {
     require_once '../includes/footer.php';
     exit;
 }
-
-// Simple print-friendly wrapper
 ?>
+<style>
+    @media print {
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff !important;
+        }
+        .container {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .no-print {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .card-body {
+            padding: 0 !important;
+        }
+    }
+    .prescription-paper {
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        width: 100%;
+        max-width: 800px;
+    }
+</style>
+
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
         <h2>Prescription</h2>
         <div>
-            <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+            <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print (A4)</button>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <?php echo $prescription_html; ?>
+    <div class="prescription-paper">
+        <div class="card">
+            <div class="card-body">
+                <?php echo $prescription_html; ?>
+            </div>
         </div>
     </div>
-    <p class="text-muted mt-2">Generated: <?php echo date('Y-m-d H:i:s'); ?></p>
+    <p class="text-muted mt-2 no-print">Generated: <?php echo date('Y-m-d H:i:s'); ?></p>
 </div>
 
 <?php require_once '../includes/footer.php'; ?>

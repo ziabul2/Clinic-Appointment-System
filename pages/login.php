@@ -18,11 +18,8 @@ if (isLoggedIn()) {
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="login-container" style="background-image: url('../assets/images/login_bg.png'); background-size: cover; background-position: center; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
-    <!-- Overlay for the background image -->
-    <div style="background: linear-gradient(135deg, rgba(13, 110, 253, 0.4) 0%, rgba(10, 25, 41, 0.8) 100%); width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;"></div>
-
-    <div class="card glass-card login-card" style="position: relative; z-index: 2; border: none;">
+<div class="login-container">
+    <div class="card glass-card login-card shadow-lg">
         <div class="login-logo">
             <i class="fas fa-clinic-medical"></i>
         </div>
@@ -55,21 +52,37 @@ require_once __DIR__ . '/../includes/header.php';
             <button class="btn btn-primary w-100 btn-login mb-4" type="submit">
                 <i class="fas fa-sign-in-alt me-2"></i> Sign In
             </button>
-
-
         </form>
     </div>
 </div>
 
 <style>
-/* Fix for the login-page background to use the image properly */
-.login-page {
-    background-image: url('../assets/images/login_bg.png');
-    background-attachment: fixed;
-}
-/* Center the container properly */
+/* Full screen background fix */
 body {
-    background: #f8f9fa;
+    background-image: url('../assets/images/login_bg.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+    backdrop-filter: brightness(0.7); /* Slightly darken the background for better contrast */
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
 }
 </style>
 

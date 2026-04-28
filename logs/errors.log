@@ -317,3 +317,5 @@
 [2026-04-28T10:14:15+06:00] [MAIL_FALLBACK_ERROR] PHP mail() failed to send to: ziabulislam@gmail.com
 [28-Apr-2026 10:14:17 Asia/Dhaka] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\clinicApp\includes\functions.php on line 281
 [2026-04-28T10:14:17+06:00] [MAIL_FALLBACK_ERROR] PHP mail() failed to send to: ziabulislam2222@gmail.com
+[28-Apr-2026 10:48:04 Asia/Dhaka] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\clinicApp\includes\functions.php on line 281
+[2026-04-28T10:48:04+06:00] [MAIL_FALLBACK_ERROR] PHP mail() failed to send to: ziabulislam@gmail.com

@@ -78,6 +78,29 @@ try {
         $stats['new_patients_today'] = 0;
     }
 
+    // Live Doctor Queues (for Admin/Receptionist)
+    $doctorQueues = [];
+    try {
+        $dq = $db->prepare("
+            SELECT d.doctor_id, d.first_name as doc_first, d.last_name as doc_last, d.specialization, d.available_days,
+                   u.last_login, u.last_activity, u.last_logout,
+                   (SELECT COUNT(*) FROM appointments a2 WHERE a2.doctor_id = d.doctor_id AND a2.appointment_date = CURDATE() AND a2.status IN ('scheduled', 'arrived')) as pending_count,
+                   (SELECT COUNT(*) FROM appointments a3 WHERE a3.doctor_id = d.doctor_id AND a3.appointment_date = CURDATE()) as total_today,
+                   a.appointment_serial, p.first_name as pat_first, p.last_name as pat_last, a.status
+            FROM doctors d
+            INNER JOIN appointments a_today ON d.doctor_id = a_today.doctor_id AND a_today.appointment_date = CURDATE()
+            LEFT JOIN users u ON d.doctor_id = u.doctor_id
+            LEFT JOIN appointments a ON d.doctor_id = a.doctor_id AND a.appointment_date = CURDATE() AND a.status = 'visiting'
+            LEFT JOIN patients p ON a.patient_id = p.patient_id
+            GROUP BY d.doctor_id
+            ORDER BY d.last_name ASC
+        ");
+        $dq->execute();
+        $doctorQueues = $dq->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        $doctorQueues = [];
+    }
+
     // Appointments today by doctor (small summary)
     $query = "SELECT d.doctor_id, d.first_name, d.last_name, COUNT(a.appointment_id) as cnt FROM doctors d LEFT JOIN appointments a ON d.doctor_id = a.doctor_id AND a.appointment_date = CURDATE() GROUP BY d.doctor_id ORDER BY cnt DESC LIMIT 6";
     $stmt = $db->prepare($query);
@@ -156,7 +179,7 @@ try {
                     <div class="current-patient-pill mt-3">
                         <span class="label">CURRENTLY VISITING:</span>
                         <span class="name"><?php echo htmlspecialchars($currentVisiting['first_name'] . ' ' . $currentVisiting['last_name']); ?></span>
-                        <span class="serial">Serial #<?php echo $currentVisiting['appointment_serial']; ?></span>
+                        <span class="serial">Serial #<?php echo !empty($currentVisiting['appointment_serial']) ? $currentVisiting['appointment_serial'] : 'N/A'; ?></span>
                     </div>
                 <?php endif; ?>
 
@@ -308,6 +331,7 @@ try {
                                 <th>Contact</th>
                                 <th>Time</th>
                                 <th>Status</th>
+                                <th>Vitals</th>
                                 <th class="text-end">Actions</th>
                             </tr>
                         </thead>
@@ -336,6 +360,19 @@ try {
                                              endforeach; 
                                              ?>
                                          </select>
+                                     </td>
+                                     <td>
+                                         <?php 
+                                         $hasVitals = (!empty($ap['bp']) && !empty($ap['pulse']) && !empty($ap['weight'])); 
+                                         if ($hasVitals): ?>
+                                             <a href="vitals_edit.php?appointment_id=<?php echo $ap['appointment_id']; ?>" class="btn btn-sm btn-success" title="Vitals Saved">
+                                                 <i class="fas fa-check-circle"></i>
+                                             </a>
+                                         <?php else: ?>
+                                             <a href="vitals_edit.php?appointment_id=<?php echo $ap['appointment_id']; ?>" class="btn btn-sm btn-outline-info" title="Add Vitals">
+                                                 <i class="fas fa-heartbeat"></i>
+                                             </a>
+                                         <?php endif; ?>
                                      </td>
                                     <td class="text-end">
                                         <div class="btn-group">
@@ -372,6 +409,114 @@ try {
                     <div class="d-flex gap-2">
                         <a href="users.php" class="btn btn-primary btn-lg animated-btn"><i class="fas fa-users-cog"></i> Manage Users</a>
                         <a href="add_user.php" class="btn btn-outline-primary btn-lg animated-btn"><i class="fas fa-user-plus"></i> Add User</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- Live Queue Overview (For Admin/Receptionist) -->
+    <?php if (!$isDoctor && !empty($doctorQueues)): ?>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-stream me-2"></i> Live Doctor Queues</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Doctor</th>
+                                    <th>Specialization</th>
+                                    <th>Currently Visiting</th>
+                                    <th>Serial #</th>
+                                    <th>Remaining</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <?php foreach ($doctorQueues as $dq): 
+                                     $isHoliday = false;
+                                     if (!empty($dq['available_days'])) {
+                                         $todayDay = date('l');
+                                         $days = array_map('trim', explode(',', $dq['available_days']));
+                                         if (!in_array($todayDay, $days)) $isHoliday = true;
+                                     }
+
+                                     $isActive = false;
+                                     $isLoggedOut = false;
+                                     
+                                     // Check if logged out
+                                     if (!empty($dq['last_logout']) && !empty($dq['last_login'])) {
+                                         if (strtotime($dq['last_logout']) > strtotime($dq['last_login'])) {
+                                             $isLoggedOut = true;
+                                         }
+                                     } elseif (!empty($dq['last_logout']) && empty($dq['last_login'])) {
+                                         $isLoggedOut = true;
+                                     }
+
+                                     if (!$isLoggedOut && !empty($dq['last_activity'])) {
+                                         $lastAct = strtotime($dq['last_activity']);
+                                         if (time() - $lastAct < 300) $isActive = true; // 5 minutes
+                                     }
+
+                                     $isLoggedToday = false;
+                                     if (!$isLoggedOut && !empty($dq['last_login'])) {
+                                         if (date('Y-m-d', strtotime($dq['last_login'])) == date('Y-m-d')) $isLoggedToday = true;
+                                     }
+
+                                     $statusLabel = 'Offline';
+                                     $statusClass = 'bg-secondary';
+                                     
+                                     if ($isHoliday) {
+                                         $statusLabel = 'Holiday';
+                                         $statusClass = 'bg-warning text-dark';
+                                     } elseif ($isActive) {
+                                         $statusLabel = 'Active';
+                                         $statusClass = 'bg-success';
+                                     } elseif ($isLoggedToday) {
+                                         $statusLabel = 'Away';
+                                         $statusClass = 'bg-info';
+                                     } elseif ($dq['total_today'] > 0) {
+                                         $statusLabel = 'Not Login Yet';
+                                         $statusClass = 'bg-danger';
+                                     }
+                                 ?>
+                                 <tr>
+                                     <td class="ps-4">
+                                         <strong>Dr. <?php echo htmlspecialchars($dq['doc_first'] . ' ' . $dq['doc_last']); ?></strong>
+                                         <?php if ($isActive): ?>
+                                             <br><small class="text-success" style="font-size: 10px;">Session: <?php echo date('H:i', strtotime($dq['last_activity'])); ?></small>
+                                         <?php endif; ?>
+                                     </td>
+                                     <td><span class="text-muted small"><?php echo htmlspecialchars($dq['specialization']); ?></span></td>
+                                     <td>
+                                         <?php if ($dq['pat_first']): ?>
+                                             <span class="text-dark fw-semibold"><?php echo htmlspecialchars($dq['pat_first'] . ' ' . $dq['pat_last']); ?></span>
+                                         <?php else: ?>
+                                             <span class="text-muted italic">No patient currently</span>
+                                         <?php endif; ?>
+                                     </td>
+                                     <td>
+                                         <?php if ($dq['appointment_serial']): ?>
+                                             <span class="badge bg-primary rounded-pill">#<?php echo $dq['appointment_serial']; ?></span>
+                                         <?php else: ?>
+                                             <span class="text-muted">-</span>
+                                         <?php endif; ?>
+                                     </td>
+                                     <td>
+                                         <span class="badge bg-light text-dark border"><?php echo $dq['pending_count']; ?> waiting</span>
+                                     </td>
+                                     <td class="text-center">
+                                         <span class="badge <?php echo $statusClass; ?>"><?php echo $statusLabel; ?></span>
+                                     </td>
+                                 </tr>
+                                 <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -508,6 +653,7 @@ try {
                                 <th style="width:12%;">Time</th>
                                 <th style="width:12%;">Status</th>
                                 <th style="width:16%;">Type</th>
+                                <th style="width:10%;">Vitals</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -528,7 +674,20 @@ try {
                                     ?>">
                                         <?php echo ucfirst($appointment['status']); ?>
                                     </span></td>
-                                    <td><?php echo ucfirst(str_replace('-', ' ', $appointment['consultation_type'])); ?></td>
+                                     <td><?php echo ucfirst(str_replace('-', ' ', $appointment['consultation_type'])); ?></td>
+                                     <td>
+                                         <?php 
+                                         $hasVitals = (!empty($appointment['bp']) && !empty($appointment['pulse']) && !empty($appointment['weight'])); 
+                                         if ($hasVitals): ?>
+                                             <a href="vitals_edit.php?appointment_id=<?php echo $appointment['appointment_id']; ?>" class="btn btn-sm btn-success w-100">
+                                                 <i class="fas fa-check-circle"></i> Done
+                                             </a>
+                                         <?php else: ?>
+                                             <a href="vitals_edit.php?appointment_id=<?php echo $appointment['appointment_id']; ?>" class="btn btn-sm btn-outline-info w-100">
+                                                 <i class="fas fa-heartbeat"></i> Vitals
+                                             </a>
+                                         <?php endif; ?>
+                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

@@ -3,10 +3,12 @@ $page_title = "Doctor Dashboard";
 require_once '../includes/header.php';
 
 // Check authentication and role
-if (!isLoggedIn() || $_SESSION['role'] !== 'Doctor') {
+if (!isLoggedIn() || strtolower($_SESSION['role']) !== 'doctor') {
     $_SESSION['error'] = 'Access denied. Doctor login required.';
     redirect('../index.php');
 }
+// If they are on doctor_dashboard.php, redirect them to the new enhanced dashboard.php
+redirect('dashboard.php');
 
 // Get doctor_id from user
 $user_id = $_SESSION['user_id'];

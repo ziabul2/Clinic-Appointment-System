@@ -1,3 +1,73 @@
+[2026-04-28 11:19:26] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:16:54] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:11:19] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:11:16] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:11:16] Dr.ziabul | USER_LOGOUT | User logged out: Dr.ziabul
+[2026-04-28 11:11:08] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:11:03] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:10:55] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:10:55] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
+[2026-04-28 11:10:31] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:10:19] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:01:22] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:01:06] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 11:01:05] Dr.ziabul | USER_LOGOUT | User logged out: Dr.ziabul
+[2026-04-28 11:00:46] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 11:00:08] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:59:56] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:59:54] Dr.ziabul | STATUS_UPDATE | Appointment 14 status set to visiting
+[2026-04-28 10:59:44] Dr.ziabul | STATUS_UPDATE | Appointment 14 status set to arrived
+[2026-04-28 10:59:32] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:59:32] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
+[2026-04-28 10:58:48] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:58:44] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 10:58:44] Dr.ziabul | USER_LOGOUT | User logged out: Dr.ziabul
+[2026-04-28 10:57:34] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:57:15] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:48:55] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:48:55] Dr.ziabul | CALL_NEXT | Doctor 4 called appointment 14
+[2026-04-28 10:48:40] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:48:33] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-28 10:48:02] Ziabul | APPOINTMENT_ADDED | New appointment: Ziabul Islam with Dr. Ziabul islam zim on 2026-04-28 at 11:00 (ID: 14)
+[2026-04-28 10:47:06] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-28 10:47:02] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-28 10:46:50] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:46:35] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:45:38] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 10:45:35] Dr.ziabul | SEND_PRESCRIPTION_ERROR | No prescription file found
+[2026-04-28 10:45:26] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:44:47] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:44:38] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:44:29] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:44:26] Ziabul | PAGE_ACCESS | Accessed: vitals_edit.php
+[2026-04-28 10:44:24] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:43:13] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:43:13] Ziabul | VITALS_SAVED | Vitals saved for appointment 13
+[2026-04-28 10:42:57] Ziabul | PAGE_ACCESS | Accessed: vitals_edit.php
+[2026-04-28 10:42:55] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:41:58] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 10:41:42] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:41:38] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-28 10:41:30] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:39:05] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:38:47] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:38:25] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:38:21] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:32:25] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:32:21] Dr.ziabul | PAGE_ACCESS | Accessed: view_patient.php
+[2026-04-28 10:30:17] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:30:17] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-28 10:30:11] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:30:10] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-28 10:30:05] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:30:05] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-28 10:24:13] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 10:24:06] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:23:57] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:23:52] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:23:30] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 10:21:57] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 10:21:42] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-28 10:15:11] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
 [2026-04-28 10:15:01] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-28 10:14:33] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
