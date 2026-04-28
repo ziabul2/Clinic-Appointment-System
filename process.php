@@ -967,6 +967,15 @@ try {
                     try {
                         $up_login = $db->prepare("UPDATE users SET last_login = NOW() WHERE user_id = :uid");
                         $up_login->execute(['uid' => $row['user_id']]);
+
+                        // Log session start
+                        $ins_session = $db->prepare("INSERT INTO user_logins (user_id, login_time, ip_address, user_agent, status) VALUES (:uid, NOW(), :ip, :ua, 'active')");
+                        $ins_session->execute([
+                            'uid' => $row['user_id'],
+                            'ip'  => $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN',
+                            'ua'  => $_SERVER['HTTP_USER_AGENT'] ?? 'UNKNOWN'
+                        ]);
+                        $_SESSION['login_log_id'] = $db->lastInsertId();
                     } catch (Exception $e) { /* ignore */ }
 
                     logAuth('LOGIN', $_SESSION['username'], $_SESSION['user_id']);
@@ -1956,6 +1965,12 @@ try {
                 try {
                     $up_logout = $db->prepare("UPDATE users SET last_logout = NOW(), last_activity = NULL WHERE user_id = :uid");
                     $up_logout->execute(['uid' => $_SESSION['user_id']]);
+
+                    // Close session log
+                    if (isset($_SESSION['login_log_id'])) {
+                        $up_session = $db->prepare("UPDATE user_logins SET logout_time = NOW(), duration_seconds = TIMESTAMPDIFF(SECOND, login_time, NOW()), status = 'logged_out' WHERE id = :lid");
+                        $up_session->execute(['lid' => $_SESSION['login_log_id']]);
+                    }
                 } catch (Exception $e) { /* ignore */ }
             }
             logAction("USER_LOGOUT", "User logged out: " . ($_SESSION['username'] ?? 'Unknown'));

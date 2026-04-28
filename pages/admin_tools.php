@@ -4,125 +4,173 @@ require_once '../includes/header.php';
 if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','root'])) redirect('../index.php');
 ?>
 
-<div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2"><i class="fas fa-tools"></i> Admin Tools</h1>
-    <div>
-        <a href="dashboard.php" class="btn btn-secondary">Back</a>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0"><i class="fas fa-tools text-primary me-2"></i>System Administration & Tools</h2>
+            <p class="text-muted">Manage system health, security, and audit logs.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="session_history.php" class="btn btn-primary shadow-sm">
+                <i class="fas fa-history me-2"></i>Session History
+            </a>
+            <a href="dashboard.php" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- System Monitoring & Audits -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-primary text-white border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-shield-alt me-2"></i>Monitoring & Audits</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="session_history.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center">
+                            <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Session History</h6>
+                                <small class="text-muted">View detailed login/logout logs and durations.</small>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="db_check.php">
+                            <div class="icon-box bg-light-info text-info me-3 rounded-3 p-2">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Database Health</h6>
+                                <small class="text-muted">Check database connectivity and integrity.</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schema & Maintenance -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-info text-white border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-wrench me-2"></i>Maintenance Tools</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="repair_schema.php">
+                            <div class="icon-box bg-light-warning text-warning me-3 rounded-3 p-2">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Repair Schema</h6>
+                                <small class="text-muted">Fix missing tables or columns automatically.</small>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="purge_expired_tokens.php">
+                            <div class="icon-box bg-light-danger text-danger me-3 rounded-3 p-2">
+                                <i class="fas fa-broom"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Purge Tokens</h6>
+                                <small class="text-muted">Clear expired security and reset tokens.</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communication & Testing -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-success text-white border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-paper-plane me-2"></i>Communication</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="send_test_mail.php">
+                            <div class="icon-box bg-light-success text-success me-3 rounded-3 p-2">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Test Email System</h6>
+                                <small class="text-muted">Verify SMTP settings by sending a test mail.</small>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="simulate_booking.php">
+                            <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2">
+                                <i class="fas fa-vials"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Simulate Booking</h6>
+                                <small class="text-muted">Run a test script to simulate patient activity.</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Output Terminal -->
+    <div class="mt-4 card border-0 shadow-sm" id="toolOutputCard" style="display:none;">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <span class="small fw-bold"><i class="fas fa-terminal me-2"></i>Tool Execution Output</span>
+            <button type="button" class="btn-close btn-close-white btn-sm" onclick="document.getElementById('toolOutputCard').style.display='none'"></button>
+        </div>
+        <div class="card-body bg-black p-0">
+            <pre id="toolOutput" class="p-3 text-success mb-0" style="max-height: 400px; overflow-y: auto; font-family: 'Courier New', Courier, monospace; font-size: 13px;"></pre>
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <!-- Database & Schema Tools -->
-    <div class="col-md-6 mb-3">
-        <div class="card shadow">
-            <div class="card-header bg-info text-white">
-                <i class="fas fa-database"></i> Database & Schema
-            </div>
-            <div class="card-body">
-                <a href="../private/tools/db_check.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-heartbeat"></i> Database Health Check
-                </a>
-                <a href="../private/tools/repair_schema.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-wrench"></i> Repair Schema
-                </a>
-                <a href="../private/tools/apply_schema_fixes.php" class="btn btn-block btn-sm btn-outline-primary mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-tools"></i> Apply Schema Fixes
-                </a>
-                <a href="../private/tools/check_includes.php" class="btn btn-block btn-sm btn-outline-primary" style="width:100%;text-align:left;">
-                    <i class="fas fa-list"></i> Check Includes
-                </a>
-            </div>
-        </div>
-    </div>
+<style>
+.hover-up { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.hover-up:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+.bg-light-primary { background: rgba(13, 110, 253, 0.1); }
+.bg-light-info { background: rgba(13, 202, 240, 0.1); }
+.bg-light-success { background: rgba(25, 135, 84, 0.1); }
+.bg-light-warning { background: rgba(255, 193, 7, 0.1); }
+.bg-light-danger { background: rgba(220, 53, 69, 0.1); }
+.bg-black { background: #111; }
+</style>
 
-    <!-- Email & Communication Tools -->
-    <div class="col-md-6 mb-3">
-        <div class="card shadow">
-            <div class="card-header bg-success text-white">
-                <i class="fas fa-envelope"></i> Email & Communication
-            </div>
-            <div class="card-body">
-                <a href="../private/tools/send_test_mail.php" class="btn btn-block btn-sm btn-outline-success mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-envelope"></i> Send Test Email
-                </a>
-                <a href="../private/tools/send_set_passwords.php" class="btn btn-block btn-sm btn-outline-success mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-key"></i> Send Set Password Links
-                </a>
-                <a href="../private/tools/send_prescription_test.php" class="btn btn-block btn-sm btn-outline-success" style="width:100%;text-align:left;">
-                    <i class="fas fa-file-prescription"></i> Send Prescription Test
-                </a>
-            </div>
-        </div>
-    </div>
+<script>
+document.querySelectorAll('.run-tool-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const tool = this.dataset.tool;
+        const outCard = document.getElementById('toolOutputCard');
+        const outPre = document.getElementById('toolOutput');
+        
+        outCard.style.display = 'block';
+        outPre.textContent = 'Executing ' + tool + '...\n';
+        outCard.scrollIntoView({ behavior: 'smooth' });
 
-    <!-- Security & Tokens -->
-    <div class="col-md-6 mb-3">
-        <div class="card shadow">
-            <div class="card-header bg-warning text-dark">
-                <i class="fas fa-lock"></i> Security & Tokens
-            </div>
-            <div class="card-body">
-                <a href="../private/tools/purge_expired_tokens.php" class="btn btn-block btn-sm btn-outline-warning mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-trash"></i> Purge Expired Tokens
-                </a>
-                <a href="../private/tools/test_login.php" class="btn btn-block btn-sm btn-outline-warning" style="width:100%;text-align:left;">
-                    <i class="fas fa-sign-in-alt"></i> Test Login System
-                </a>
-            </div>
-        </div>
-    </div>
+        const formData = new FormData();
+        formData.append('tool_file', tool);
+        formData.append('csrf_token', '<?php echo csrf_token(); ?>');
 
-    <!-- Migration & Setup Tools -->
-    <div class="col-md-6 mb-3">
-        <div class="card shadow">
-            <div class="card-header bg-secondary text-white">
-                <i class="fas fa-cogs"></i> Migration & Setup
-            </div>
-            <div class="card-body">
-                <a href="../private/tools/migrate_add_users_profile_columns.php" class="btn btn-block btn-sm btn-outline-secondary mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-user-plus"></i> Add User Profile Columns
-                </a>
-                <a href="map_patients_users.php" class="btn btn-block btn-sm btn-outline-secondary" style="width:100%;text-align:left;">
-                    <i class="fas fa-link"></i> Map Patients to Users
-                </a>
-            </div>
-        </div>
-    </div>
+        fetch('../process.php?action=run_tool', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                outPre.textContent += res.output || 'No output returned.';
+            } else {
+                outPre.innerHTML += '<span class="text-danger">Error: ' + res.message + '</span>';
+            }
+        })
+        .catch(err => {
+            outPre.innerHTML += '<span class="text-danger">Request Failed: ' + err.message + '</span>';
+        });
+    });
+});
+</script>
 
-    <!-- Booking & Simulation -->
-    <div class="col-md-6 mb-3">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <i class="fas fa-calendar"></i> Booking & Simulation
-            </div>
-            <div class="card-body">
-                <a href="../private/tools/simulate_booking.php" class="btn btn-block btn-sm btn-outline-primary" style="width:100%;text-align:left;">
-                    <i class="fas fa-vial"></i> Simulate Appointment Booking
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Data Management -->
-    <div class="col-md-6 mb-3">
-        <div class="card shadow">
-            <div class="card-header bg-danger text-white">
-                <i class="fas fa-file"></i> Data Management
-            </div>
-            <div class="card-body">
-                <a href="../private/tools/auto_update_archive_refs.php" class="btn btn-block btn-sm btn-outline-danger mb-2" style="width:100%;text-align:left;">
-                    <i class="fas fa-link"></i> Update Archive References
-                </a>
-                <a href="../private/tools/link_checker.php" class="btn btn-block btn-sm btn-outline-danger" style="width:100%;text-align:left;">
-                    <i class="fas fa-link"></i> Check Links
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="alert alert-info mt-4">
-    <strong>Note:</strong> All tools on this page are restricted to administrators only. Each tool performs specific maintenance, debugging, or configuration tasks for the clinic management system.
-</div>
-
-<?php require_once '../includes/footer.php';
+<?php require_once '../includes/footer.php'; ?>
