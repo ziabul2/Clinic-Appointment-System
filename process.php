@@ -1523,10 +1523,11 @@ try {
                     }
 
                     $_SESSION['success'] = 'Consultation record saved successfully.';
-                    redirect('pages/consultation_history.php?patient_id=' . $patient_id);
+                    $target = ($_POST['redirect'] ?? '') === 'dashboard' ? 'pages/dashboard.php' : 'pages/consultation_history.php?patient_id=' . $patient_id;
+                    redirect($target);
                 } catch (Exception $e) {
                     $_SESSION['error'] = 'Failed to save: ' . $e->getMessage();
-                    redirect('pages/consultation_history.php?patient_id=' . $patient_id);
+                    redirect('pages/dashboard.php');
                 }
             }
             break;
@@ -1621,12 +1622,14 @@ try {
             $bp = sanitizeInput($_POST['bp'] ?? '');
             $pulse = sanitizeInput($_POST['pulse'] ?? '');
             $weight = sanitizeInput($_POST['weight'] ?? '');
+            $temp = sanitizeInput($_POST['temperature'] ?? '');
+            $spo2 = sanitizeInput($_POST['spo2'] ?? '');
             
             if (!$id) { echo json_encode(['ok'=>false,'message'=>'Appointment ID required']); exit; }
             
             try {
-                $up = $db->prepare('UPDATE appointments SET bp = :bp, pulse = :p, weight = :w, updated_at = NOW() WHERE appointment_id = :id');
-                $up->execute(['bp'=>$bp, 'p'=>$pulse, 'w'=>$weight, 'id'=>$id]);
+                $up = $db->prepare('UPDATE appointments SET bp = :bp, pulse = :p, weight = :w, temperature = :t, spo2 = :s, updated_at = NOW() WHERE appointment_id = :id');
+                $up->execute(['bp'=>$bp, 'p'=>$pulse, 'w'=>$weight, 't'=>$temp, 's'=>$spo2, 'id'=>$id]);
                 logAction('VITALS_SAVED', "Vitals saved for appointment $id");
                 
                 $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
@@ -1644,6 +1647,103 @@ try {
                     $_SESSION['error'] = 'Error: ' . $e->getMessage();
                     redirect('pages/dashboard.php');
                 }
+            }
+            exit;
+            break;
+
+        case 'search_medicine':
+            header('Content-Type: application/json');
+            if (!isLoggedIn()) { echo json_encode(['ok'=>false, 'message'=>'Unauthorized']); exit; }
+            $q = trim($_GET['q'] ?? '');
+            if (strlen($q) < 2) { echo json_encode([]); exit; }
+            
+            try {
+                // 1. Find primary matches (up to 30 to keep it fast)
+                $stmt = $db->prepare("SELECT brand_name, generic_name, dosage_form, strength, manufacturer, drug_class, indication, id 
+                                    FROM medicine_master_data 
+                                    WHERE brand_name LIKE :q1 OR generic_name LIKE :q2 OR indication LIKE :q3
+                                    ORDER BY (brand_name LIKE :eq1) DESC, (generic_name LIKE :eq2) DESC 
+                                    LIMIT 30");
+                $search = "%$q%";
+                $stmt->execute([
+                    'q1' => $search, 
+                    'q2' => $search, 
+                    'q3' => $search, 
+                    'eq1' => $q, 
+                    'eq2' => $q
+                ]);
+                $primaryResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                if (empty($primaryResults)) { echo json_encode([]); exit; }
+
+                // 2. Identify unique generics from primary results to find alternatives
+                $generics = [];
+                $brandNames = [];
+                foreach ($primaryResults as $res) {
+                    if ($res['generic_name']) $generics[] = $res['generic_name'];
+                    $brandNames[] = $res['brand_name'];
+                }
+                $generics = array_unique($generics);
+
+                $alternatives = [];
+                if (!empty($generics)) {
+                    // Fetch up to 2 alternatives per generic in a single query
+                    $genPlaceholders = implode(',', array_fill(0, count($generics), '?'));
+                    $brandPlaceholders = implode(',', array_fill(0, count($brandNames), '?'));
+                    
+                    $altStmt = $db->prepare("SELECT brand_name, generic_name, dosage_form, strength, manufacturer, id 
+                                           FROM medicine_master_data 
+                                           WHERE generic_name IN ($genPlaceholders) 
+                                           AND brand_name NOT IN ($brandPlaceholders)
+                                           LIMIT 60");
+                    
+                    $params = array_merge(array_values($generics), array_values($brandNames));
+                    $altStmt->execute($params);
+                    $alternatives = $altStmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+
+                // 3. Merge results: Primary first, then their alternatives
+                $finalResults = [];
+                foreach ($primaryResults as $p) {
+                    $p['type'] = 'primary';
+                    $finalResults[] = $p;
+                    
+                    // Find alternatives for THIS specific primary result
+                    $count = 0;
+                    foreach ($alternatives as $alt) {
+                        if ($alt['generic_name'] === $p['generic_name'] && $count < 2) {
+                            $alt['type'] = 'related';
+                            $finalResults[] = $alt;
+                            $count++;
+                        }
+                    }
+                }
+
+                echo json_encode($finalResults);
+            } catch (Exception $e) {
+                echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+            }
+            exit;
+            break;
+
+        case 'suggest_specialty':
+            header('Content-Type: application/json');
+            if (!isLoggedIn()) { echo json_encode(['ok'=>false, 'message'=>'Unauthorized']); exit; }
+            $s = trim($_GET['symptom'] ?? '');
+            if (strlen($s) < 2) { echo json_encode([]); exit; }
+            
+            try {
+                $stmt = $db->prepare("SELECT ds.name as specialty 
+                                    FROM symptoms sy 
+                                    JOIN symptom_specialty_mapping m ON sy.id = m.symptom_id 
+                                    JOIN doctor_specialties ds ON m.specialty_id = ds.id 
+                                    WHERE sy.name LIKE :s 
+                                    ORDER BY m.priority DESC LIMIT 3");
+                $stmt->execute(['s' => "%$s%"]);
+                $results = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                echo json_encode(['ok'=>true, 'specialties'=>$results]);
+            } catch (Exception $e) {
+                echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
             }
             exit;
             break;

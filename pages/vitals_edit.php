@@ -61,11 +61,28 @@ if (!$appointment) {
                         </div>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label class="form-label fw-bold">Weight (kg)</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-weight"></i></span>
                             <input type="text" class="form-control form-control-lg" name="weight" placeholder="e.g. 70" value="<?php echo htmlspecialchars($appointment['weight'] ?? ''); ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Temperature (°F)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-thermometer-half"></i></span>
+                                <input type="text" class="form-control form-control-lg" name="temperature" placeholder="98.6" value="<?php echo htmlspecialchars($appointment['temperature'] ?? ''); ?>">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label fw-bold">SpO2 (%)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lungs"></i></span>
+                                <input type="text" class="form-control form-control-lg" name="spo2" placeholder="98" value="<?php echo htmlspecialchars($appointment['spo2'] ?? ''); ?>">
+                            </div>
                         </div>
                     </div>
 

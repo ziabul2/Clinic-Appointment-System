@@ -64,10 +64,13 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                     
                     <?php if ($role === 'doctor'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php">Appointments</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/prescriptions.php"><i class="fas fa-file-prescription"></i> Prescriptions</a>
+                            <a class="nav-link <?php echo $current_page == 'medicine_search.php' ? 'active' : ''; ?>" href="../pages/medicine_search.php">Medicines</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo $current_page == 'patients.php' ? 'active' : ''; ?>" href="../pages/patients.php">Patients</a>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">

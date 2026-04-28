@@ -61,30 +61,63 @@ if ($appointment_id) {
     </div>
     </div>
 
-<div class="card">
-    <div class="card-body">
-        <?php if (!$appointment_id || !$patient): ?>
-            <div class="alert alert-warning">No appointment selected or appointment not found.</div>
-        <?php else: ?>
-            <form method="post" action="../process.php?action=save_prescription">
-                <?php echo csrf_input(); ?>
-                <input type="hidden" name="appointment_id" value="<?php echo $appointment_id; ?>">
-                <div class="mb-2">
-                    <label class="form-label">Patient</label>
-                    <input class="form-control" value="<?php echo htmlspecialchars($patient['name']); ?>" disabled>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <?php if (!$appointment_id || !$patient): ?>
+                    <div class="alert alert-warning">No appointment selected or appointment not found.</div>
+                <?php else: ?>
+                    <form method="post" action="../process.php?action=save_prescription">
+                        <?php echo csrf_input(); ?>
+                        <input type="hidden" name="appointment_id" value="<?php echo $appointment_id; ?>">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Patient: <span class="text-primary"><?php echo htmlspecialchars($patient['name']); ?></span></label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Prescription Editor</label>
+                            <textarea name="prescription_html" id="prescription_html" class="form-control" rows="12"><?php echo $prescription_html; ?></textarea>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-primary px-4" type="submit">
+                                <i class="fas fa-save me-2"></i>Save Prescription
+                            </button>
+                            <button type="button" id="loadTemplate" class="btn btn-outline-info">
+                                <i class="fas fa-file-invoice me-2"></i>Load Template
+                            </button>
+                            <button type="button" id="sendPresc" class="btn btn-success">
+                                <i class="fas fa-paper-plane me-2"></i>Send to Patient
+                            </button>
+                            <a href="prescription_print.php?appointment_id=<?php echo $appointment_id; ?>" target="_blank" class="btn btn-outline-secondary">
+                                <i class="fas fa-print me-2"></i>Print
+                            </a>
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Medicine Search Tool -->
+        <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0"><i class="fas fa-search-plus me-2"></i>Medicine Directory</h5>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input type="text" id="medSearchInput" class="form-control" placeholder="Search brand or generic...">
+                    <button class="btn btn-primary" id="medSearchBtn"><i class="fas fa-search"></i></button>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Prescription (HTML allowed)</label>
-                    <textarea name="prescription_html" id="prescription_html" class="form-control" rows="12"><?php echo $prescription_html; ?></textarea>
+                
+                <div id="medSearchResults" class="list-group list-group-flush overflow-auto" style="max-height: 500px;">
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-pills fa-2x mb-2"></i>
+                        <p class="small mb-0">Search medicines to add them to the Rx table.</p>
+                    </div>
                 </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary" type="submit">Save Prescription</button>
-                    <button type="button" id="loadTemplate" class="btn btn-outline-info">Load Template</button>
-                    <button type="button" id="sendPresc" class="btn btn-success">Send to Patient</button>
-                    <a href="prescription_print.php?appointment_id=<?php echo $appointment_id; ?>" target="_blank" class="btn btn-outline-secondary">Print</a>
-                </div>
-            </form>
-        <?php endif; ?>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -222,6 +255,122 @@ document.getElementById('loadTemplate')?.addEventListener('click', function() {
     </div>
 </div>`;
         tinymce.get('prescription_html').setContent(template);
+    }
+});
+    // Medicine Search Logic
+    const medInput = document.getElementById('medSearchInput');
+    const medBtn = document.getElementById('medSearchBtn');
+    const medResults = document.getElementById('medSearchResults');
+
+    function performSearch() {
+        if (!medInput) return;
+        const q = medInput.value.trim();
+        if (q.length < 2) return;
+        
+        medResults.innerHTML = '<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"></div> Searching...</div>';
+        
+        fetch(`../process.php?action=search_medicine&q=${encodeURIComponent(q)}`, {credentials: 'same-origin'})
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.ok === false) {
+                throw new Error(data.message);
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                medResults.innerHTML = '<div class="text-center py-3 text-muted">No medicines found.</div>';
+                return;
+            }
+            
+            let html = '';
+            data.forEach(med => {
+                html += `
+                <div class="list-group-item p-3 border-start-0 border-end-0">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div style="max-width: 80%;">
+                            <h6 class="mb-1 fw-bold text-primary text-truncate">${med.brand_name}</h6>
+                            <p class="small mb-1 text-muted text-truncate" title="${med.generic_name}"><strong>Generic:</strong> ${med.generic_name}</p>
+                            <p class="small mb-0 text-dark"><strong>Strength:</strong> ${med.strength || 'N/A'}</p>
+                            <p class="small mb-0 text-muted"><em>${med.dosage_form || ''}</em></p>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-primary insert-med" 
+                                data-brand="${med.brand_name}" 
+                                data-strength="${med.strength || ''}" 
+                                data-generic="${med.generic_name}">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>`;
+            });
+            medResults.innerHTML = html;
+            
+            // Add listeners to new buttons
+            document.querySelectorAll('.insert-med').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const brand = this.dataset.brand;
+                    const strength = this.dataset.strength;
+                    const generic = this.dataset.generic;
+                    insertMedicineToRx(brand, strength, generic);
+                });
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            medResults.innerHTML = `<div class="text-center py-3 text-danger"><small>Error: ${err.message}</small></div>`;
+        });
+    }
+
+    if (medBtn) medBtn.addEventListener('click', performSearch);
+    if (medInput) medInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); performSearch(); } });
+
+    function insertMedicineToRx(brand, strength, generic) {
+        const editor = tinymce.get('prescription_html');
+        if (!editor) return;
+        let content = editor.getContent();
+        
+        // Find the first empty row in the table
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(content, 'text/html');
+        const rows = doc.querySelectorAll('tr');
+        let found = false;
+        
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].querySelectorAll('td');
+            if (cells.length >= 3) {
+                const medCell = cells[0];
+                const contentText = medCell.textContent.trim().replace(/\u00a0/g, ''); // replace &nbsp;
+                if (contentText === '') {
+                    medCell.innerHTML = `<strong>${brand}</strong> <span style="font-size: 11px;">(${strength})</span><br><small style="color: #666;">${generic}</small>`;
+                    cells[1].innerHTML = '1+0+1'; // default dosage placeholder
+                    cells[2].innerHTML = '7 days'; // default duration placeholder
+                    found = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!found) {
+            // Append a new row if no empty row found
+            const table = doc.querySelector('tbody');
+            if (table) {
+                const newRow = doc.createElement('tr');
+                newRow.style.borderBottom = '1px solid #f9f9f9';
+                newRow.innerHTML = `
+                    <td style="padding: 10px 5px;"><strong>${brand}</strong> <span style="font-size: 11px;">(${strength})</span><br><small style="color: #666;">${generic}</small></td>
+                    <td style="padding: 10px 5px;">1+0+1</td>
+                    <td style="padding: 10px 5px;">7 days</td>
+                `;
+                table.appendChild(newRow);
+                found = true;
+            }
+        }
+        
+        if (found) {
+            editor.setContent(doc.body.innerHTML);
+            if (window.flashNotify) flashNotify('success', 'Inserted', `${brand} added to Rx.`);
+        } else {
+            // If no table found at all, just append text at the end
+            editor.insertContent(`<p><strong>${brand}</strong> (${strength}) - ${generic}</p>`);
+        }
     }
 });
 </script>
