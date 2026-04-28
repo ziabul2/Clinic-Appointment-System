@@ -78,20 +78,22 @@ try {
         $stats['new_patients_today'] = 0;
     }
 
-    // Live Doctor Queues (for Admin/Receptionist)
+    // Live Doctor Queues (for Admin/Receptionist) optimized with single-pass aggregation
     $doctorQueues = [];
     try {
         $dq = $db->prepare("
             SELECT d.doctor_id, d.first_name as doc_first, d.last_name as doc_last, d.specialization, d.available_days,
                    u.last_login, u.last_activity, u.last_logout,
-                   (SELECT COUNT(*) FROM appointments a2 WHERE a2.doctor_id = d.doctor_id AND a2.appointment_date = CURDATE() AND a2.status IN ('scheduled', 'arrived')) as pending_count,
-                   (SELECT COUNT(*) FROM appointments a3 WHERE a3.doctor_id = d.doctor_id AND a3.appointment_date = CURDATE()) as total_today,
-                   a.appointment_serial, p.first_name as pat_first, p.last_name as pat_last, a.status
+                   COUNT(a_all.appointment_id) as total_today,
+                   SUM(CASE WHEN a_all.status IN ('scheduled', 'arrived') THEN 1 ELSE 0 END) as pending_count,
+                   MAX(CASE WHEN a_all.status = 'visiting' THEN a_all.appointment_serial END) as appointment_serial,
+                   MAX(CASE WHEN a_all.status = 'visiting' THEN p_visiting.first_name END) as pat_first,
+                   MAX(CASE WHEN a_all.status = 'visiting' THEN p_visiting.last_name END) as pat_last,
+                   MAX(CASE WHEN a_all.status = 'visiting' THEN a_all.status END) as status
             FROM doctors d
-            INNER JOIN appointments a_today ON d.doctor_id = a_today.doctor_id AND a_today.appointment_date = CURDATE()
+            INNER JOIN appointments a_all ON d.doctor_id = a_all.doctor_id AND a_all.appointment_date = CURDATE()
             LEFT JOIN users u ON d.doctor_id = u.doctor_id
-            LEFT JOIN appointments a ON d.doctor_id = a.doctor_id AND a.appointment_date = CURDATE() AND a.status = 'visiting'
-            LEFT JOIN patients p ON a.patient_id = p.patient_id
+            LEFT JOIN patients p_visiting ON a_all.patient_id = p_visiting.patient_id AND a_all.status = 'visiting'
             GROUP BY d.doctor_id
             ORDER BY d.last_name ASC
         ");

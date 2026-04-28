@@ -2,6 +2,24 @@
 $page_title = 'Admin Tools';
 require_once '../includes/header.php';
 if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','root'])) redirect('../index.php');
+
+// Fetch Medicine Stats
+$medStats = [];
+try {
+    $q = $db->prepare("SELECT COUNT(*) as total FROM medicine_master_data");
+    $q->execute();
+    $medStats['total_medicines'] = $q->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $q = $db->prepare("SELECT COUNT(DISTINCT drug_class) as total FROM medicine_master_data");
+    $q->execute();
+    $medStats['total_categories'] = $q->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $q = $db->prepare("SELECT COUNT(DISTINCT manufacturer) as total FROM medicine_master_data");
+    $q->execute();
+    $medStats['total_manufacturers'] = $q->fetch(PDO::FETCH_ASSOC)['total'];
+} catch (Exception $e) {
+    $medStats = ['total_medicines' => 0, 'total_categories' => 0, 'total_manufacturers' => 0];
+}
 ?>
 
 <div class="container-fluid py-4">
@@ -109,6 +127,49 @@ if (!isLoggedIn() || !in_array(strtolower($_SESSION['role'] ?? ''), ['admin','ro
                                 <small class="text-muted">Run a test script to simulate patient activity.</small>
                             </div>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medicine Directory Analytics Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-microscope me-2 text-info"></i> Medicine Directory Analytics</h5>
+                    <a href="medicine_search.php" class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm">Open Search Explorer</a>
+                </div>
+                <div class="card-body bg-light bg-opacity-50 p-4">
+                    <div class="row g-4 text-center">
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white rounded-4 shadow-sm h-100 border-bottom border-4 border-info">
+                                <div class="icon-box bg-soft-info text-info rounded-circle mx-auto mb-3" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px; background-color: rgba(13, 202, 240, 0.1);">
+                                    <i class="fas fa-pills"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1"><?php echo number_format($medStats['total_medicines']); ?></h2>
+                                <p class="text-muted small mb-0 fw-bold text-uppercase">Total Medicines</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white rounded-4 shadow-sm h-100 border-bottom border-4 border-primary">
+                                <div class="icon-box bg-soft-primary text-primary rounded-circle mx-auto mb-3" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px; background-color: rgba(13, 110, 253, 0.1);">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1"><?php echo number_format($medStats['total_categories']); ?></h2>
+                                <p class="text-muted small mb-0 fw-bold text-uppercase">Drug Categories</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white rounded-4 shadow-sm h-100 border-bottom border-4 border-success">
+                                <div class="icon-box bg-soft-success text-success rounded-circle mx-auto mb-3" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px; background-color: rgba(25, 135, 84, 0.1);">
+                                    <i class="fas fa-industry"></i>
+                                </div>
+                                <h2 class="fw-bold mb-1"><?php echo number_format($medStats['total_manufacturers']); ?></h2>
+                                <p class="text-muted small mb-0 fw-bold text-uppercase">Pharmaceuticals</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
