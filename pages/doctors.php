@@ -109,12 +109,12 @@ try {
                     <thead>
                         <tr>
                             <th style="width:5%;">ID</th>
-                            <th style="width:25%;">Doctor</th>
-                            <th style="width:20%;">Specialization</th>
+                            <th style="white-space: nowrap;">Doctor</th>
+                            <th style="width:15%;">Specialization</th>
                             <th style="width:20%;">Email & Phone</th>
-                            <th style="width:15%;">Availability</th>
-                            <th style="width:10%;">Appointments</th>
-                            <th style="width:5%;">Actions</th>
+                            <th style="width:25%;">Availability</th>
+                            <th style="width:10%;">Appts</th>
+                            <th class="text-end" style="min-width: 120px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="doctorsTableBody">
@@ -128,24 +128,24 @@ try {
                                         <?php else: ?>
                                             <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2" style="width:40px;height:40px;font-size:18px;"><i class="fas fa-user-md"></i></div>
                                         <?php endif; ?>
-                                        <strong>Dr. <?php echo htmlspecialchars($doc['first_name'] . ' ' . $doc['last_name']); ?></strong>
+                                        <strong style="white-space: nowrap;">Dr. <?php echo htmlspecialchars($doc['first_name'] . ' ' . $doc['last_name']); ?></strong>
                                     </div>
                                 </td>
                                 <td><?php echo htmlspecialchars($doc['specialization']); ?></td>
-                                <td>
+                                <td class="text-break">
                                     <small>
-                                        <div><?php echo htmlspecialchars($doc['email']); ?></div>
+                                        <div class="text-break"><?php echo htmlspecialchars($doc['email']); ?></div>
                                         <div class="text-muted"><?php echo htmlspecialchars($doc['phone']); ?></div>
                                     </small>
                                 </td>
-                                <td>
+                                <td class="text-break">
                                     <small>
                                         <div><strong><?php echo htmlspecialchars($doc['available_days']); ?></strong></div>
                                         <div class="text-muted"><?php echo date('H:i', strtotime($doc['available_time_start'])) . ' - ' . date('H:i', strtotime($doc['available_time_end'])); ?></div>
                                     </small>
                                 </td>
                                 <td><span class="badge bg-info"><?php echo $doc['total_appointments']; ?></span></td>
-                                <td>
+                                <td class="text-end">
                                     <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
                                         <a href="view_doctor.php?id=<?php echo $doc['doctor_id']; ?>" class="btn btn-sm btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
                                         <a href="edit_doctor.php?id=<?php echo $doc['doctor_id']; ?>" class="btn btn-sm btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>

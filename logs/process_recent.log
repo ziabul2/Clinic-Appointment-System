@@ -1,3 +1,170 @@
+[2026-04-28 10:15:11] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 10:15:01] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:14:33] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:13:42] Ziabul | APPOINTMENT_VIEWED | Appointment ID: 13 viewed
+[2026-04-28 10:13:42] Ziabul | PAGE_ACCESS | Accessed: appointment_view.php
+[2026-04-28 10:13:42] Ziabul | APPOINTMENT_UPDATED | Appointment ID: 13 updated
+[2026-04-28 10:13:42] Ziabul | PAGE_ACCESS | Accessed: appointment_actions.php
+[2026-04-28 10:12:39] Ziabul | PAGE_ACCESS | Accessed: appointment_actions.php
+[2026-04-28 10:12:33] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-28 10:12:17] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:12:15] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-28 10:11:49] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-28 10:10:27] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-28 10:09:59] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:07:50] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-28 10:07:48] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:58] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:05:55] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:55] Ziabul | PATIENT_DELETED | Patient ID: 2 deleted
+[2026-04-28 10:05:55] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:51] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:51] Ziabul | PATIENT_READMITTED | Patient ID: 2 moved to today's list
+[2026-04-28 10:05:49] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-28 10:05:47] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:47] Ziabul | PATIENT_DELETED | Patient ID: 3 deleted
+[2026-04-28 10:05:47] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:43] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:43] Ziabul | PATIENT_READMITTED | Patient ID: 3 moved to today's list
+[2026-04-28 10:05:41] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-28 10:05:39] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:39] Ziabul | PATIENT_DELETED | Patient ID: 4 deleted
+[2026-04-28 10:05:39] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:36] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:36] Ziabul | PATIENT_READMITTED | Patient ID: 4 moved to today's list
+[2026-04-28 10:05:34] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-28 10:05:32] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:32] Ziabul | PATIENT_DELETED | Patient ID: 5 deleted
+[2026-04-28 10:05:32] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:19] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:19] Ziabul | PATIENT_READMITTED | Patient ID: 5 moved to today's list
+[2026-04-28 10:05:18] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-28 10:05:17] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:16] Ziabul | PATIENT_DELETED | Patient ID: 21 deleted
+[2026-04-28 10:05:16] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:13] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:12] Ziabul | PATIENT_READMITTED | Patient ID: 21 moved to today's list
+[2026-04-28 10:05:10] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-28 10:05:09] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:09] Ziabul | PATIENT_DELETED | Patient ID: 8 deleted
+[2026-04-28 10:05:09] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:01] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:05:01] Ziabul | PATIENT_READMITTED | Patient ID: 8 moved to today's list
+[2026-04-28 10:04:41] Ziabul | PAGE_ACCESS | Accessed: old_patients.php
+[2026-04-28 10:04:39] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:04:26] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:04:16] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:04:14] Dr.ziabul | STATUS_UPDATE | Appointment 13 status set to completed
+[2026-04-28 10:03:09] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 10:02:46] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:02:43] Ziabul | PAGE_ACCESS | Accessed: view_patient.php
+[2026-04-28 10:02:37] Ziabul | PAGE_ACCESS | Accessed: edit_patient.php
+[2026-04-28 10:02:28] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 10:02:23] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:02:15] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:01:58] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 10:01:46] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:54:53] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:54:46] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:51:50] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:50:46] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 09:50:36] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 09:49:52] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 09:49:49] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-28 09:49:33] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 09:49:22] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 09:46:25] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 09:46:21] Dr.ziabul | PAGE_ACCESS | Accessed: view_patient.php
+[2026-04-28 09:46:16] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:46:13] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 09:41:23] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:41:21] Ziabul | PAGE_ACCESS | Accessed: session_details.php
+[2026-04-28 09:41:15] Ziabul | PAGE_ACCESS | Accessed: session_details.php
+[2026-04-28 09:40:20] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-28 09:38:43] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-28 09:30:23] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-28 09:29:25] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_edit.php
+[2026-04-28 09:29:20] Dr.ziabul | PAGE_ACCESS | Accessed: prescription_print.php
+[2026-04-28 09:29:10] Dr.ziabul | PAGE_ACCESS | Accessed: view_patient.php
+[2026-04-28 09:28:56] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:28:46] Ziabul | APPOINTMENT_ADDED | New appointment: Ziabul Islam with Dr. Ziabul islam zim on 2026-04-28 at 09:30 (ID: 13)
+[2026-04-28 09:28:04] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-28 09:28:00] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-28 09:27:57] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-28 09:27:57] Ziabul | DOCTOR_UPDATED | Doctor ID: 4 updated
+[2026-04-28 09:27:57] Ziabul | PAGE_ACCESS | Accessed: edit_doctor.php
+[2026-04-28 09:27:42] Ziabul | PAGE_ACCESS | Accessed: edit_doctor.php
+[2026-04-28 09:27:37] Ziabul | PAGE_ACCESS | Accessed: doctors.php
+[2026-04-28 09:27:16] Ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-28 09:27:14] Ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-28 09:27:03] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 09:27:03] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ziabulislam@gmail.com' for key 'email'
+[2026-04-28 09:27:03] Ziabul | PATIENT_ADDED | New patient: Ziabul Islam
+[2026-04-28 09:24:02] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:23:56] Dr.ziabul | PAGE_ACCESS | Accessed: my_profile.php
+[2026-04-28 09:23:45] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:23:45] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
+[2026-04-28 09:23:38] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 09:21:51] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ziabulislam2222@gmail.com' for key 'email'
+[2026-04-28 09:21:51] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ziabulislam2222@gmail.com' for key 'email'
+[2026-04-28 09:21:42] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ziabulislam2222@gmail.com' for key 'email'
+[2026-04-28 09:21:42] Ziabul | PROCESS_DB_ERROR | Database error in add_patient: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ziabulislam2222@gmail.com' for key 'email'
+[2026-04-28 09:20:22] Ziabul | PAGE_ACCESS | Accessed: add_patient.php
+[2026-04-28 09:20:07] Ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-28 09:19:55] Ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:19:55] Ziabul | USER_LOGIN | User logged in: Ziabul
+[2026-04-28 09:19:48] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 09:19:48] Dr.ziabul | USER_LOGOUT | User logged out: Dr.ziabul
+[2026-04-28 09:19:40] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:19:33] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-28 09:19:19] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:18:40] Dr.ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-28 09:18:15] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-28 09:18:15] Dr.ziabul | USER_LOGIN | User logged in: Dr.ziabul
+[2026-04-28 09:18:00] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-28 09:18:00] Guest | LOGIN_FAILED | User not found: ziabulislam222243
+[2026-04-28 09:17:48] Guest | PAGE_ACCESS | Accessed: login.php
+[2026-04-27 16:49:09] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:49:09] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-27 16:48:55] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:48:53] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:45:00] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:44:59] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:44:59] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-27 16:44:58] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-27 16:44:57] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:44:55] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-27 16:44:49] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:44:49] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-27 16:44:45] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:44:44] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:44:42] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:42:25] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:42:24] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:57] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:55] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:55] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-27 16:40:54] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:52] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-27 16:40:51] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:51] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-27 16:40:50] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:44] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:43] Dr.ziabul | PAGE_ACCESS | Accessed: doctor_dashboard.php
+[2026-04-27 16:40:42] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:40] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:40:38] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:39:08] Dr.ziabul | PAGE_ACCESS | Accessed: patients.php
+[2026-04-27 16:39:01] Dr.ziabul | PAGE_ACCESS | Accessed: add_patient.php
+[2026-04-27 16:38:54] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:38:08] Dr.ziabul | PAGE_ACCESS | Accessed: add_appointment.php
+[2026-04-27 16:37:58] Dr.ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-27 16:37:55] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:37:52] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-27 16:37:50] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
+[2026-04-27 16:37:47] Dr.ziabul | PAGE_ACCESS | Accessed: prescriptions.php
+[2026-04-27 16:37:32] Dr.ziabul | PAGE_ACCESS | Accessed: appointments.php
+[2026-04-27 16:37:27] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-27 16:35:02] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-27 16:33:03] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php
 [2026-04-27 16:32:36] Dr.ziabul | PAGE_ACCESS | Accessed: dashboard.php

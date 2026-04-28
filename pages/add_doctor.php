@@ -72,7 +72,14 @@ if ($_POST) {
         }
     } catch (PDOException $e) {
         logAction("DOCTOR_ADD_ERROR", "Database error: " . $e->getMessage());
-        $error = "System error. Please try again.";
+        $error = "System error occurred.";
+        if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {
+            if (strpos($e->getMessage(), 'email') !== false) {
+                $error = "Email address already exists for another doctor.";
+            } else if (strpos($e->getMessage(), 'license_number') !== false) {
+                $error = "License number already exists for another doctor.";
+            }
+        }
     }
 }
 ?>

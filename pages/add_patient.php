@@ -7,6 +7,12 @@ if (!isLoggedIn()) {
     redirect('../index.php');
 }
 
+// Check role - only admin and receptionist can add patients
+if (!in_array($_SESSION['role'] ?? '', ['admin', 'receptionist'])) {
+    $_SESSION['error'] = 'Access denied. Only administrators and receptionists can add patients.';
+    redirect('dashboard.php');
+}
+
 
 ?>
 

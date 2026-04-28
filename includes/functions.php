@@ -9,38 +9,37 @@ function sendMail($to, $subject, $htmlBody, $plainBody = '') {
     $fromName = MAIL_FROM_NAME;
 
     // If PHPMailer is available via Composer autoload, use it for SMTP
-    if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    // Added version check because current composer.lock requires PHP 8.1+
+    if (version_compare(PHP_VERSION, '8.1.0', '>=') && file_exists(__DIR__ . '/../vendor/autoload.php')) {
         try {
             require_once __DIR__ . '/../vendor/autoload.php';
-            $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-            // SMTP config if provided
-            if (!empty(MAIL_SMTP_HOST)) {
-                $mail->isSMTP();
-                $mail->Host = MAIL_SMTP_HOST;
-                $mail->SMTPAuth = true;
-                $mail->Username = MAIL_SMTP_USER;
-                $mail->Password = MAIL_SMTP_PASS;
-                $mail->SMTPSecure = MAIL_SMTP_SECURE;
-                $mail->Port = MAIL_SMTP_PORT;
+            if (class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+                $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+                // SMTP config if provided
+                if (!empty(MAIL_SMTP_HOST)) {
+                    $mail->isSMTP();
+                    $mail->Host = MAIL_SMTP_HOST;
+                    $mail->SMTPAuth = true;
+                    $mail->Username = MAIL_SMTP_USER;
+                    $mail->Password = MAIL_SMTP_PASS;
+                    $mail->SMTPSecure = MAIL_SMTP_SECURE;
+                    $mail->Port = MAIL_SMTP_PORT;
+                }
+                $mail->setFrom($from, $fromName);
+                $mail->addAddress($to);
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body = $htmlBody;
+                if (!empty($plainBody)) $mail->AltBody = $plainBody;
+                $mail->send();
+                return true;
             }
-            $mail->setFrom($from, $fromName);
-            $mail->addAddress($to);
-            $mail->isHTML(true);
-            $mail->Subject = $subject;
-            $mail->Body = $htmlBody;
-            if (!empty($plainBody)) $mail->AltBody = $plainBody;
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $log_dir = __DIR__ . '/../logs/';
             if (!is_dir($log_dir)) mkdir($log_dir, 0777, true);
-            $msg = '['.date('Y-m-d H:i:s').'] [PHPMailer_ERROR] '.$e->getMessage().PHP_EOL;
+            $msg = '['.date('Y-m-d H:i:s').'] [MAIL_LOAD_ERROR] '.$e->getMessage().PHP_EOL;
             file_put_contents($log_dir.'errors.log', $msg, FILE_APPEND | LOCK_EX);
-            // If configuration requests forcing SMTP, do not fall back to PHP mail()
-            if (defined('MAIL_FORCE_SMTP') && MAIL_FORCE_SMTP) {
-                return false;
-            }
-            // otherwise continue to mail() fallback
+            if (defined('MAIL_FORCE_SMTP') && MAIL_FORCE_SMTP) return false;
         }
     }
 
@@ -141,44 +140,46 @@ function popFlashMessages() {
  */
 function sendSMTPMail($to, $subject, $body, $isHtml = true, $debug = false) {
     $vendor = __DIR__ . '/../vendor/autoload.php';
-    if (file_exists($vendor)) {
+    if (version_compare(PHP_VERSION, '8.1.0', '>=') && file_exists($vendor)) {
         try {
             require_once $vendor;
-            // Use namespaced PHPMailer classes
-            $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+            if (class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+                // Use namespaced PHPMailer classes
+                $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
-            // Debug
-            if ($debug) {
-                $mail->SMTPDebug = 2; // verbose
-                $mail->Debugoutput = function($str, $level) {
-                    error_log("PHPMailer debug level $level; message: $str");
-                };
+                // Debug
+                if ($debug) {
+                    $mail->SMTPDebug = 2; // verbose
+                    $mail->Debugoutput = function($str, $level) {
+                        error_log("PHPMailer debug level $level; message: $str");
+                    };
+                }
+
+                $mail->isSMTP();
+                $mail->Host       = MAIL_SMTP_HOST;
+                $mail->SMTPAuth   = true;
+                $mail->Username   = MAIL_SMTP_USER;
+                $mail->Password   = MAIL_SMTP_PASS;
+                if (defined('MAIL_SMTP_SECURE') && MAIL_SMTP_SECURE === 'ssl') {
+                    $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+                } else {
+                    $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+                }
+                $mail->Port       = MAIL_SMTP_PORT;
+
+                $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+                $mail->addAddress($to);
+
+                $mail->isHTML($isHtml);
+                $mail->Subject = $subject;
+                $mail->Body    = $body;
+                if (!$isHtml) $mail->AltBody = strip_tags($body);
+
+                $mail->send();
+                return true;
             }
-
-            $mail->isSMTP();
-            $mail->Host       = MAIL_SMTP_HOST;
-            $mail->SMTPAuth   = true;
-            $mail->Username   = MAIL_SMTP_USER;
-            $mail->Password   = MAIL_SMTP_PASS;
-            if (defined('MAIL_SMTP_SECURE') && MAIL_SMTP_SECURE === 'ssl') {
-                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-            } else {
-                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-            }
-            $mail->Port       = MAIL_SMTP_PORT;
-
-            $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
-            $mail->addAddress($to);
-
-            $mail->isHTML($isHtml);
-            $mail->Subject = $subject;
-            $mail->Body    = $body;
-            if (!$isHtml) $mail->AltBody = strip_tags($body);
-
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
-            error_log('PHPMailer exception: ' . ($e->getMessage() ?? 'unknown'));
+        } catch (Throwable $e) {
+            error_log('PHPMailer load/send exception: ' . ($e->getMessage() ?? 'unknown'));
             return false;
         }
     }
@@ -239,36 +240,36 @@ function sendAppointmentNotificationToDoctor($doctorEmail, $doctorName, $patient
 function sendMailReport($to, $subject, $htmlBody, $isHtml = true) {
     $vendor = __DIR__ . '/../vendor/autoload.php';
     // Try PHPMailer first if available
-    if (file_exists($vendor)) {
+    if (version_compare(PHP_VERSION, '8.1.0', '>=') && file_exists($vendor)) {
         try {
             require_once $vendor;
-            $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-            if (!empty(MAIL_SMTP_HOST)) {
-                $mail->isSMTP();
-                $mail->Host = MAIL_SMTP_HOST;
-                $mail->SMTPAuth = true;
-                $mail->Username = MAIL_SMTP_USER;
-                $mail->Password = MAIL_SMTP_PASS;
-                $mail->SMTPSecure = MAIL_SMTP_SECURE;
-                $mail->Port = MAIL_SMTP_PORT;
+            if (class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+                $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+                if (!empty(MAIL_SMTP_HOST)) {
+                    $mail->isSMTP();
+                    $mail->Host = MAIL_SMTP_HOST;
+                    $mail->SMTPAuth = true;
+                    $mail->Username = MAIL_SMTP_USER;
+                    $mail->Password = MAIL_SMTP_PASS;
+                    $mail->SMTPSecure = MAIL_SMTP_SECURE;
+                    $mail->Port = MAIL_SMTP_PORT;
+                }
+                $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+                $mail->addAddress($to);
+                $mail->isHTML($isHtml);
+                $mail->Subject = $subject;
+                $mail->Body = $htmlBody;
+                if (!$isHtml) $mail->AltBody = strip_tags($htmlBody);
+                $mail->send();
+                return ['ok' => true, 'error' => null];
             }
-            $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
-            $mail->addAddress($to);
-            $mail->isHTML($isHtml);
-            $mail->Subject = $subject;
-            $mail->Body = $htmlBody;
-            if (!$isHtml) $mail->AltBody = strip_tags($htmlBody);
-            $mail->send();
-            return ['ok' => true, 'error' => null];
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $msg = $e->getMessage();
-            // Log it
             $log_dir = __DIR__ . '/../logs/'; if (!is_dir($log_dir)) mkdir($log_dir, 0777, true);
-            file_put_contents($log_dir.'errors.log', '['.date('c').'] [PHPMailer_ERROR] '.$msg.PHP_EOL, FILE_APPEND | LOCK_EX);
+            file_put_contents($log_dir.'errors.log', '['.date('c').'] [MAIL_REPORT_LOAD_ERROR] '.$msg.PHP_EOL, FILE_APPEND | LOCK_EX);
             if (defined('MAIL_FORCE_SMTP') && MAIL_FORCE_SMTP) {
-                return ['ok' => false, 'error' => 'SMTP error: ' . $msg];
+                return ['ok' => false, 'error' => 'SMTP load error: ' . $msg];
             }
-            // otherwise fall back to mail()
         }
     }
 

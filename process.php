@@ -1385,6 +1385,52 @@ try {
             redirect('pages/dashboard.php');
             break;
 
+        case 'update_appointment_status':
+            header('Content-Type: application/json');
+            if (!isLoggedIn()) { echo json_encode(['ok'=>false,'message'=>'Unauthorized']); exit; }
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['ok'=>false,'message'=>'Invalid method']); exit; }
+            if (!verify_csrf()) { echo json_encode(['ok'=>false,'message'=>'Invalid CSRF token']); exit; }
+            $id = isset($_POST['appointment_id']) ? intval($_POST['appointment_id']) : 0;
+            $status = isset($_POST['status']) ? sanitizeInput($_POST['status']) : '';
+            $allowed = ['scheduled','arrived','visiting','completed','cancelled','no-show'];
+            if (!$id || !in_array($status, $allowed)) {
+                echo json_encode(['ok'=>false,'message'=>'Invalid parameters']); exit;
+            }
+            try {
+                $up = $db->prepare('UPDATE appointments SET status = :s, updated_at = NOW() WHERE appointment_id = :id');
+                $up->execute(['s'=>$status, 'id'=>$id]);
+                logAction('STATUS_UPDATE', "Appointment $id status set to $status");
+                echo json_encode(['ok'=>true, 'message'=>'Status updated to ' . ucfirst($status)]);
+            } catch (Exception $e) {
+                echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+            }
+            exit;
+            break;
+
+        case 'call_next_patient':
+            header('Content-Type: application/json');
+            if (!isLoggedIn()) { echo json_encode(['ok'=>false,'message'=>'Unauthorized']); exit; }
+            if (!verify_csrf()) { echo json_encode(['ok'=>false,'message'=>'Invalid CSRF token']); exit; }
+            $doctor_id = isset($_POST['doctor_id']) ? intval($_POST['doctor_id']) : 0;
+            if (!$doctor_id) { echo json_encode(['ok'=>false,'message'=>'Doctor ID required']); exit; }
+            try {
+                $q = $db->prepare("SELECT appointment_id FROM appointments WHERE doctor_id = :did AND appointment_date = CURDATE() AND status IN ('scheduled', 'arrived') ORDER BY appointment_serial ASC, appointment_time ASC LIMIT 1");
+                $q->execute(['did'=>$doctor_id]);
+                $id = $q->fetchColumn();
+                if (!$id) {
+                    echo json_encode(['ok'=>false, 'message'=>'No more patients in queue for today.']);
+                    exit;
+                }
+                $up = $db->prepare("UPDATE appointments SET status = 'visiting', updated_at = NOW() WHERE appointment_id = :id");
+                $up->execute(['id'=>$id]);
+                logAction('CALL_NEXT', "Doctor $doctor_id called appointment $id");
+                echo json_encode(['ok'=>true, 'appointment_id'=>$id, 'message'=>'Calling next patient...']);
+            } catch (Exception $e) {
+                echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+            }
+            exit;
+            break;
+
         case 'run_tool':
             // Run a maintenance/diagnostic script from private/tools/ via web (Admin only)
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -1909,13 +1955,30 @@ try {
         (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) ||
         (isset($_GET['ajax']) && $_GET['ajax'] == '1')
     );
+    
     logAction("PROCESS_DB_ERROR", "Database error in $action: " . $e->getMessage());
+    
+    $errorMsg = "Database error occurred. Please try again.";
+    
+    // Check for duplicate entry error (MySQL 1062)
+    if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {
+        if ($action == 'add_patient' && strpos($e->getMessage(), 'email') !== false) {
+            $errorMsg = "A patient with this email address already exists.";
+        } else if ($action == 'add_user' && strpos($e->getMessage(), 'username') !== false) {
+            $errorMsg = "This username is already taken.";
+        } else if ($action == 'add_user' && strpos($e->getMessage(), 'email') !== false) {
+            $errorMsg = "This email is already registered to another user.";
+        } else {
+            $errorMsg = "Duplicate entry detected. Please check your information.";
+        }
+    }
+
     if ($isAjax) {
         header('Content-Type: application/json');
-        echo json_encode(['ok' => false, 'error' => 'Database error occurred.', 'toast' => true]);
+        echo json_encode(['ok' => false, 'error' => $errorMsg, 'toast' => true]);
         exit;
     }
-    $_SESSION['error'] = "Database error occurred. Please try again.";
+    $_SESSION['error'] = $errorMsg;
     redirect('index.php');
 } catch (Exception $e) {
     $isAjax = (

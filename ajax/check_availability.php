@@ -32,14 +32,14 @@ try {
     $use_cache = true;
 
     // load doctor info
-    $dq = $db->prepare('SELECT available_days, available_time_start, available_time_end, buffer_before_minutes, buffer_after_minutes FROM doctors WHERE doctor_id = :id LIMIT 1');
+    $dq = $db->prepare('SELECT available_days, available_time_start, available_time_end FROM doctors WHERE doctor_id = :id LIMIT 1');
     $dq->bindParam(':id', $doctor_id);
     $dq->execute();
     $doctor = $dq->fetch(PDO::FETCH_ASSOC);
     if (!$doctor) throw new Exception('Doctor not found');
 
-    // prepare map of existing appointments for date range to avoid N queries
-    $apptStmt = $db->prepare('SELECT a.appointment_date, a.appointment_time, COALESCE(rr.duration_minutes, 15) AS duration_minutes FROM appointments a LEFT JOIN recurrence_rules rr ON a.recurrence_id = rr.recurrence_id WHERE a.doctor_id = :doc AND a.appointment_date BETWEEN :sd AND :ed AND a.status != "cancelled"');
+    // prepare map of existing appointments for date range
+    $apptStmt = $db->prepare('SELECT appointment_date, appointment_time FROM appointments WHERE doctor_id = :doc AND appointment_date BETWEEN :sd AND :ed AND status != "cancelled"');
     $apptStmt->bindParam(':doc', $doctor_id);
     $sdf = $sd->format('Y-m-d'); $edf = $ed->format('Y-m-d');
     $apptStmt->bindParam(':sd', $sdf);
@@ -50,12 +50,13 @@ try {
     foreach ($appts as $a) {
         $d = $a['appointment_date'];
         if (!isset($appts_by_date[$d])) $appts_by_date[$d] = [];
-        $appts_by_date[$d][] = ['time'=>$a['appointment_time'],'duration'=>intval($a['duration_minutes'] ?? 15)];
+        // Default duration 15 minutes since recurrence_rules/estimated_duration is not used or inconsistent
+        $appts_by_date[$d][] = ['time'=>$a['appointment_time'],'duration'=>15];
     }
 
-    // parse available_days from doctors.available_days (CSV). Accept names or numbers
+    // parse available_days from doctors.available_days (CSV)
     $available_days_raw = trim($doctor['available_days'] ?? '');
-    $available_days_map = null; // null = all days available
+    $available_days_map = null;
     if ($available_days_raw !== '') {
         $parts = array_filter(array_map('trim', explode(',', strtoupper($available_days_raw))));
         $available_days_map = [];
@@ -66,8 +67,8 @@ try {
         if (empty($available_days_map)) $available_days_map = null;
     }
 
-    $bufBefore = intval($doctor['buffer_before_minutes'] ?? 0);
-    $bufAfter = intval($doctor['buffer_after_minutes'] ?? 0);
+    $bufBefore = 0;
+    $bufAfter = 0;
 
     // determine working hours
     $work_start = $doctor['available_time_start'] ?? '09:00:00';
@@ -85,30 +86,12 @@ try {
             continue;
         }
 
-        // check cache
-        $use_cached = false;
-        $cacheStmt = $db->prepare('SELECT timeslots, generated_at, ttl_seconds FROM availability_cache WHERE doctor_id = :doc AND date = :d LIMIT 1');
-        $cacheStmt->bindParam(':doc', $doctor_id);
-        $cacheStmt->bindParam(':d', $dStr);
-        $cacheStmt->execute();
-        $c = $cacheStmt->fetch(PDO::FETCH_ASSOC);
-        if ($c) {
-            $gen = strtotime($c['generated_at']);
-            $ttl = intval($c['ttl_seconds']);
-            if ($gen + $ttl >= time()) {
-                $slots_by_date[$dStr] = json_decode($c['timeslots'], true);
-                $cursor->modify('+1 day');
-                continue;
-            }
-        }
-
         // compute timeslots for this date
         $slots = [];
         $startDT = DateTime::createFromFormat('Y-m-d H:i:s', $dStr . ' ' . $work_start);
         $endDT = DateTime::createFromFormat('Y-m-d H:i:s', $dStr . ' ' . $work_end);
         if (!$startDT || !$endDT) { $cursor->modify('+1 day'); continue; }
 
-        // build existing appointments for this date
         $existing = $appts_by_date[$dStr] ?? [];
 
         $slot = clone $startDT;
@@ -118,41 +101,30 @@ try {
 
             // check overlaps
             $conflict = false;
-            // candidate with buffers
-            $candStartBuf = (clone $slot)->modify("-{$bufBefore} minutes");
-            $candEndBuf = (clone $slotEnd)->modify("+{$bufAfter} minutes");
-
             foreach ($existing as $ex) {
-                $exStart = DateTime::createFromFormat('Y-m-d H:i:s', $dStr . ' ' . $ex['time']);
+                // Normalize existing appointment time to H:i:s
+                $exTime = $ex['time'];
+                if (strlen($exTime) == 5) $exTime .= ':00';
+                
+                $exStart = DateTime::createFromFormat('Y-m-d H:i:s', $dStr . ' ' . $exTime);
                 if (!$exStart) continue;
                 $exEnd = (clone $exStart)->modify('+' . intval($ex['duration']) . ' minutes');
-                if ($candStartBuf < $exEnd && $exStart < $candEndBuf) { $conflict = true; break; }
+                
+                // Check if candidate slot overlaps with existing appointment
+                if ($slot < $exEnd && $exStart < $slotEnd) { 
+                    $conflict = true; 
+                    break; 
+                }
             }
 
             if (!$conflict) {
                 $slots[] = $slot->format('H:i');
             }
 
-            // advance slot by step
             $slot->modify('+' . $step . ' minutes');
         }
 
-        // store slots
         $slots_by_date[$dStr] = $slots;
-
-        // update cache (upsert)
-        try {
-            $tsJson = json_encode($slots);
-            $up = $db->prepare('INSERT INTO availability_cache (doctor_id, date, timeslots, generated_at, ttl_seconds) VALUES (:doc, :d, :ts, NOW(), 300) ON DUPLICATE KEY UPDATE timeslots = :ts2, generated_at = NOW(), ttl_seconds = 300');
-            $up->bindParam(':doc', $doctor_id);
-            $up->bindParam(':d', $dStr);
-            $up->bindParam(':ts', $tsJson);
-            $up->bindParam(':ts2', $tsJson);
-            $up->execute();
-        } catch (Exception $e) {
-            // ignore cache write failures
-        }
-
         $cursor->modify('+1 day');
     }
 

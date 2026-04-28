@@ -6,13 +6,26 @@ $appointment_id = isset($_GET['appointment_id']) ? intval($_GET['appointment_id'
 $prescription_html = '';
 
 if ($appointment_id) {
-    $prescDir = __DIR__ . '/../prescriptions';
-    if (is_dir($prescDir)) {
-        $files = glob($prescDir . "/prescription_{$appointment_id}_*.html");
-        if ($files) {
-            usort($files, function($a,$b){ return filemtime($b) - filemtime($a); });
-            $prescription_html = file_get_contents($files[0]);
+    // Try to fetch from database first
+    try {
+        $dbPresc = $db->prepare('SELECT content FROM prescriptions WHERE appointment_id = :aid ORDER BY created_at DESC LIMIT 1');
+        $dbPresc->bindParam(':aid', $appointment_id);
+        $dbPresc->execute();
+        if ($dbPresc->rowCount()) {
+            $prescription_html = $dbPresc->fetchColumn();
+        } else {
+            // Fallback: Look for existing prescription files
+            $prescDir = __DIR__ . '/../prescriptions';
+            if (is_dir($prescDir)) {
+                $files = glob($prescDir . "/prescription_{$appointment_id}_*.html");
+                if ($files) {
+                    usort($files, function($a,$b){ return filemtime($b) - filemtime($a); });
+                    $prescription_html = file_get_contents($files[0]);
+                }
+            }
         }
+    } catch (Exception $e) {
+        error_log('Error fetching prescription for print: ' . $e->getMessage());
     }
 }
 

@@ -92,7 +92,14 @@ try {
 
 } catch (PDOException $e) {
     logAction('EDIT_DOCTOR_ERROR', $e->getMessage());
-    $error = "Database error.";
+    $error = "Database error occurred.";
+    if (isset($e->errorInfo[1]) && $e->errorInfo[1] == 1062) {
+        if (strpos($e->getMessage(), 'email') !== false) {
+            $error = "Email address already exists for another doctor.";
+        } else if (strpos($e->getMessage(), 'license_number') !== false) {
+            $error = "License number already exists for another doctor.";
+        }
+    }
 }
 ?>
 

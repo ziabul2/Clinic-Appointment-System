@@ -125,10 +125,16 @@ try {
             $doctorStats['completed_today'] = $q->fetch(PDO::FETCH_ASSOC)['total'];
 
             // Fetch today's appointments for the table
-            $q = $db->prepare("SELECT a.*, p.first_name, p.last_name, p.phone FROM appointments a JOIN patients p ON a.patient_id = p.patient_id WHERE a.doctor_id = :did AND a.appointment_date = CURDATE() ORDER BY a.appointment_serial ASC, a.appointment_time ASC");
+            $q = $db->prepare("SELECT a.*, p.first_name, p.last_name, p.phone FROM appointments a LEFT JOIN patients p ON a.patient_id = p.patient_id WHERE a.doctor_id = :did AND a.appointment_date = CURDATE() ORDER BY a.appointment_serial ASC, a.appointment_time ASC");
             $q->bindParam(':did', $currentDoctorId);
             $q->execute();
             $doctorAppointments = $q->fetchAll(PDO::FETCH_ASSOC);
+
+            // Fetch currently visiting patient
+            $q = $db->prepare("SELECT a.*, p.first_name, p.last_name FROM appointments a LEFT JOIN patients p ON a.patient_id = p.patient_id WHERE a.doctor_id = :did AND a.appointment_date = CURDATE() AND a.status = 'visiting' LIMIT 1");
+            $q->bindParam(':did', $currentDoctorId);
+            $q->execute();
+            $currentVisiting = $q->fetch(PDO::FETCH_ASSOC);
         }
     }
     
@@ -142,19 +148,71 @@ try {
     <!-- Doctor Hero Section -->
     <div class="dashboard-hero">
         <div class="row align-items-center">
-            <div class="col-md-8 welcome-text">
+            <div class="col-md-7 welcome-text">
                 <h1>Welcome back, Dr. <?php echo htmlspecialchars($doctorData['last_name'] ?? $_SESSION['username']); ?>!</h1>
-                <p>You have <?php echo $doctorStats['pending_today']; ?> patients waiting for you today. Let's provide some great care!</p>
+                <p>You have <?php echo $doctorStats['pending_today']; ?> patients waiting for you today.</p>
+                
+                <?php if ($currentVisiting): ?>
+                    <div class="current-patient-pill mt-3">
+                        <span class="label">CURRENTLY VISITING:</span>
+                        <span class="name"><?php echo htmlspecialchars($currentVisiting['first_name'] . ' ' . $currentVisiting['last_name']); ?></span>
+                        <span class="serial">Serial #<?php echo $currentVisiting['appointment_serial']; ?></span>
+                    </div>
+                <?php endif; ?>
+
                 <div class="mt-4 d-flex gap-3">
+                    <button id="callNextBtn" class="btn btn-warning btn-lg shadow-sm animated-btn" data-did="<?php echo $currentDoctorId; ?>">
+                        <i class="fas fa-bullhorn"></i> Call Next Patient
+                    </button>
                     <a href="appointments.php" class="btn btn-light btn-lg shadow-sm"><i class="fas fa-calendar-alt"></i> View Schedule</a>
-                    <a href="prescriptions.php" class="btn btn-outline-light btn-lg"><i class="fas fa-file-medical"></i> Prescriptions</a>
                 </div>
             </div>
-            <div class="col-md-4 d-none d-md-block text-end">
+            <div class="col-md-5 welcome-img d-none d-md-block text-end">
                 <i class="fas fa-user-md fa-8x opacity-25"></i>
             </div>
         </div>
     </div>
+
+    <style>
+    .current-patient-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .current-patient-pill .label { font-size: 10px; font-weight: bold; opacity: 0.8; margin-right: 10px; }
+    .current-patient-pill .name { font-weight: bold; font-size: 18px; margin-right: 15px; }
+    .current-patient-pill .serial { background: #fff; color: #0d6efd; padding: 2px 10px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+
+    /* Enhanced Status Dropdown */
+    .status-updater {
+        border: none;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 50rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+        background-size: 10px 10px;
+        padding-right: 1.5rem;
+    }
+    .status-updater[data-status="scheduled"] { background-color: #e7f1ff; color: #0d6efd; }
+    .status-updater[data-status="arrived"] { background-color: #fff3cd; color: #856404; }
+    .status-updater[data-status="visiting"] { background-color: #cfe2ff; color: #084298; border: 1px solid #0d6efd; }
+    .status-updater[data-status="completed"] { background-color: #d1e7dd; color: #0f5132; }
+    .status-updater[data-status="cancelled"] { background-color: #f8d7da; color: #842029; }
+    .status-updater[data-status="no-show"] { background-color: #e2e3e5; color: #41464b; }
+    
+    .status-updater:hover { transform: translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
 
     <!-- Doctor Stats & Quick Actions -->
     <div class="row g-4 mb-5">
@@ -173,8 +231,12 @@ try {
                     <div class="doctor-stat-card stat-card-purple">
                         <div class="icon-box bg-white text-purple"><i class="fas fa-user-clock"></i></div>
                         <div>
-                            <div class="stat-label">Pending Patients</div>
+                            <div class="stat-label">Remaining in Queue</div>
                             <div class="stat-value"><?php echo $doctorStats['pending_today']; ?></div>
+                            <div class="stat-sublabel small opacity-75">Next up: Serial #<?php 
+                                $next = array_filter($doctorAppointments, function($a){ return $a['status'] == 'scheduled' || $a['status'] == 'arrived'; });
+                                echo !empty($next) ? reset($next)['appointment_serial'] : 'None';
+                            ?></div>
                         </div>
                     </div>
                 </div>
@@ -241,6 +303,7 @@ try {
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Patient ID</th>
                                 <th>Patient Name</th>
                                 <th>Contact</th>
                                 <th>Time</th>
@@ -252,6 +315,7 @@ try {
                             <?php foreach ($doctorAppointments as $ap): ?>
                                 <tr>
                                     <td><span class="fw-bold text-primary"><?php echo $ap['appointment_serial'] ?? '-'; ?></span></td>
+                                    <td><span class="badge bg-light text-dark border"><?php echo htmlspecialchars($ap['patient_id'] ?? 'N/A'); ?></span></td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="avatar-sm me-3 bg-light rounded-circle d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
@@ -263,12 +327,16 @@ try {
                                     <td><?php echo htmlspecialchars($ap['phone'] ?? '-'); ?></td>
                                     <td><i class="far fa-clock me-1 text-muted"></i> <?php echo date('g:i A', strtotime($ap['appointment_time'])); ?></td>
                                     <td>
-                                        <span class="badge bg-<?php 
-                                            echo $ap['status'] == 'completed' ? 'success' : ($ap['status'] == 'cancelled' ? 'danger' : 'primary'); 
-                                        ?> rounded-pill">
-                                            <?php echo ucfirst($ap['status']); ?>
-                                        </span>
-                                    </td>
+                                         <select class="form-select form-select-sm status-updater" data-id="<?php echo $ap['appointment_id']; ?>" data-status="<?php echo $ap['status']; ?>" style="width: auto;">
+                                             <?php 
+                                             $options = ['scheduled', 'arrived', 'visiting', 'completed', 'cancelled', 'no-show'];
+                                             foreach ($options as $opt): 
+                                                 $selected = ($ap['status'] == $opt) ? 'selected' : '';
+                                                 echo "<option value='$opt' $selected>" . ucfirst($opt) . "</option>";
+                                             endforeach; 
+                                             ?>
+                                         </select>
+                                     </td>
                                     <td class="text-end">
                                         <div class="btn-group">
                                             <a href="view_patient.php?id=<?php echo $ap['patient_id']; ?>" class="btn btn-sm btn-outline-secondary" title="View Patient Profile"><i class="fas fa-user"></i></a>
@@ -470,5 +538,78 @@ try {
         </div>
     </div>
 <?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = '<?php echo csrf_token(); ?>';
+
+    // Call Next Patient
+    document.getElementById('callNextBtn')?.addEventListener('click', function() {
+        const did = this.dataset.did;
+        if (!confirm('Call the next patient in queue?')) return;
+
+        const formData = new FormData();
+        formData.append('doctor_id', did);
+        formData.append('csrf_token', csrfToken);
+
+        fetch('../process.php?action=call_next_patient', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                location.reload();
+            } else {
+                alert(res.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('An error occurred while calling the next patient.');
+        });
+    });
+
+    // Update Status Dropdown
+    document.querySelectorAll('.status-updater').forEach(select => {
+        select.addEventListener('change', function() {
+            const id = this.dataset.id;
+            const newStatus = this.value;
+            
+            const formData = new FormData();
+            formData.append('appointment_id', id);
+            formData.append('status', newStatus);
+            formData.append('csrf_token', csrfToken);
+
+            fetch('../process.php?action=update_appointment_status', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.ok) {
+                    this.dataset.status = newStatus;
+                    // Small toast-like feedback
+                    const toast = document.createElement('div');
+                    toast.className = 'alert alert-success position-fixed bottom-0 end-0 m-3 shadow';
+                    toast.style.zIndex = '9999';
+                    toast.innerHTML = '<i class="fas fa-check-circle"></i> ' + res.message;
+                    document.body.appendChild(toast);
+                    setTimeout(() => { toast.remove(); if (newStatus === 'visiting' || newStatus === 'completed') location.reload(); }, 2000);
+                } else {
+                    alert(res.message);
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred while updating status.');
+            });
+        });
+    });
+});
+</script>
 
 <?php require_once '../includes/footer.php'; ?>

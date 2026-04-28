@@ -137,14 +137,14 @@ try {
                     <thead>
                         <tr>
                              <th style="width:5%;">ID</th>
-                             <th style="width:15%;">Patient Name</th>
+                             <th style="white-space: nowrap;">Patient Name</th>
                              <th style="width:10%;">Time</th>
-                             <th style="width:15%;">Email & Phone</th>
-                             <th style="width:15%;">Date of Birth</th>
-                             <th style="width:12%;">Emergency Contact</th>
-                             <th style="width:10%;">Appointments</th>
+                             <th style="width:20%;">Email & Phone</th>
+                             <th style="width:10%;">Date of Birth</th>
+                             <th style="width:10%;">Emergency</th>
+                             <th style="width:5%;">Appts</th>
                              <th style="width:10%;">Last Visit</th>
-                             <th style="width:5%;">Actions</th>
+                             <th class="text-end" style="min-width: 150px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="patientsTableBody">
@@ -152,7 +152,7 @@ try {
                             <tr>
                                 <td><span class="badge bg-secondary">#<?php echo $patient['patient_id']; ?></span></td>
                                  <td>
-                                     <strong><?php echo htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']); ?></strong>
+                                     <strong style="white-space: nowrap;"><?php echo htmlspecialchars($patient['first_name'] . ' ' . $patient['last_name']); ?></strong>
                                      <?php if ($patient['gender']): ?>
                                          <br><small class="text-muted"><?php echo $patient['gender']; ?></small>
                                      <?php endif; ?>
@@ -163,7 +163,7 @@ try {
                                          <?php echo date('g:i A', strtotime($patient['admitted_at'])); ?>
                                      </span>
                                  </td>
-                                <td>
+                                <td class="text-break">
                                     <small>
                                         <?php if ($patient['email']): ?>
                                             <div><?php echo htmlspecialchars($patient['email']); ?></div>
@@ -201,7 +201,7 @@ try {
                                         <?php endif; ?>
                                     </small>
                                 </td>
-                                <td>
+                                <td class="text-end">
                                     <!-- Desktop Actions -->
                                     <div class="btn-group btn-group-sm d-none d-md-inline-flex" role="group">
                                         <a href="view_patient.php?id=<?php echo $patient['patient_id']; ?>" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>

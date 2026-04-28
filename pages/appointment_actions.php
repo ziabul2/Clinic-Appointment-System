@@ -35,6 +35,24 @@ try {
         throw new Exception("Appointment not found");
     }
 
+    // Permission check
+    $user_role = $_SESSION['role'] ?? '';
+    $is_doctor = $user_role === 'Doctor';
+    if ($is_doctor) {
+        // Get doctor's ID from user
+        $user_id = $_SESSION['user_id'];
+        $doc_query = $db->prepare("SELECT doctor_id FROM users WHERE user_id = :uid");
+        $doc_query->bindParam(':uid', $user_id);
+        $doc_query->execute();
+        $doc_row = $doc_query->fetch(PDO::FETCH_ASSOC);
+        $user_doctor_id = $doc_row['doctor_id'] ?? null;
+        if (!$user_doctor_id || $appointment['doctor_id'] != $user_doctor_id) {
+            throw new Exception("Access denied. You can only update your own appointments.");
+        }
+    } elseif (!in_array($user_role, ['admin', 'receptionist'])) {
+        throw new Exception("Access denied.");
+    }
+
     // Handle form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify CSRF token (use global helper)
@@ -46,14 +64,28 @@ try {
         $notes = sanitizeInput($_POST['notes'] ?? '');
         $diagnosis = sanitizeInput($_POST['diagnosis'] ?? '');
         $prescription = sanitizeInput($_POST['prescription'] ?? '');
-        $is_admitted = isset($_POST['is_admitted']) ? 1 : 0;
-        $admission_notes = sanitizeInput($_POST['admission_notes'] ?? '');
-        $admission_date = !empty($_POST['admission_date']) ? sanitizeInput($_POST['admission_date']) : null;
-        $payment_status = sanitizeInput($_POST['payment_status'] ?? '');
-        $payment_method = sanitizeInput($_POST['payment_method'] ?? '');
-        $amount_paid = !empty($_POST['amount_paid']) ? floatval($_POST['amount_paid']) : 0;
-        $payment_date = !empty($_POST['payment_date']) ? sanitizeInput($_POST['payment_date']) : null;
-        $payment_notes = sanitizeInput($_POST['payment_notes'] ?? '');
+        
+        // Fields that only admin/reception can modify
+        if (!$is_doctor) {
+            $is_admitted = isset($_POST['is_admitted']) ? 1 : 0;
+            $admission_notes = sanitizeInput($_POST['admission_notes'] ?? '');
+            $admission_date = !empty($_POST['admission_date']) ? sanitizeInput($_POST['admission_date']) : null;
+            $payment_status = sanitizeInput($_POST['payment_status'] ?? '');
+            $payment_method = sanitizeInput($_POST['payment_method'] ?? '');
+            $amount_paid = !empty($_POST['amount_paid']) ? floatval($_POST['amount_paid']) : 0;
+            $payment_date = !empty($_POST['payment_date']) ? sanitizeInput($_POST['payment_date']) : null;
+            $payment_notes = sanitizeInput($_POST['payment_notes'] ?? '');
+        } else {
+            // For doctors, keep existing values for restricted fields
+            $is_admitted = $appointment['is_admitted'];
+            $admission_notes = $appointment['admission_notes'];
+            $admission_date = $appointment['admission_date'];
+            $payment_status = $appointment['payment_status'];
+            $payment_method = $appointment['payment_method'];
+            $amount_paid = $appointment['amount_paid'];
+            $payment_date = $appointment['payment_date'];
+            $payment_notes = $appointment['payment_notes'];
+        }
 
         // Update appointment
         $update_query = "UPDATE appointments SET 
@@ -162,6 +194,7 @@ try {
                             </div>
                         </div>
 
+                        <?php if (!$is_doctor): ?>
                         <hr>
 
                         <!-- Admission Section -->
@@ -249,6 +282,8 @@ try {
                                 </div>
                             </div>
                         </div>
+
+                        <?php endif; ?>
 
                         <hr>
 

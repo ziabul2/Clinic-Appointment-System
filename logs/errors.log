@@ -301,3 +301,19 @@
 [26-Apr-2026 16:11:53 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\old_patients.php on line 84
 [26-Apr-2026 16:13:29 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\patients.php on line 109
 [26-Apr-2026 16:13:39 Asia/Dhaka] PHP Warning:  Undefined variable $total_patients in C:\xampp\htdocs\clinicApp\pages\patients.php on line 109
+[28-Apr-2026 09:28:47 Asia/Dhaka] PHP Warning:  require(C:\xampp\htdocs\clinicApp\vendor\composer/../ralouphie/getallheaders/src/getallheaders.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\clinicApp\vendor\composer\autoload_real.php on line 39
+[28-Apr-2026 09:28:47 Asia/Dhaka] [2026-04-28 09:28:47] Uncaught Exception: Failed opening required 'C:\xampp\htdocs\clinicApp\vendor\composer/../ralouphie/getallheaders/src/getallheaders.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\clinicApp\vendor\composer\autoload_real.php:39
+
+[28-Apr-2026 09:36:17 Asia/Dhaka] [2026-04-28 09:36:17] Uncaught Exception: syntax error, unexpected token "catch" in C:\xampp\htdocs\clinicApp\includes\functions.php:36
+
+[28-Apr-2026 09:36:29 Asia/Dhaka] [2026-04-28 09:36:29] Uncaught Exception: syntax error, unexpected token "catch" in C:\xampp\htdocs\clinicApp\includes\functions.php:36
+
+[28-Apr-2026 09:36:38 Asia/Dhaka] [2026-04-28 09:36:38] Uncaught Exception: syntax error, unexpected token "catch" in C:\xampp\htdocs\clinicApp\includes\functions.php:36
+
+[28-Apr-2026 09:36:48 Asia/Dhaka] [2026-04-28 09:36:48] Uncaught Exception: syntax error, unexpected token "catch" in C:\xampp\htdocs\clinicApp\includes\functions.php:36
+
+[28-Apr-2026 09:37:47 Asia/Dhaka] PHP Warning:  Undefined array key "REQUEST_METHOD" in C:\xampp\htdocs\clinicApp\ajax\check_availability.php on line 15
+[28-Apr-2026 10:14:15 Asia/Dhaka] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\clinicApp\includes\functions.php on line 281
+[2026-04-28T10:14:15+06:00] [MAIL_FALLBACK_ERROR] PHP mail() failed to send to: ziabulislam@gmail.com
+[28-Apr-2026 10:14:17 Asia/Dhaka] PHP Warning:  mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\clinicApp\includes\functions.php on line 281
+[2026-04-28T10:14:17+06:00] [MAIL_FALLBACK_ERROR] PHP mail() failed to send to: ziabulislam2222@gmail.com

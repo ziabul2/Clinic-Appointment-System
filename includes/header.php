@@ -50,34 +50,39 @@ logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
             <div class="collapse navbar-collapse" id="navbarNav">
                 <?php if (isLoggedIn()): ?>
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                    </li>
-
                     <?php $role = strtolower($_SESSION['role'] ?? ''); ?>
-
+                    
                     <?php if ($role === 'doctor'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../pages/doctor_dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/prescriptions.php"><i class="fas fa-file-prescription"></i> Prescriptions</a>
                         </li>
-                    <?php elseif ($role === 'receptionist'): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
-                        </li>
                     <?php else: ?>
-                        <!-- Admin and other roles: full access -->
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                            <a class="nav-link" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
-                        </li>
+                        
+                        <?php if ($role === 'receptionist'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
+                            </li>
+                        <?php else: ?>
+                            <!-- Admin and other roles: full access -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
+                            </li>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </ul>
                 <?php endif; ?>

@@ -8,6 +8,12 @@ if (!isLoggedIn()) {
     redirect('../index.php');
 }
 
+// Check role - only admin and receptionist can add appointments
+if (!in_array($_SESSION['role'] ?? '', ['admin', 'receptionist'])) {
+    $_SESSION['error'] = 'Access denied. Only administrators and receptionists can create appointments.';
+    redirect('dashboard.php');
+}
+
 try {
     // Fetch doctors for dropdown
     $doctors_query = "SELECT doctor_id, first_name, last_name, specialization, available_days, available_time_start, available_time_end, consultation_fee 
@@ -183,7 +189,7 @@ try {
                                 $pr = $pu->fetch(PDO::FETCH_ASSOC);
                                 $patientUserId = $pr['user_id'];
                             }
-                        } catch (Exception $inner) {
+                        } catch (Throwable $inner) {
                             // Column may not exist; fall back to matching by email
                             if (!empty($patient_email)) {
                                 $pu = $db->prepare('SELECT user_id FROM users WHERE email = :email LIMIT 1');
@@ -199,10 +205,10 @@ try {
                         if ($patientUserId) {
                             createNotification($db, $patientUserId, 'appointment_created', 'Appointment Scheduled', "Your appointment with Dr. $doctor_name on $appointment_date at $appointment_time has been scheduled.", $meta);
                         }
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         logAction('NOTIF_ERROR', 'Failed to notify patient user: ' . $e->getMessage());
                     }
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     logAction('NOTIF_ERROR', 'Failed to create appointment notifications: ' . $e->getMessage());
                 }
 
@@ -210,7 +216,7 @@ try {
                 if (!empty($patient_email)) {
                     try {
                         sendAppointmentNotificationToPatient($patient_email, $patient_name, $doctor_name, $appointment_date, $appointment_time, $notes);
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
                         logAction('EMAIL_ERROR', 'Failed to send appointment email to patient: ' . $e->getMessage());
                     }
                 }
@@ -551,6 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = appointmentDate.value;
 
         const slotPicker = document.getElementById('slotPicker');
+        slotPicker.innerHTML = '';
 
         if (!doctorId) {
             availabilityAlert.className = 'alert alert-info mb-0';
