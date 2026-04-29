@@ -482,6 +482,22 @@ body {
     animation: bubbleIn 0.25s cubic-bezier(0.34,1.4,0.64,1) both;
     word-break: break-word;
 }
+.messenger-main .dropdown-item {
+    color: var(--sb-text);
+    font-size: 0.9rem;
+    transition: background var(--transition);
+}
+.messenger-main .dropdown-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+.messenger-main .dropdown-divider {
+    border-top: 1px solid var(--sb-border);
+}
+.messenger-main .dropdown-menu {
+    border-radius: 12px;
+    margin-top: 8px !important;
+}
 @keyframes bubbleIn {
     from { opacity: 0; transform: scale(0.88) translateY(8px); }
     to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -1142,13 +1158,37 @@ body {
                 <div id="chatActiveUserName">Select a conversation</div>
                 <div id="chatActiveUserRole" style="font-size:0.78rem; color:var(--text-muted); font-weight:500;">—</div>
             </div>
+
+            <!-- Inline Search Bar -->
+            <div id="inlineSearchWrap" class="d-none align-items-center flex-grow-1 mx-3 px-3 rounded-pill" style="background: var(--chat-canvas); height: 40px; border: 1px solid var(--chat-border);">
+                <i class="fas fa-search text-muted me-2 small"></i>
+                <input type="text" id="inlineSearchInput" placeholder="Search messages..." class="flex-grow-1 border-0 bg-transparent" style="outline: none; font-size: 0.9rem; color: var(--ink) !important; font-weight: 500;">
+                <span id="searchResultCount" class="small text-muted me-2" style="white-space: nowrap; font-weight: 500;"></span>
+                <div class="d-flex align-items-center border-start border-end px-2 mx-1" style="border-color: rgba(0,0,0,0.1) !important; height: 20px;">
+                    <button class="btn btn-sm text-muted p-0 px-1" onclick="navigateSearch(-1)" title="Previous match"><i class="fas fa-chevron-up" style="font-size: 0.75rem;"></i></button>
+                    <button class="btn btn-sm text-muted p-0 px-1" onclick="navigateSearch(1)" title="Next match"><i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i></button>
+                </div>
+                <button class="btn btn-sm text-muted p-0 ms-1" onclick="toggleChatSearch(false)"><i class="fas fa-times"></i></button>
+            </div>
+
             <div class="topbar-actions">
-                <button class="topbar-icon-btn" title="Search in chat">
+                <button class="topbar-icon-btn" id="chatSearchBtn" onclick="toggleChatSearch(true)" title="Search in chat">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </button>
-                <button class="topbar-icon-btn" title="More options">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                </button>
+                <div class="dropdown">
+                    <button class="topbar-icon-btn" id="chatOptionsBtn" data-bs-toggle="dropdown" aria-expanded="false" title="More options">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" aria-labelledby="chatOptionsBtn" style="background: var(--sb-bg2); border: 1px solid var(--sb-border) !important; min-width: 200px;">
+                        <li><a class="dropdown-item py-2" href="#" onclick="toggleInfoPane(true)"><i class="fas fa-info-circle me-3 opacity-75"></i> Contact info</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="toggleChatSearch(true)"><i class="fas fa-search me-3 opacity-75"></i> Search</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="toggleMute()"><i class="fas fa-bell-slash me-3 opacity-75"></i> Mute notifications</a></li>
+                        <li><a class="dropdown-item py-2" href="#" onclick="toggleDisappearing()"><i class="fas fa-history me-3 opacity-75"></i> Disappearing messages</a></li>
+                        <li><hr class="dropdown-divider opacity-10"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#" onclick="clearChat()"><i class="fas fa-eraser me-3 opacity-75"></i> Clear chat</a></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#" onclick="toggleBlock()"><i class="fas fa-ban me-3 opacity-75"></i> Block user</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 

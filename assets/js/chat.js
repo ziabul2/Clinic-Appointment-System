@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.setAttribute('data-role', u.role);
                     item.setAttribute('data-online', isOnline);
                     item.setAttribute('data-picture', u.picture || '');
+                    item.setAttribute('data-permission', u.permission);
                     
                     let badgeHtml = '';
                     if (unreadCount > 0) {
@@ -367,7 +368,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const role = btn.getAttribute('data-role');
                 const isOnline = btn.getAttribute('data-online');
                 const picture = btn.getAttribute('data-picture');
-                openChatRoom(id, name, role, isOnline, picture);
+                const permission = btn.getAttribute('data-permission');
+                openChatRoom(id, name, role, isOnline, picture, permission);
             });
         });
     }
@@ -419,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Open Chat Room
-    window.openChatRoom = function(id, name, role, isOnline, picture) {
+    window.openChatRoom = function(id, name, role, isOnline, picture, permission = 'accepted') {
         currentChatUserId = id;
         lastMessageId = 0;
         
@@ -453,6 +455,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         chatMessages.innerHTML = '<div class="text-center text-muted my-3 small">Loading messages...</div>';
         
+        // Handle blocked state
+        if (permission === 'blocked') {
+            messageInput.disabled = true;
+            messageInput.placeholder = 'User is blocked';
+        } else {
+            messageInput.disabled = false;
+            messageInput.placeholder = 'Type a message...';
+        }
+
         fetchMessages();
         // Refresh users list to clear the unread badge for this user
         fetchUsers();
@@ -755,6 +766,206 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(err => console.error('Poll err', err));
                 
         }, 3000); // 3 seconds poll
+    }
+
+    // Chat Options Functions
+    window.clearChat = function() {
+        if (!currentChatUserId) return;
+        if (!confirm('Are you sure you want to clear all messages in this conversation? This cannot be undone.')) return;
+
+        const formData = new FormData();
+        formData.append('action', 'clear_chat');
+        formData.append('with_user', currentChatUserId);
+        formData.append('csrf_token', csrfToken);
+
+        fetch(chatAPI, { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    chatMessages.innerHTML = '<div class="text-center text-muted my-5 small">Chat cleared.</div>';
+                    lastMessageId = 0;
+                    if (window.flashNotify) window.flashNotify('success', 'Chat Cleared', 'Conversation history has been deleted.');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            });
+    };
+
+    window.toggleBlock = function() {
+        if (!currentChatUserId) return;
+        const action = confirm('Are you sure you want to change the block status for this user?') ? 'toggle_block' : null;
+        if (!action) return;
+
+        const formData = new FormData();
+        formData.append('action', 'toggle_block');
+        formData.append('target_id', currentChatUserId);
+        formData.append('csrf_token', csrfToken);
+
+        fetch(chatAPI, { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    const status = data.status;
+                    if (window.flashNotify) window.flashNotify('info', 'Block Status Updated', `User is now ${status}.`);
+                    // If blocked, maybe close the room or show a message
+                    if (status === 'blocked') {
+                        messageInput.disabled = true;
+                        messageInput.placeholder = 'User is blocked';
+                    } else {
+                        messageInput.disabled = false;
+                        messageInput.placeholder = 'Type a message...';
+                    }
+                    fetchUsers();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            });
+    };
+
+    window.toggleMute = function() {
+        if (!currentChatUserId) return;
+        const mutedKey = `chat_muted_${currentChatUserId}`;
+        const isMuted = localStorage.getItem(mutedKey) === 'true';
+        localStorage.setItem(mutedKey, !isMuted);
+        
+        if (window.flashNotify) {
+            window.flashNotify('info', 'Notifications', !isMuted ? 'Muted for this user.' : 'Unmuted for this user.');
+        }
+    };
+
+    window.toggleInfoPane = function(show) {
+        if (show) {
+            // Already handled by existing info pane logic if present
+            // If not, we could trigger the sidebar fetch here
+            const infoBtn = document.getElementById('chatTopbarInfo');
+            if (infoBtn) infoBtn.click();
+        }
+    };
+
+    window.toggleDisappearing = function() {
+        alert('Disappearing messages feature coming soon!');
+    };
+
+    window.toggleChatSearch = function(show) {
+        const wrap = document.getElementById('inlineSearchWrap');
+        const info = document.getElementById('chatTopbarInfo');
+        const input = document.getElementById('inlineSearchInput');
+        
+        if (show) {
+            wrap.classList.remove('d-none');
+            wrap.classList.add('d-flex');
+            info.classList.add('d-none');
+            input.focus();
+        } else {
+            wrap.classList.remove('d-flex');
+            wrap.classList.add('d-none');
+            info.classList.remove('d-none');
+            input.value = '';
+            document.getElementById('searchResultCount').textContent = '';
+            // Reset message visibility
+            document.querySelectorAll('.chat-bubble').forEach(w => w.style.display = '');
+        }
+    };
+
+    let searchMatches = [];
+    let currentMatchIndex = -1;
+
+    window.toggleChatSearch = function(show) {
+        const wrap = document.getElementById('inlineSearchWrap');
+        const info = document.getElementById('chatTopbarInfo');
+        const input = document.getElementById('inlineSearchInput');
+        
+        if (show) {
+            wrap.classList.remove('d-none');
+            wrap.classList.add('d-flex');
+            info.classList.add('d-none');
+            input.focus();
+        } else {
+            wrap.classList.remove('d-flex');
+            wrap.classList.add('d-none');
+            info.classList.remove('d-none');
+            input.value = '';
+            resetSearch();
+        }
+    };
+
+    function resetSearch() {
+        searchMatches = [];
+        currentMatchIndex = -1;
+        searchResultCount.textContent = '';
+        document.querySelectorAll('.chat-bubble').forEach(bubble => {
+            bubble.style.display = '';
+            bubble.style.opacity = '';
+            bubble.style.filter = '';
+            const original = bubble.getAttribute('data-original-html');
+            if (original) {
+                bubble.innerHTML = original;
+                bubble.removeAttribute('data-original-html');
+            }
+        });
+    }
+
+    window.navigateSearch = function(direction) {
+        if (searchMatches.length === 0) return;
+        
+        // Reset previous active match style
+        if (currentMatchIndex >= 0 && searchMatches[currentMatchIndex]) {
+            searchMatches[currentMatchIndex].style.filter = '';
+        }
+
+        currentMatchIndex += direction;
+        if (currentMatchIndex < 0) currentMatchIndex = searchMatches.length - 1;
+        if (currentMatchIndex >= searchMatches.length) currentMatchIndex = 0;
+
+        const activeBubble = searchMatches[currentMatchIndex];
+        // Visual indicator for active match
+        activeBubble.style.filter = 'brightness(1.2) drop-shadow(0 0 5px rgba(255,193,7,0.8))';
+        activeBubble.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        searchResultCount.textContent = (currentMatchIndex + 1) + ' / ' + searchMatches.length;
+    };
+
+    const inlineSearchInput = document.getElementById('inlineSearchInput');
+    const searchResultCount = document.getElementById('searchResultCount');
+    if (inlineSearchInput) {
+        inlineSearchInput.addEventListener('input', () => {
+            const query = inlineSearchInput.value.toLowerCase();
+            resetSearch(); // Clear previous highlights and matches
+            
+            if (!query) return;
+
+            const bubbles = document.querySelectorAll('.chat-bubble');
+            searchMatches = [];
+
+            bubbles.forEach(bubble => {
+                // Ignore deleted messages in search
+                if (bubble.querySelector('.fst-italic')) return;
+
+                const text = bubble.textContent.toLowerCase() || '';
+                if (text.includes(query)) {
+                    bubble.style.display = '';
+                    bubble.style.opacity = '1';
+                    
+                    // Store original and highlight
+                    if (!bubble.getAttribute('data-original-html')) {
+                        bubble.setAttribute('data-original-html', bubble.innerHTML);
+                    }
+                    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    bubble.innerHTML = bubble.getAttribute('data-original-html').replace(regex, '<mark style="background:#ffc107; color:#000; border-radius:2px; padding:0 2px;">$1</mark>');
+                    
+                    searchMatches.push(bubble);
+                } else {
+                    bubble.style.opacity = '0.4'; // Dim non-matches instead of hiding to keep context
+                }
+            });
+
+            if (searchMatches.length > 0) {
+                searchResultCount.textContent = '0 / ' + searchMatches.length;
+                navigateSearch(1); // Auto-jump to first match
+            } else {
+                searchResultCount.textContent = '0 matches';
+            }
+        });
     }
 
     // Start

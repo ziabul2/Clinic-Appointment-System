@@ -143,8 +143,10 @@ try {
                 elseif ($ext === 'pdf') $file_type = 'pdf';
                 else $file_type = 'text';
 
+                $original_name_only = pathinfo($file['name'], PATHINFO_FILENAME);
+                $sanitized_name = preg_replace('/[^a-zA-Z0-9._-]/', '_', $original_name_only);
                 $file_name = htmlspecialchars($file['name']);
-                $new_file_name = uniqid('chat_') . '_' . time() . '.' . $ext;
+                $new_file_name = $sanitized_name . '_' . time() . '.' . $ext;
                 $upload_dir = __DIR__ . '/uploads/chat_files/';
                 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
@@ -192,6 +194,49 @@ try {
                ->execute(['id' => $msg_id]);
 
             echo json_encode(['ok' => true]);
+            break;
+
+        case 'clear_chat':
+            $with_user = intval($_POST['with_user'] ?? 0);
+            if (!$with_user) throw new Exception('Invalid user.');
+
+            // Delete messages where I am sender or receiver with this user
+            $stmt = $db->prepare("SELECT file_path FROM staff_chat_messages WHERE (sender_id = :uid1 AND receiver_id = :wid1) OR (sender_id = :wid2 AND receiver_id = :uid2)");
+            $stmt->execute(['uid1' => $user_id, 'wid1' => $with_user, 'wid2' => $with_user, 'uid2' => $user_id]);
+            $files = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            foreach ($files as $f) {
+                if ($f) {
+                    $physical_path = __DIR__ . '/' . $f;
+                    if (file_exists($physical_path)) @unlink($physical_path);
+                }
+            }
+
+            $db->prepare("DELETE FROM staff_chat_messages WHERE (sender_id = :uid1 AND receiver_id = :wid1) OR (sender_id = :wid2 AND receiver_id = :uid2)")
+               ->execute(['uid1' => $user_id, 'wid1' => $with_user, 'wid2' => $with_user, 'uid2' => $user_id]);
+
+            echo json_encode(['ok' => true]);
+            break;
+
+        case 'toggle_block':
+            $target_id = intval($_POST['target_id'] ?? 0);
+            if (!$target_id) throw new Exception('Invalid target user.');
+
+            $stmt = $db->prepare("SELECT status FROM staff_chat_permissions WHERE (requester_id = :uid1 AND target_id = :tid1) OR (requester_id = :tid2 AND target_id = :uid2)");
+            $stmt->execute(['uid1' => $user_id, 'tid1' => $target_id, 'tid2' => $target_id, 'uid2' => $user_id]);
+            $existing = $stmt->fetch();
+
+            if ($existing) {
+                $newStatus = ($existing['status'] === 'blocked') ? 'accepted' : 'blocked';
+                $db->prepare("UPDATE staff_chat_permissions SET status = :status, updated_at = NOW() WHERE (requester_id = :uid1 AND target_id = :tid1) OR (requester_id = :tid2 AND target_id = :uid2)")
+                   ->execute(['status' => $newStatus, 'uid1' => $user_id, 'tid1' => $target_id, 'tid2' => $target_id, 'uid2' => $user_id]);
+                echo json_encode(['ok' => true, 'status' => $newStatus]);
+            } else {
+                // If no permission exists, create a blocked one
+                $db->prepare("INSERT INTO staff_chat_permissions (requester_id, target_id, status) VALUES (:uid, :tid, 'blocked')")
+                   ->execute(['uid' => $user_id, 'tid' => $target_id]);
+                echo json_encode(['ok' => true, 'status' => 'blocked']);
+            }
             break;
 
         case 'fetch_messages':
