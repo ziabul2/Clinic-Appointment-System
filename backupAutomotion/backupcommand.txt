@@ -1,1 +1,0 @@
-powershell -ExecutionPolicy Bypass -File "C:\xampp\htdocs\clinicapp\backupAutomotion\run_backup_v2.ps1"

@@ -103,6 +103,10 @@ try {
                             <div class="icon-box bg-light-success text-success me-3 rounded-3 p-2"><i class="fas fa-patch-check"></i></div>
                             <div><h6 class="mb-0">Apply Fixes</h6><small class="text-muted">Run pending migrations.</small></div>
                         </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="db_backup.php">
+                            <div class="icon-box bg-light-warning text-warning me-3 rounded-3 p-2"><i class="fas fa-download"></i></div>
+                            <div><h6 class="mb-0">Database Backup</h6><small class="text-muted">Export SQL and JSON snapshots.</small></div>
+                        </a>
                     </div>
                 </div>
             </div>
