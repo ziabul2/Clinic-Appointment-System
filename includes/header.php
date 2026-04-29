@@ -6,8 +6,49 @@ require_once __DIR__ . '/../config/config.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 logAction("PAGE_ACCESS", "Accessed: " . $current_page);
 
-// Update last activity for logged in user
+// Session Validation & Auto-Logout
 if (isLoggedIn() && isset($_SESSION['user_id'])) {
+    $session_timeout = 3600; // 1 hour
+    $current_time = time();
+
+    // Check for inactivity timeout
+    if (isset($_SESSION['last_activity_time']) && ($current_time - $_SESSION['last_activity_time']) > $session_timeout) {
+        // Mark session as auto_logged_out
+        if (isset($_SESSION['login_log_id'])) {
+            try {
+                $stmt = $db->prepare("UPDATE user_logins SET status = 'auto_logged_out', logout_time = NOW(), duration_seconds = TIMESTAMPDIFF(SECOND, login_time, NOW()) WHERE id = :id");
+                $stmt->execute(['id' => $_SESSION['login_log_id']]);
+            } catch (Exception $e) {}
+        }
+        
+        session_unset();
+        session_destroy();
+        session_start();
+        $_SESSION['error'] = 'You have been logged out due to inactivity.';
+        redirect(SITE_URL . '/pages/login.php');
+    }
+
+    // Verify session status in DB (if it was killed by an admin)
+    if (isset($_SESSION['login_log_id'])) {
+        try {
+            $stmt = $db->prepare("SELECT status FROM user_logins WHERE id = :id");
+            $stmt->execute(['id' => $_SESSION['login_log_id']]);
+            $login_status = $stmt->fetchColumn();
+            
+            if ($login_status === 'killed') {
+                session_unset();
+                session_destroy();
+                session_start();
+                $_SESSION['error'] = 'Your session was terminated by an administrator.';
+                redirect(SITE_URL . '/pages/login.php');
+            }
+        } catch (Exception $e) {}
+    }
+
+    // Update session activity time
+    $_SESSION['last_activity_time'] = $current_time;
+
+    // Update last activity in database
     try {
         $up_act = $db->prepare("UPDATE users SET last_activity = CURRENT_TIMESTAMP WHERE user_id = :uid");
         $up_act->execute(['uid' => $_SESSION['user_id']]);

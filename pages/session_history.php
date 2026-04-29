@@ -53,9 +53,17 @@ function formatDuration($seconds) {
             <h2 class="fw-bold mb-0"><i class="fas fa-user-clock text-primary me-2"></i>Staff Activity Audit</h2>
             <p class="text-muted">Consolidated overview of total time spent and system usage.</p>
         </div>
-        <a href="admin_tools.php" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Tools
-        </a>
+        <div class="d-flex gap-2">
+            <form method="POST" action="../process.php?action=cleanup_inactive_sessions" onsubmit="return confirm('Clean up all inactive sessions?');">
+                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                <button type="submit" class="btn btn-outline-warning">
+                    <i class="fas fa-broom me-2"></i>Cleanup Inactive
+                </button>
+            </form>
+            <a href="admin_tools.php" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Tools
+            </a>
+        </div>
     </div>
 
     <div class="row g-4">
@@ -141,9 +149,20 @@ function formatDuration($seconds) {
                                                 <?php endif; ?>
                                             </td>
                                             <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#details-<?php echo $s['user_id']; ?>">
-                                                    <i class="fas fa-list-ul"></i>
-                                                </button>
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <?php if ($isOnline): ?>
+                                                        <form method="POST" action="../process.php?action=kill_all_user_sessions" onsubmit="return confirm('Force logout this user from all sessions?');">
+                                                            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                                            <input type="hidden" name="user_id" value="<?php echo $s['user_id']; ?>">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Kill all active sessions">
+                                                                <i class="fas fa-power-off"></i>
+                                                            </button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#details-<?php echo $s['user_id']; ?>">
+                                                        <i class="fas fa-list-ul"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                         <!-- Expandable Details Row -->
@@ -174,7 +193,24 @@ function formatDuration($seconds) {
                                                                         <td><?php echo formatDuration($dl['duration_seconds']); ?></td>
                                                                         <td><code><?php echo $dl['ip_address']; ?></code></td>
                                                                         <td class="pe-3">
-                                                                            <span class="badge bg-light text-dark"><?php echo $dl['status']; ?></span>
+                                                                            <?php if ($dl['status'] === 'active'): ?>
+                                                                                <div class="d-flex align-items-center gap-2">
+                                                                                    <span class="badge bg-success">Active</span>
+                                                                                    <form method="POST" action="../process.php?action=kill_session" onsubmit="return confirm('Kill this specific session?');" class="m-0">
+                                                                                        <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                                                                        <input type="hidden" name="login_id" value="<?php echo $dl['id']; ?>">
+                                                                                        <button type="submit" class="btn btn-xs btn-outline-danger" style="padding: 0.1rem 0.3rem; font-size: 0.75rem;" title="Kill Session">
+                                                                                            <i class="fas fa-times"></i>
+                                                                                        </button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            <?php elseif ($dl['status'] === 'killed'): ?>
+                                                                                <span class="badge bg-danger">Killed</span>
+                                                                            <?php elseif ($dl['status'] === 'auto_logged_out'): ?>
+                                                                                <span class="badge bg-warning text-dark">Auto Logout</span>
+                                                                            <?php else: ?>
+                                                                                <span class="badge bg-light text-dark"><?php echo htmlspecialchars(ucfirst(str_replace('_', ' ', $dl['status']))); ?></span>
+                                                                            <?php endif; ?>
                                                                         </td>
                                                                     </tr>
                                                                 <?php endwhile; ?>

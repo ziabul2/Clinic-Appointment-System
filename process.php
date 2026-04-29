@@ -2288,6 +2288,76 @@ try {
             exit;
             break;
             
+        case 'kill_session':
+            checkRole(['admin', 'root']);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_id'])) {
+                if (!verify_csrf()) {
+                    $_SESSION['error'] = 'Invalid CSRF token.';
+                    redirect('pages/session_history.php');
+                }
+                $login_id = intval($_POST['login_id']);
+                try {
+                    $stmt = $db->prepare("UPDATE user_logins SET status = 'killed', logout_time = NOW(), duration_seconds = TIMESTAMPDIFF(SECOND, login_time, NOW()) WHERE id = :id AND status = 'active'");
+                    $stmt->execute(['id' => $login_id]);
+                    if ($stmt->rowCount() > 0) {
+                        $_SESSION['success'] = 'Session forcefully terminated.';
+                        logAction("KILL_SESSION", "Admin killed session ID: $login_id");
+                    } else {
+                        $_SESSION['error'] = 'Session is not active or could not be found.';
+                    }
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Failed to kill session: ' . $e->getMessage();
+                }
+            }
+            redirect('pages/session_history.php');
+            break;
+
+        case 'kill_all_user_sessions':
+            checkRole(['admin', 'root']);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
+                if (!verify_csrf()) {
+                    $_SESSION['error'] = 'Invalid CSRF token.';
+                    redirect('pages/session_history.php');
+                }
+                $uid = intval($_POST['user_id']);
+                try {
+                    $stmt = $db->prepare("UPDATE user_logins SET status = 'killed', logout_time = NOW(), duration_seconds = TIMESTAMPDIFF(SECOND, login_time, NOW()) WHERE user_id = :uid AND status = 'active'");
+                    $stmt->execute(['uid' => $uid]);
+                    $_SESSION['success'] = $stmt->rowCount() . ' active sessions terminated for user ID: ' . $uid;
+                    logAction("KILL_ALL_SESSIONS", "Admin killed all sessions for user ID: $uid");
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Failed to terminate sessions: ' . $e->getMessage();
+                }
+            }
+            redirect('pages/session_history.php');
+            break;
+
+        case 'cleanup_inactive_sessions':
+            checkRole(['admin', 'root']);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (!verify_csrf()) {
+                    $_SESSION['error'] = 'Invalid CSRF token.';
+                    redirect('pages/session_history.php');
+                }
+                try {
+                    // Find active sessions where the user's last_activity is older than 1 hour
+                    $stmt = $db->prepare("
+                        UPDATE user_logins ul
+                        JOIN users u ON ul.user_id = u.user_id
+                        SET ul.status = 'auto_logged_out', ul.logout_time = NOW(), ul.duration_seconds = TIMESTAMPDIFF(SECOND, ul.login_time, NOW())
+                        WHERE ul.status = 'active' AND TIMESTAMPDIFF(SECOND, u.last_activity, NOW()) > 3600
+                    ");
+                    $stmt->execute();
+                    $cleaned = $stmt->rowCount();
+                    $_SESSION['success'] = "Cleanup complete. Marked $cleaned inactive sessions as auto-logged out.";
+                    logAction("CLEANUP_SESSIONS", "Admin triggered cleanup. $cleaned sessions logged out.");
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Failed to cleanup sessions: ' . $e->getMessage();
+                }
+            }
+            redirect('pages/session_history.php');
+            break;
+
         default:
             logAction("PROCESS_ERROR", "Invalid action: $action");
             $_SESSION['error'] = "Invalid action requested.";
