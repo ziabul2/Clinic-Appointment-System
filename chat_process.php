@@ -280,6 +280,11 @@ try {
             $read_stmt->execute(['uid' => $user_id, 'wid' => $with_user]);
             $maxReadId = $read_stmt->fetchColumn() ?: 0;
 
+            // Fetch all deleted message IDs for this conversation to sync UI deletions in real-time
+            $del_stmt = $db->prepare("SELECT id FROM staff_chat_messages WHERE ((sender_id = :uid1 AND receiver_id = :wid1) OR (sender_id = :wid2 AND receiver_id = :uid2)) AND is_deleted = 1");
+            $del_stmt->execute(['uid1' => $user_id, 'wid1' => $with_user, 'wid2' => $with_user, 'uid2' => $user_id]);
+            $deleted_ids = $del_stmt->fetchAll(PDO::FETCH_COLUMN);
+
             echo json_encode([
                 'ok' => true, 
                 'messages' => $messages, 
