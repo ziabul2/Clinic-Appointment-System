@@ -14,12 +14,16 @@ A comprehensive, web-based solution designed to streamline clinic operations. Th
 ## ✨ Key Features
 
 - **👤 Patient Management**: Seamlessly add, update, and track patient records and medical history.
-*   **👨‍⚕️ Doctor Portal**: Manage specialist profiles, availability, and dedicated appointment views.
-*   **📅 Smart Scheduling**: Real-time appointment booking with automated availability checking.
-*   **🔒 Secure Auth**: Multi-role authentication (Admin, Doctor, Receptionist) with CSRF protection and secure password hashing.
-*   **📝 Activity Logs**: Detailed system logging for audit trails and error tracking.
-*   **📱 Responsive UI**: Modern design built with Bootstrap 5, optimized for all devices.
-*   **📧 Notifications**: (Coming Soon) Email alerts for appointments and account updates.
+- **👨‍⚕️ Doctor Portal**: Manage specialist profiles, availability, and dedicated appointment views.
+- **📅 Smart Scheduling**: Real-time appointment booking with automated availability checking.
+- **💬 Staff Messenger**: Premium, real-time messaging suite with:
+    - File sharing (Images, PDFs, Text).
+    - Chat permissions/request system.
+    - Professional 3-level read receipts (Sent, Received, Seen).
+    - Glowing real-time presence indicators.
+- **🔒 Secure Auth**: Multi-role authentication (Admin, Doctor, Receptionist) with CSRF protection and secure session management.
+- **📊 Session Audit**: Detailed session history tracking with auto-logout and activity monitoring.
+- **📱 Premium UI**: Edge-to-edge modern design, dark mode support, and smooth animations.
 
 ---
 
@@ -27,9 +31,33 @@ A comprehensive, web-based solution designed to streamline clinic operations. Th
 
 - **Backend**: PHP 7.4+ (Vanilla PHP with PDO)
 - **Database**: MySQL 5.7+
-- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+), Bootstrap 5
 - **Icons**: Font Awesome 6
 - **Server**: Apache / Nginx
+
+---
+
+## 📂 Project Structure
+
+```text
+clinicApp/
+├── assets/             # CSS, JS, and Images
+│   ├── css/            # Global and component-specific styles
+│   ├── js/             # UI logic and Messenger (chat.js)
+│   └── images/         # UI assets and logos
+├── config/             # Database and system configuration
+├── includes/           # Shared components (Header, Footer, Functions)
+├── logs/               # System activity and error logs
+├── pages/              # Main application pages
+│   ├── messenger.php   # Premium Messenger UI
+│   ├── dashboard.php   # Main operational hub
+│   └── ...             # Feature-specific pages
+├── private/            # Secure JSON data and internal settings
+├── sqls_DB/            # Database schema exports
+├── uploads/            # User-uploaded files (Profiles, Chat attachments)
+├── chat_process.php    # Real-time Messaging API
+└── process.php         # Central system logic and auth handler
+```
 
 ---
 
