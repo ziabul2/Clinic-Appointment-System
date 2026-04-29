@@ -1,0 +1,2 @@
+sqls_DB/*.sql filter=lfs diff=lfs merge=lfs -text
+sqls_DB/*.json filter=lfs diff=lfs merge=lfs -text

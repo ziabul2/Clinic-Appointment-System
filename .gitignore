@@ -9,4 +9,3 @@ uploads/doctors/*
 uploads/prescriptions/*
 !uploads/prescriptions/.gitkeep
 private/
-sqls_DB/
