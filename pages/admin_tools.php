@@ -194,6 +194,27 @@ try {
                 </div>
             </div>
         </div>
+
+        <!-- Storage & Assets -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-warning text-dark border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-folder-open me-2"></i>Storage & Assets</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="manage_uploads.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center">
+                            <div class="icon-box bg-light-warning text-warning me-3 rounded-3 p-2"><i class="fas fa-file-invoice"></i></div>
+                            <div><h6 class="mb-0">File Manager</h6><small class="text-muted">Manage all uploaded files and media.</small></div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="clear_temp.php">
+                            <div class="icon-box bg-light-danger text-danger me-3 rounded-3 p-2"><i class="fas fa-trash-alt"></i></div>
+                            <div><h6 class="mb-0">Clear Cache</h6><small class="text-muted">Purge temporary files and logs.</small></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Medicine Directory Analytics Section -->
