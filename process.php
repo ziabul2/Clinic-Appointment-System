@@ -1781,12 +1781,8 @@ try {
                     echo json_encode(['ok'=>false,'message'=>'Tool not found']); exit;
                 }
 
-                // To avoid Apache "generation" errors on Windows, we'll try to find the real PHP binary
-                // or use a more robust execution method.
-                $phpBin = 'php';
-                if (file_exists('C:\\xampp\\php\\php.exe')) {
-                    $phpBin = 'C:\\xampp\\php\\php.exe';
-                }
+                // Use the discovered PHP binary from config
+                $phpBin = PHP_BIN;
 
                 $cmd = '"' . $phpBin . '" -f "' . $candidate . '" 2>&1';
                 

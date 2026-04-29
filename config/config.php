@@ -63,9 +63,47 @@ if ($db instanceof PDO) {
 }
 
 // System constants
+// Auto-detect SITE_URL for portability between local and production servers
+if (!defined('SITE_URL')) {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || ($_SERVER['SERVER_PORT'] ?? 80) == 443) ? "https://" : "http://";
+    $domainName = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    
+    // Calculate path relative to document root
+    $docRoot = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT']));
+    $dirPath = str_replace('\\', '/', realpath(__DIR__ . '/..'));
+    $basePath = str_replace($docRoot, '', $dirPath);
+    
+    define('SITE_URL', rtrim($protocol . $domainName . $basePath, '/'));
+}
+
 define('SITE_NAME', 'Clinic Appointment System');
-define('SITE_URL', 'http://localhost/clinicapp');
 define('ADMIN_EMAIL', 'ziabul@duck.com');
+
+// Binary Paths (for tools and backups)
+// Detect PHP and MySQL paths automatically
+$phpBin = 'php'; // Default to path
+$mysqlBin = 'mysqldump'; // Default to path
+
+$commonPhpPaths = [
+    'C:\xampp\php\php.exe',
+    '/usr/bin/php',
+    '/usr/local/bin/php'
+];
+foreach ($commonPhpPaths as $path) {
+    if (@file_exists($path)) { $phpBin = $path; break; }
+}
+
+$commonMysqlPaths = [
+    'C:\xampp\mysql\bin\mysqldump.exe',
+    '/usr/bin/mysqldump',
+    '/usr/local/bin/mysqldump'
+];
+foreach ($commonMysqlPaths as $path) {
+    if (@file_exists($path)) { $mysqlBin = $path; break; }
+}
+
+define('PHP_BIN', $phpBin);
+define('MYSQLDUMP_BIN', $mysqlBin);
 
 // For quick local setups where login is failing, enable BYPASS_AUTH=true to auto-login as first admin user.
 // WARNING: This bypasses authentication. Do NOT enable in production.

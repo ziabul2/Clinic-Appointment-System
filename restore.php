@@ -137,7 +137,7 @@ $forensics_file = __DIR__ . '/archive/forensics_' . $timestamp . '.sql';
 
 log_info("Saving current database to forensics backup...");
 try {
-    $cmd = 'C:\\xampp\\mysql\\bin\\mysqldump.exe -u root clinic_management > ' . escapeshellarg($forensics_file) . ' 2>nul';
+    $cmd = MYSQLDUMP_BIN . ' -u root clinic_management > ' . escapeshellarg($forensics_file) . ' 2>nul';
     $output = [];
     $return_var = 0;
     exec($cmd, $output, $return_var);
@@ -251,12 +251,12 @@ echo PHP_EOL;
 
 log_success("Database has been restored from: " . basename($backup_file));
 log_info("Restart Apache and MySQL if they are stopped.");
-log_info("Visit http://localhost/clinicapp/ to verify.");
+log_info("Visit " . SITE_URL . "/ to verify.");
 
 echo PHP_EOL;
 log_warning("If you see errors, check:");
 log_warning("  - logs/errors.log for application errors");
-log_warning("  - C:\\xampp\\mysql\\data\\*.err for MySQL errors");
+log_warning("  - Database server logs for MySQL errors");
 
 echo PHP_EOL;
 
