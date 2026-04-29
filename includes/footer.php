@@ -86,8 +86,20 @@
     </footer>
     <?php endif; ?>
 
+    <?php if (isLoggedIn() && basename($_SERVER['PHP_SELF']) !== 'messenger.php'): ?>
+        <!-- Floating Chat Button -->
+        <button id="floatingChatBtn" class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; z-index: 1040; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <i class="fas fa-comment-dots fa-2x"></i>
+            <span id="chatFloatingBadge" class="badge bg-danger rounded-pill shadow-sm border border-white" style="position:absolute; top: -2px; right: -2px; display:none;">0</span>
+        </button>
+        <?php require_once __DIR__ . '/chat_sidebar.php'; ?>
+    <?php endif; ?>
+
     <!-- Scripts moved outside footer to prevent grid-item issues -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/script.js"></script>
+    <?php if (isLoggedIn()): ?>
+        <script src="../assets/js/chat.js"></script>
+    <?php endif; ?>
 </body>
 </html>

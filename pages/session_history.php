@@ -98,13 +98,13 @@ function formatDuration($seconds) {
                                         $displayName = $s['username'];
                                         if ($s['dfn']) $displayName = 'Dr. ' . $s['dfn'] . ' ' . $s['dln'];
                                         
-                                        // Improved Online Logic: check user_logins status OR last_activity within 5 mins
-                                        $isActiveByActivity = false;
-                                        if (!empty($s['last_activity'])) {
-                                            $lastAct = strtotime($s['last_activity']);
-                                            if (time() - $lastAct < 300) $isActiveByActivity = true;
-                                        }
-                                        $isOnline = ($s['current_status'] == 'active' || $isActiveByActivity);
+                                        // Improved Online Logic: MUST be 'active' status AND have recent activity
+                                         $isActiveByActivity = false;
+                                         if (!empty($s['last_activity'])) {
+                                             $lastAct = strtotime($s['last_activity']);
+                                             if (time() - $lastAct < 300) $isActiveByActivity = true;
+                                         }
+                                         $isOnline = ($s['current_status'] == 'active' && $isActiveByActivity);
                                     ?>
                                         <tr>
                                             <td class="ps-4">

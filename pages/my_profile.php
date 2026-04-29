@@ -54,13 +54,15 @@ try {
             $last = sanitizeInput($_POST['last_name'] ?? '');
             $phone = sanitizeInput($_POST['phone'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
+            $about = sanitizeInput($_POST['about'] ?? '');
 
-            $uu = $db->prepare('UPDATE users SET username = :un, first_name = :fn, last_name = :ln, phone = :ph, address = :ad WHERE user_id = :uid');
+            $uu = $db->prepare('UPDATE users SET username = :un, first_name = :fn, last_name = :ln, phone = :ph, address = :ad, about = :ab WHERE user_id = :uid');
             $uu->bindParam(':un', $display);
             $uu->bindParam(':fn', $first);
             $uu->bindParam(':ln', $last);
             $uu->bindParam(':ph', $phone);
             $uu->bindParam(':ad', $address);
+            $uu->bindParam(':ab', $about);
             $uu->bindParam(':uid', $user_id);
             $uu->execute();
             $_SESSION['username'] = $display;
@@ -117,6 +119,10 @@ try {
                             <div class="mb-3">
                                 <label class="form-label fw-bold small text-muted text-uppercase">Address</label>
                                 <textarea class="form-control" name="address" rows="2"><?php echo htmlspecialchars($user['address'] ?? ''); ?></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-muted text-uppercase">About / Bio</label>
+                                <textarea class="form-control" name="about" rows="2" placeholder="e.g. Available, Busy, In a meeting..."><?php echo htmlspecialchars($user['about'] ?? ''); ?></textarea>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label fw-bold small text-muted text-uppercase">Profile Picture</label>

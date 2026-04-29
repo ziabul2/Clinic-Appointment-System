@@ -2238,25 +2238,31 @@ try {
             
         case 'logout':
             if (isset($_SESSION['user_id'])) {
+                $uid = $_SESSION['user_id'];
+                $username = $_SESSION['username'] ?? 'Unknown';
                 try {
+                    // Force clear last_activity and set last_logout
                     $up_logout = $db->prepare("UPDATE users SET last_logout = NOW(), last_activity = NULL WHERE user_id = :uid");
-                    $up_logout->execute(['uid' => $_SESSION['user_id']]);
+                    $up_logout->execute(['uid' => $uid]);
 
                     // Close session log
                     if (isset($_SESSION['login_log_id'])) {
                         $up_session = $db->prepare("UPDATE user_logins SET logout_time = NOW(), duration_seconds = TIMESTAMPDIFF(SECOND, login_time, NOW()), status = 'logged_out' WHERE id = :lid");
                         $up_session->execute(['lid' => $_SESSION['login_log_id']]);
+                    } else {
+                        // Backup: close any active session for this user
+                        $db->prepare("UPDATE user_logins SET logout_time = NOW(), status = 'logged_out' WHERE user_id = :uid AND status = 'active'")
+                           ->execute(['uid' => $uid]);
                     }
+                    logAction("USER_LOGOUT", "User logged out: $username");
+                    
+                    // Notify Admins and Receptionists
+                    $logoutMsg = "User $username has logged out.";
+                    notifyRoles($db, ['admin', 'receptionist'], 'auth', 'Staff Logout', $logoutMsg);
                 } catch (Exception $e) { /* ignore */ }
             }
-            logAction("USER_LOGOUT", "User logged out: " . ($_SESSION['username'] ?? 'Unknown'));
             
-            // Notify Admins and Receptionists
-            if (isset($_SESSION['username'])) {
-                $logoutMsg = "User " . $_SESSION['username'] . " has logged out.";
-                notifyRoles($db, ['admin', 'receptionist'], 'auth', 'Staff Logout', $logoutMsg);
-            }
-
+            session_unset();
             session_destroy();
             redirect('pages/login.php');
             break;

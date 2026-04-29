@@ -135,9 +135,23 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                                 <a class="nav-link <?php echo $current_page == 'doctors.php' ? 'active' : ''; ?>" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
                             </li>
                             <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
                             </li>
                         <?php endif; ?>
+                        
+                        <li class="nav-item ms-md-2 border-start ps-md-3 border-secondary d-none d-lg-block">
+                            <a class="nav-link position-relative <?php echo $current_page == 'messenger.php' ? 'active text-white' : 'text-light'; ?>" href="../pages/messenger.php">
+                                <i class="fab fa-whatsapp me-1"></i> Messenger
+                                <span id="chatGlobalBadge" class="badge bg-danger rounded-pill ms-1" style="display:none;">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link position-relative <?php echo $current_page == 'messenger.php' ? 'active' : ''; ?>" href="../pages/messenger.php">
+                                <i class="fab fa-whatsapp"></i> Messenger
+                                <span id="chatGlobalBadgeMobile" class="badge bg-danger rounded-pill ms-1" style="display:none;">0</span>
+                            </a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <?php endif; ?>
@@ -174,6 +188,7 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                             </a>
                         </li>
                         <?php endif; ?>
+
                         <li class="nav-item dropdown position-relative me-2">
                             <a class="nav-link position-relative" href="#" id="notificationBell" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
