@@ -9,3 +9,6 @@ uploads/doctors/*
 uploads/prescriptions/*
 !uploads/prescriptions/.gitkeep
 private/
+DatabaseJSON/*
+sqls_DB/*
+Uploads/*

@@ -215,6 +215,36 @@ try {
                 </div>
             </div>
         </div>
+
+        <!-- Hybrid Database & Sync -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="card-header bg-secondary text-white border-0 py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-sync-alt me-2"></i>Offline Sync Engine</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div id="syncStatusBadge" class="badge rounded-pill px-3 py-2 me-3 <?php echo DB_OK ? 'bg-success' : 'bg-danger'; ?>">
+                            <i class="fas <?php echo DB_OK ? 'fa-check-circle' : 'fa-exclamation-triangle'; ?> me-1"></i>
+                            <?php echo DB_OK ? 'Online' : 'Offline Mode'; ?>
+                        </div>
+                        <div id="pendingSyncCount" class="small text-muted fw-bold">
+                            Checking pending changes...
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <button id="manualSyncBtn" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center" <?php echo !DB_OK ? 'disabled' : ''; ?>>
+                            <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <div><h6 class="mb-0">Sync Pending Changes</h6><small class="text-muted">Manually push offline changes to MySQL.</small></div>
+                        </button>
+                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="db_backup.php">
+                            <div class="icon-box bg-light-info text-info me-3 rounded-3 p-2"><i class="fas fa-file-export"></i></div>
+                            <div><h6 class="mb-0">Export JSON Snapshot</h6><small class="text-muted">Force update all JSON files from MySQL.</small></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Medicine Directory Analytics Section -->
@@ -316,6 +346,52 @@ document.querySelectorAll('.run-tool-btn').forEach(btn => {
         });
     });
 });
+
+// Hybrid DB Sync Logic
+function updateSyncStatus() {
+    fetch('../ajax/sync_db.php?action=status')
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            const countElem = document.getElementById('pendingSyncCount');
+            if (res.pending_count > 0) {
+                countElem.innerHTML = `<span class="text-warning">${res.pending_count} pending changes</span>`;
+                if (!res.is_offline) document.getElementById('manualSyncBtn').disabled = false;
+            } else {
+                countElem.textContent = 'All data synchronized';
+            }
+        }
+    })
+    .catch(err => console.error('Sync check failed:', err));
+}
+
+document.getElementById('manualSyncBtn').addEventListener('click', function() {
+    const btn = this;
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner-border spinner-border-sm text-primary me-3" role="status"></div><div><h6 class="mb-0">Syncing...</h6></div>';
+
+    fetch('../ajax/sync_db.php?action=sync')
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            alert(res.message);
+            updateSyncStatus();
+        } else {
+            alert('Sync failed: ' + res.message);
+        }
+    })
+    .catch(err => alert('Request failed: ' + err.message))
+    .finally(() => {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    });
+});
+
+// Initial check
+updateSyncStatus();
+// Poll every 30 seconds
+setInterval(updateSyncStatus, 30000);
 </script>
 
 <?php require_once '../includes/footer.php'; ?>

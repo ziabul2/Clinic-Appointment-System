@@ -36,30 +36,25 @@ date_default_timezone_set('Asia/Dhaka');
 
 // Database connection (use absolute path for reliability)
 require_once __DIR__ . '/database.php';
-$database = new Database();
-$db = $database->getConnection();
+require_once __DIR__ . '/hybrid_db.php';
 
-// Mark database availability for other files to check and avoid fatal errors when DB is down
-if ($db instanceof PDO) {
+$database = new Database();
+$pdo = $database->getConnection();
+
+// Initialize Hybrid Database Wrapper
+$jsonBasePath = __DIR__ . '/../DatabaseJSON';
+$db = new HybridPDO($pdo, $jsonBasePath);
+
+// Mark database availability
+if (!$db->isOffline()) {
     define('DB_OK', true);
+    // Automatically attempt to sync pending changes if back online
+    $db->syncPending();
 } else {
     define('DB_OK', false);
-    // Log a friendly entry
-    $msg = "[".date('Y-m-d H:i:s')."] [WARN] [DB] Database connection is not available." . PHP_EOL;
+    // In hybrid mode, we don't need NullDB as HybridPDO handles the fallback
+    $msg = "[".date('Y-m-d H:i:s')."] [INFO] [DB] System running in OFFLINE mode (JSON fallback)." . PHP_EOL;
     file_put_contents(__DIR__ . '/../logs/process.log', $msg, FILE_APPEND | LOCK_EX);
-
-    // Provide a small stub object so code that calls $db->prepare() fails with a controlled Exception
-    // instead of triggering a fatal "call to a member function on null" error.
-    class NullDB {
-        public function prepare($sql) {
-            throw new Exception('Database connection is not available. Please try again later.');
-        }
-        public function __call($name, $args) {
-            throw new Exception('Database connection is not available. Please try again later.');
-        }
-    }
-
-    $db = new NullDB();
 }
 
 // System constants
