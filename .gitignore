@@ -11,4 +11,5 @@ uploads/prescriptions/*
 private/
 DatabaseJSON/*
 sqls_DB/
+sessions/
 Uploads/*

@@ -216,8 +216,12 @@
         fetch(path, { credentials: 'same-origin' })
             .then(function(r){ return r.json(); })
             .then(function(data){
-                if (data && data.ok && data.notifications && data.notifications.length > 0) {
-                    lastNotifId = parseInt(data.notifications[0].id, 10);
+                if (data && data.ok) {
+                    if (typeof data.max_id !== 'undefined') {
+                        lastNotifId = parseInt(data.max_id, 10) || 0;
+                    } else if (data.notifications && data.notifications.length > 0) {
+                        lastNotifId = parseInt(data.notifications[0].id, 10);
+                    }
                 }
                 updateUnreadCount();
             });

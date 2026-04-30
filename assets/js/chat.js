@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let titleInterval = null;
     let previousUnread = 0;
     let previousRequests = 0;
+    let isFirstPoll = true;
 
     function notifyTitle(msg) {
         if (!titleToggle.checked || titleInterval) return; // already notifying or disabled
@@ -731,7 +732,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
 
                         // Notification logic
-                        if (totalUnread > previousUnread || totalRequests > previousRequests) {
+                        if (!isFirstPoll && (totalUnread > previousUnread || totalRequests > previousRequests)) {
                             // Flash title only if hidden
                             if (document.hidden) notifyTitle('New Message!');
                             
@@ -751,6 +752,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 window.flashNotify('info', 'Chat Request', 'You have a new staff chat request.');
                             }
                         }
+                        
+                        isFirstPoll = false;
                         previousUnread = totalUnread;
                         previousRequests = totalRequests;
 

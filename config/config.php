@@ -4,7 +4,10 @@
  * System settings and constants
  */
 
-// Start session
+// Start session with custom path to avoid XAMPP permission issues
+$sessionPath = __DIR__ . '/../sessions';
+if (!is_dir($sessionPath)) mkdir($sessionPath, 0777, true);
+session_save_path($sessionPath);
 session_start();
 
 // Error reporting
@@ -25,16 +28,13 @@ set_exception_handler(function($e) use ($app_error_log) {
     file_put_contents($proc, $msg, FILE_APPEND | LOCK_EX);
     if (ini_get('display_errors')) {
         echo '<pre>' . htmlspecialchars($msg) . '</pre>';
-    } else {
-        // Friendly message
-        // echo '<div class="alert alert-danger">A system error occurred. Please contact admin.</div>';
     }
 });
 
-// Timezone setting (use valid timezone identifier)
+// Timezone setting
 date_default_timezone_set('Asia/Dhaka');
 
-// Database connection (use absolute path for reliability)
+// Database connection
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/hybrid_db.php';
 
@@ -46,13 +46,12 @@ $jsonBasePath = __DIR__ . '/../DatabaseJSON';
 $db = new HybridPDO($pdo, $jsonBasePath);
 
 // Mark database availability
-if (!$db->isOffline()) {
-    define('DB_OK', true);
+define('DB_OK', !$db->isOffline());
+
+if (DB_OK) {
     // Automatically attempt to sync pending changes if back online
     $db->syncPending();
 } else {
-    define('DB_OK', false);
-    // In hybrid mode, we don't need NullDB as HybridPDO handles the fallback
     $msg = "[".date('Y-m-d H:i:s')."] [INFO] [DB] System running in OFFLINE mode (JSON fallback)." . PHP_EOL;
     file_put_contents(__DIR__ . '/../logs/process.log', $msg, FILE_APPEND | LOCK_EX);
 }

@@ -74,18 +74,7 @@ if (!isset($_GET['action'])) {
     redirect('index.php');
 }
 
-// If database is not available, handle gracefully for actions that need DB
-if (!defined('DB_OK') || DB_OK === false) {
-    // Only allow safe actions like viewing status or logout; otherwise inform user
-    $action_temp = $_GET['action'] ?? '';
-    $allowed_when_db_down = ['logout'];
-    if (!in_array($action_temp, $allowed_when_db_down)) {
-        logAction('DB_DOWN', 'Attempt to perform action while DB is unavailable: ' . $action_temp);
-        // Set friendly message and redirect to login page (or a maintenance page)
-        $_SESSION['error'] = 'Database is temporarily unavailable. Please try again later.';
-        redirect('pages/login.php');
-    }
-}
+// We no longer block actions when DB_OK is false because HybridPDO handles offline mode.
 
 $action = $_GET['action'];
 
@@ -574,58 +563,7 @@ try {
             redirect('pages/map_patients_users.php');
             break;
 
-        case 'notifications_fetch':
-            // Return recent notifications for current user as JSON (used by the header widget)
-            header('Content-Type: application/json');
-            if (!isLoggedIn()) {
-                echo json_encode(['ok' => false, 'error' => 'unauth']);
-                exit;
-            }
-            try {
-                $uid = $_SESSION['user_id'];
-                $notifs = getNotifications($db, $uid, 20);
-                $unread = getUnreadNotificationCount($db, $uid);
-                echo json_encode(['ok' => true, 'notifications' => $notifs, 'unread' => $unread]);
-            } catch (Exception $e) {
-                echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
-            }
-            exit;
-
-        case 'notifications_mark_read':
-            // Mark provided notification IDs as read. Accepts POST 'ids[]' and CSRF token.
-            header('Content-Type: application/json');
-            if (!isLoggedIn()) { echo json_encode(['ok'=>false,'error'=>'unauth']); exit; }
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['ok'=>false,'error'=>'invalid_method']); exit; }
-            if (!verify_csrf()) { echo json_encode(['ok'=>false,'error'=>'invalid_csrf']); exit; }
-            $ids = $_POST['ids'] ?? [];
-            if (!is_array($ids) || count($ids) === 0) { echo json_encode(['ok'=>false,'error'=>'no_ids']); exit; }
-            // sanitize ids to integers
-            $ids = array_map('intval', $ids);
-            $placeholders = implode(',', array_fill(0, count($ids), '?'));
-            $uid = $_SESSION['user_id'];
-            $role = strtolower($_SESSION['role'] ?? '');
-            try {
-                if (in_array($role, ['admin','receptionist'])) {
-                    // allow marking notifications targeted to this user or system-level (user_id IS NULL)
-                    $sql = "UPDATE notifications SET is_read = 1 WHERE id IN ($placeholders) AND (user_id = ? OR user_id IS NULL)";
-                    $stmt = $db->prepare($sql);
-                    $i = 1;
-                    foreach ($ids as $v) { $stmt->bindValue($i++, $v, PDO::PARAM_INT); }
-                    $stmt->bindValue($i, $uid, PDO::PARAM_INT);
-                } else {
-                    // normal users may only mark their notifications
-                    $sql = "UPDATE notifications SET is_read = 1 WHERE id IN ($placeholders) AND user_id = ?";
-                    $stmt = $db->prepare($sql);
-                    $i = 1;
-                    foreach ($ids as $v) { $stmt->bindValue($i++, $v, PDO::PARAM_INT); }
-                    $stmt->bindValue($i, $uid, PDO::PARAM_INT);
-                }
-                $stmt->execute();
-                echo json_encode(['ok'=>true,'updated'=> $stmt->rowCount()]);
-            } catch (Exception $e) {
-                echo json_encode(['ok'=>false,'error' => $e->getMessage()]);
-            }
-            exit;
+        // Consolidated notification handlers moved below to avoid duplication.
 
         case 'import_users':
             // CSV import handler
@@ -1240,11 +1178,12 @@ try {
             header('Content-Type: application/json');
             if (!$user_id) { echo json_encode(['ok'=>false,'count'=>0]); exit; }
             try {
-                $cnt = function_exists('getUnreadNotificationCount') ? getUnreadNotificationCount($db, $user_id) : 0;
-                echo json_encode(['ok'=>true,'count'=>intval($cnt)]);
-            } catch (Exception $e) { echo json_encode(['ok'=>false,'count'=>0,'error'=>$e->getMessage()]); }
+                $q = $db->prepare('SELECT COUNT(*) as cnt FROM notifications WHERE user_id = :uid AND is_read = 0');
+                $q->execute(['uid' => $user_id]);
+                $r = $q->fetch(PDO::FETCH_ASSOC);
+                echo json_encode(['ok'=>true,'count'=>intval($r['cnt'] ?? 0)]);
+            } catch (Exception $e) { echo json_encode(['ok'=>false,'count'=>0]); }
             exit;
-            break;
 
         case 'notifications_fetch':
             $user_id = $_SESSION['user_id'] ?? null;
@@ -1252,15 +1191,23 @@ try {
             if (!$user_id) { echo json_encode(['ok'=>false,'notifications'=>[]]); exit; }
             try {
                 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 50;
-                $notifs = function_exists('getNotifications') ? getNotifications($db, $user_id, $limit) : [];
-                $unread = function_exists('getUnreadNotificationCount') ? getUnreadNotificationCount($db, $user_id) : 0;
-                echo json_encode(['ok'=>true, 'notifications'=>$notifs, 'unread'=>$unread]);
+                $q = $db->prepare('SELECT id, type, title, message, meta, is_read, created_at FROM notifications WHERE user_id = :uid ORDER BY created_at DESC LIMIT :lim');
+                $q->bindValue(':uid', $user_id);
+                $q->bindValue(':lim', (int)$limit, PDO::PARAM_INT);
+                $q->execute();
+                $notifs = $q->fetchAll(PDO::FETCH_ASSOC);
+                
+                // Absolute max ID for polling initialization
+                $q2 = $db->prepare("SELECT MAX(id) as max_id FROM notifications WHERE user_id = ?");
+                $q2->execute([$user_id]);
+                $maxRow = $q2->fetch(PDO::FETCH_ASSOC);
+                $max_id = intval($maxRow['max_id'] ?? 0);
+
+                echo json_encode(['ok'=>true, 'notifications'=>$notifs, 'max_id' => $max_id]);
             } catch (Exception $e) { echo json_encode(['ok'=>false, 'error'=>$e->getMessage()]); }
             exit;
-            break;
 
         case 'notifications_poll':
-            // Long-polling or frequent-polling helper: get only unread notifications after a certain ID
             $user_id = $_SESSION['user_id'] ?? null;
             header('Content-Type: application/json');
             if (!$user_id) { echo json_encode(['ok'=>false,'notifications'=>[]]); exit; }
@@ -1272,21 +1219,15 @@ try {
                 echo json_encode(['ok'=>true, 'notifications'=>$new]);
             } catch (Exception $e) { echo json_encode(['ok'=>false, 'error'=>$e->getMessage()]); }
             exit;
-            break;
 
         case 'notifications_mark_read':
             $user_id = $_SESSION['user_id'] ?? null;
             header('Content-Type: application/json');
             if (!$user_id) { echo json_encode(['ok'=>false]); exit; }
-            $ids = [];
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                if (!empty($_POST['ids'])) {
-                    $ids = is_array($_POST['ids']) ? $_POST['ids'] : explode(',', $_POST['ids']);
-                }
-            }
+            $ids = $_POST['ids'] ?? [];
             if (empty($ids)) { echo json_encode(['ok'=>false,'message'=>'No ids']); exit; }
             try {
-                $ids_clean = array_map('intval', $ids);
+                $ids_clean = is_array($ids) ? array_map('intval', $ids) : [intval($ids)];
                 $placeholders = implode(',', array_fill(0, count($ids_clean), '?'));
                 $q = $db->prepare("UPDATE notifications SET is_read = 1 WHERE id IN ($placeholders) AND user_id = ?");
                 $params = array_merge($ids_clean, [$user_id]);
@@ -1294,7 +1235,6 @@ try {
                 echo json_encode(['ok'=>true]);
             } catch (Exception $e) { echo json_encode(['ok'=>false,'error'=>$e->getMessage()]); }
             exit;
-            break;
 
         case 'save_prescription':
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

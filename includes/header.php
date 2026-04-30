@@ -161,7 +161,7 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                         // fetch user's profile picture if present
                         $waitingCount = 0;
                         $avatarUrl = '../assets/images/default_avatar.png';
-                        if (defined('DB_OK') && DB_OK && isset($db)) {
+                        if (isset($db)) {
                             try {
                                 $cntQ = $db->prepare("SELECT COUNT(*) as cnt FROM waiting_list WHERE status = 'waiting'");
                                 $cntQ->execute(); $cntR = $cntQ->fetch(PDO::FETCH_ASSOC);

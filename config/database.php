@@ -11,8 +11,10 @@ class Database {
     private $password = "";
     public $conn;
     
+    private static $onlineStatus = null;
+
     public function getConnection() {
-        $this->conn = null;
+        if ($this->conn !== null) return $this->conn;
         
         try {
             $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4";
@@ -24,11 +26,9 @@ class Database {
             ];
 
             $this->conn = new PDO($dsn, $this->username, $this->password, $options);
-
-            // Log successful connection
-            // $this->logMessage("DATABASE_CONNECTION", "Database connected successfully", "INFO");
-
+            self::$onlineStatus = true;
         } catch(PDOException $exception) {
+            self::$onlineStatus = false;
             $error_message = "Connection error: " . $exception->getMessage();
             $this->logMessage("DATABASE_ERROR", $error_message, "ERROR");
         }
@@ -37,8 +37,10 @@ class Database {
     }
 
     public static function isOnline() {
+        if (self::$onlineStatus !== null) return self::$onlineStatus;
         $instance = new self();
-        return $instance->getConnection() instanceof PDO;
+        $instance->getConnection();
+        return self::$onlineStatus;
     }
     
     private function logMessage($type, $message, $level = "INFO") {
