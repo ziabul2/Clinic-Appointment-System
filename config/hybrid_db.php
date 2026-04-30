@@ -148,6 +148,10 @@ class JsonDataStore {
             unlink($this->pendingSyncFile);
         }
     }
+
+    public function getPendingSyncFile() {
+        return $this->pendingSyncFile;
+    }
 }
 
 class HybridPDO {
@@ -218,12 +222,14 @@ class HybridPDO {
     }
 
     public function syncPending() {
-        if ($this->isOffline || !($this->pdo instanceof PDO)) return false;
+        if (!($this->pdo instanceof PDO)) return false;
 
         $changes = $this->store->getPendingChanges();
         if (empty($changes)) return true;
 
         $successCount = 0;
+        $failedIds = [];
+        
         foreach ($changes as $change) {
             try {
                 $sql = '';
@@ -235,7 +241,11 @@ class HybridPDO {
                     $sql = "INSERT INTO `{$change['table']}` ($cols) VALUES ($placeholders)";
                 } elseif ($change['type'] === 'UPDATE') {
                     $sets = [];
-                    foreach ($params as $col => $val) $sets[] = "`$col` = :$col";
+                    foreach ($params as $col => $val) {
+                        $sets[] = "`$col` = :set_$col";
+                        $params["set_$col"] = $val;
+                        unset($params[$col]);
+                    }
                     $whereSql = '';
                     if ($change['where']) {
                         foreach ($change['where'] as $col => $val) {
@@ -257,16 +267,27 @@ class HybridPDO {
                     $stmt = $this->pdo->prepare($sql);
                     if ($stmt->execute($params)) {
                         $successCount++;
+                    } else {
+                        $failedIds[] = $change['id'];
+                        $err = $stmt->errorInfo();
+                        error_log("Sync query failed for item {$change['id']}: " . ($err[2] ?? 'Unknown error'));
                     }
                 }
             } catch (Exception $e) {
-                error_log("Sync failed for item {$change['id']}: " . $e->getMessage());
+                $failedIds[] = $change['id'];
+                error_log("Sync exception for item {$change['id']}: " . $e->getMessage());
             }
         }
 
         if ($successCount === count($changes)) {
             $this->store->clearPendingChanges();
             return true;
+        }
+
+        // If some succeeded, remove them from the list
+        if ($successCount > 0) {
+            $remaining = array_filter($changes, fn($c) => in_array($c['id'], $failedIds));
+            file_put_contents($this->store->getPendingSyncFile(), json_encode(array_values($remaining), JSON_PRETTY_PRINT), LOCK_EX);
         }
 
         return false;
@@ -387,12 +408,30 @@ class HybridStatement {
             }
 
             $data = $this->store->readTable($table);
-            $maxId = 0;
+            
+            // Determine primary key column name
             $idCol = "{$table}_id";
             if ($table === 'users') $idCol = 'user_id';
+            // Handle common plural table names mapping to singular ID columns
+            $singularMap = [
+                'appointments' => 'appointment_id',
+                'patients' => 'patient_id',
+                'doctors' => 'doctor_id',
+                'prescriptions' => 'prescription_id',
+                'medicines' => 'medicine_id'
+            ];
+            if (isset($singularMap[$table])) $idCol = $singularMap[$table];
             
+            // If the table has data, try to detect the ID column from the first row if map fails
+            if (!empty($data) && !isset($data[0][$idCol])) {
+                $firstRow = $data[0];
+                if (isset($firstRow['id'])) $idCol = 'id';
+                elseif (isset($firstRow["{$table}_id"])) $idCol = "{$table}_id";
+            }
+
+            $maxId = 0;
             foreach ($data as $row) {
-                if (isset($row[$idCol]) && $row[$idCol] > $maxId) $maxId = intval($row[$idCol]);
+                if (isset($row[$idCol]) && is_numeric($row[$idCol]) && $row[$idCol] > $maxId) $maxId = intval($row[$idCol]);
             }
             $newId = $maxId + 1;
             if (!isset($newRow[$idCol]) || empty($newRow[$idCol])) {

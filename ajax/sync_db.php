@@ -30,7 +30,18 @@ try {
 
     if ($action === 'sync') {
         if ($db->isOffline()) {
-            echo json_encode(['ok' => false, 'message' => 'Cannot sync while offline.']);
+            // Try one last time to reconnect by including database.php again or checking isOnline
+            require_once '../config/database.php';
+            if (isOnline()) {
+                $newPdo = (Database::getInstance())->getConnection();
+                if ($newPdo instanceof PDO) {
+                    $db = new HybridPDO($newPdo, __DIR__ . '/../DatabaseJSON');
+                }
+            }
+        }
+
+        if ($db->isOffline()) {
+            echo json_encode(['ok' => false, 'message' => 'Cannot sync while offline. MySQL is still unreachable.']);
             exit;
         }
 
