@@ -10,5 +10,5 @@ uploads/prescriptions/*
 !uploads/prescriptions/.gitkeep
 private/
 DatabaseJSON/*
-sqls_DB/*
+sqls_DB/
 Uploads/*
