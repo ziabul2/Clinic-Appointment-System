@@ -43,6 +43,19 @@ try {
         exit;
     }
 
+    if ($action === 'rebuild_index') {
+        require_once '../config/medicine_cache.php';
+        $jsonBasePath = __DIR__ . '/../DatabaseJSON';
+        $cache = new MedicineCache($jsonBasePath);
+        $res = $cache->rebuildIndex();
+        if ($res) {
+            echo json_encode(['ok' => true, 'message' => 'Medicine search index rebuilt for super fast performance.']);
+        } else {
+            echo json_encode(['ok' => false, 'message' => 'Failed to rebuild index. Master file may be missing.']);
+        }
+        exit;
+    }
+
     echo json_encode(['ok' => false, 'message' => 'Invalid action.']);
 
 } catch (Exception $e) {

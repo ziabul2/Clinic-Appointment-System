@@ -87,6 +87,15 @@ class JsonDataStore {
      * Used for medicine_master_data.
      */
     public function searchStreamed($tableName, $query, $limit = 30) {
+        // Check for cached index first for "Super Fast" medicine search
+        if ($tableName === 'medicine_master_data') {
+            require_once __DIR__ . '/medicine_cache.php';
+            $cache = new MedicineCache($this->basePath);
+            if ($cache->isIndexReady()) {
+                return $cache->search($query, $limit);
+            }
+        }
+
         $file = $this->basePath . "clinic_management_table_{$tableName}.json";
         if (!file_exists($file)) return [];
 

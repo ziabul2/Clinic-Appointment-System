@@ -237,6 +237,10 @@ try {
                             <div class="icon-box bg-light-primary text-primary me-3 rounded-3 p-2"><i class="fas fa-cloud-upload-alt"></i></div>
                             <div><h6 class="mb-0">Sync Pending Changes</h6><small class="text-muted">Manually push offline changes to MySQL.</small></div>
                         </button>
+                        <button id="rebuildIndexBtn" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center">
+                            <div class="icon-box bg-light-success text-success me-3 rounded-3 p-2"><i class="fas fa-bolt"></i></div>
+                            <div><h6 class="mb-0">Optimize Search Cache</h6><small class="text-muted">Rebuild index for super fast medicine search.</small></div>
+                        </button>
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center run-tool-btn" data-tool="db_backup.php">
                             <div class="icon-box bg-light-info text-info me-3 rounded-3 p-2"><i class="fas fa-file-export"></i></div>
                             <div><h6 class="mb-0">Export JSON Snapshot</h6><small class="text-muted">Force update all JSON files from MySQL.</small></div>
@@ -379,6 +383,28 @@ document.getElementById('manualSyncBtn').addEventListener('click', function() {
             updateSyncStatus();
         } else {
             alert('Sync failed: ' + res.message);
+        }
+    })
+    .catch(err => alert('Request failed: ' + err.message))
+    .finally(() => {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    });
+});
+
+document.getElementById('rebuildIndexBtn').addEventListener('click', function() {
+    const btn = this;
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner-border spinner-border-sm text-success me-3" role="status"></div><div><h6 class="mb-0">Indexing...</h6></div>';
+
+    fetch('../ajax/sync_db.php?action=rebuild_index')
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            alert(res.message);
+        } else {
+            alert('Indexing failed: ' + res.message);
         }
     })
     .catch(err => alert('Request failed: ' + err.message))
