@@ -42,8 +42,8 @@ $database = new Database();
 $pdo = $database->getConnection();
 
 // Initialize Hybrid Database Wrapper
-$jsonBasePath = __DIR__ . '/../DatabaseJSON';
-$db = new HybridPDO($pdo, $jsonBasePath);
+$sqlitePath = __DIR__ . '/../DatabaseSQL/clinic_offline.db';
+$db = new HybridPDO($pdo, $sqlitePath);
 
 // Mark database availability
 define('DB_OK', !$db->isOffline());
@@ -52,7 +52,7 @@ if (DB_OK) {
     // Automatically attempt to sync pending changes if back online
     $db->syncPending();
 } else {
-    $msg = "[".date('Y-m-d H:i:s')."] [INFO] [DB] System running in OFFLINE mode (JSON fallback)." . PHP_EOL;
+    $msg = "[".date('Y-m-d H:i:s')."] [INFO] [DB] System running in OFFLINE mode (SQLite fallback)." . PHP_EOL;
     file_put_contents(__DIR__ . '/../logs/process.log', $msg, FILE_APPEND | LOCK_EX);
 }
 

@@ -232,11 +232,12 @@
         // show single server-side flash toast if provided by server
         try { if (window.__FLASH && window.__FLASH.toast === true) { showFlashToast(window.__FLASH); } } catch (e) { console.error('flash-toast error', e); }
         var bell = document.getElementById('notificationBell');
-        if (!bell) return;
-        bell.addEventListener('click', function(e){
-            // Fetch and render notifications on click (when user opens dropdown)
-            try { fetchNotifications(); } catch(err) { console.error(err); }
-        });
+        if (bell) {
+            bell.addEventListener('show.bs.dropdown', function(e){
+                // Fetch and render notifications when dropdown is about to show
+                try { fetchNotifications(); } catch(err) { console.error(err); }
+            });
+        }
 
         // Also wire "Mark all read" to call API and refresh
         var markAllBtn = document.getElementById('markAllReadBtn');
@@ -252,72 +253,7 @@
             });
         }
 
-        // Test Toast Button
-        var testBtn = document.getElementById('testToastBtn');
-        if (testBtn) {
-            testBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                showFlashToast({ success: 'This is a test notification! System is working properly.', toast: true });
-            });
-        }
-            // Intercept forms with data-ajax="true" and submit via fetch, showing a single toast result
-            try {
-                var ajaxForms = document.querySelectorAll('form[data-ajax="true"]');
-                ajaxForms.forEach(function(f){
-                    f.addEventListener('submit', function(ev){
-                        ev.preventDefault();
-                        var btn = f.querySelector('button[type="submit"]');
-                        var original = btn ? btn.innerHTML : null;
-                        var ajaxResult = { button_success: false, redirect: false };
-                        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...'; }
-                        var action = f.getAttribute('action') || window.location.href;
-                        var method = (f.getAttribute('method') || 'POST').toUpperCase();
-                        var formData = new FormData(f);
-                        fetch(action, {
-                            method: method,
-                            credentials: 'same-origin',
-                            headers: { 'X-Requested-With':'XMLHttpRequest', 'Accept':'application/json' },
-                            body: formData
-                        }).then(function(resp){ return resp.text(); })
-                          .then(function(text){
-                               try { var j = JSON.parse(text); } catch(e) { j = null; }
-                            if (j && j.ok) {
-                                // If server requested a button success visual, apply it
-                                if (j.button_success) {
-                                    ajaxResult.button_success = true;
-                                    if (btn) {
-                                        btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-                                        btn.classList.remove('btn-primary','btn-secondary','btn-outline-secondary');
-                                        btn.classList.add('btn-success');
-                                        btn.disabled = true; // keep as success state
-                                    }
-                                }
-                                if (j.toast === true && window.showFlashToast) window.showFlashToast({ success: j.message || 'Success' });
-                                if (j.redirect) { ajaxResult.redirect = true; setTimeout(function(){ window.location = j.redirect; }, 350); }
-                            } else if (j && (j.error || j.message)) {
-                                if (j.toast === true && window.showFlashToast) window.showFlashToast({ error: j.error || j.message });
-                                // show temporary error state on button
-                                if (btn) {
-                                    var prev = btn.innerHTML;
-                                    btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed';
-                                    btn.classList.remove('btn-primary','btn-secondary','btn-outline-secondary');
-                                    btn.classList.add('btn-danger');
-                                    setTimeout(function(){ btn.disabled = false; btn.innerHTML = original; btn.classList.remove('btn-danger'); btn.classList.add('btn-outline-secondary'); }, 3000);
-                                }
-                            } else {
-                                // Do not show generic toasts for non-explicit server responses
-                            }
-                          }).catch(function(err){ console.error('AJAX form error', err); if (window.showFlashToast) window.showFlashToast({ error: 'Request failed.' });
-                              if (btn) {
-                                  btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed';
-                                  btn.classList.remove('btn-primary','btn-secondary','btn-outline-secondary');
-                                  btn.classList.add('btn-danger');
-                                  setTimeout(function(){ btn.disabled = false; btn.innerHTML = original; btn.classList.remove('btn-danger'); btn.classList.add('btn-outline-secondary'); }, 3000);
-                              }
-                          })
-                          .finally(function(){ if (btn) { if (!ajaxResult.button_success && !ajaxResult.redirect) { setTimeout(function(){ btn.disabled = false; btn.innerHTML = original; }, 600); } } });
-                    });
-                });
-        } catch (e) { console.error('bind-ajax-forms failed', e); }
+
+
     });
 })();

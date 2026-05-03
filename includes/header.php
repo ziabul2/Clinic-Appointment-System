@@ -3,59 +3,7 @@
 require_once __DIR__ . '/../config/config.php';
 
 // Log page access
-$current_page = basename($_SERVER['PHP_SELF']);
-logAction("PAGE_ACCESS", "Accessed: " . $current_page);
-
-// Session Validation & Auto-Logout
-if (isLoggedIn() && isset($_SESSION['user_id'])) {
-    $session_timeout = 3600; // 1 hour
-    $current_time = time();
-
-    // Check for inactivity timeout
-    if (isset($_SESSION['last_activity_time']) && ($current_time - $_SESSION['last_activity_time']) > $session_timeout) {
-        // Mark session as auto_logged_out
-        if (isset($_SESSION['login_log_id'])) {
-            try {
-                $stmt = $db->prepare("UPDATE user_logins SET status = 'auto_logged_out', logout_time = NOW(), duration_seconds = TIMESTAMPDIFF(SECOND, login_time, NOW()) WHERE id = :id");
-                $stmt->execute(['id' => $_SESSION['login_log_id']]);
-            } catch (Exception $e) {}
-        }
-        
-        session_unset();
-        session_destroy();
-        session_start();
-        $_SESSION['error'] = 'You have been logged out due to inactivity.';
-        redirect(SITE_URL . '/pages/login.php');
-    }
-
-    // Verify session status in DB (if it was killed by an admin)
-    if (isset($_SESSION['login_log_id'])) {
-        try {
-            $stmt = $db->prepare("SELECT status FROM user_logins WHERE id = :id");
-            $stmt->execute(['id' => $_SESSION['login_log_id']]);
-            $login_status = $stmt->fetchColumn();
-            
-            if ($login_status === 'killed') {
-                session_unset();
-                session_destroy();
-                session_start();
-                $_SESSION['error'] = 'Your session was terminated by an administrator.';
-                redirect(SITE_URL . '/pages/login.php');
-            }
-        } catch (Exception $e) {}
-    }
-
-    // Update session activity time
-    $_SESSION['last_activity_time'] = $current_time;
-
-    // Update last activity in database
-    try {
-        $up_act = $db->prepare("UPDATE users SET last_activity = CURRENT_TIMESTAMP WHERE user_id = :uid");
-        $up_act->execute(['uid' => $_SESSION['user_id']]);
-    } catch (Exception $e) {
-        // Silent fail
-    }
-}
+logAction("PAGE_ACCESS", "Accessed: " . basename($_SERVER['PHP_SELF']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +14,7 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -106,52 +55,44 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                     
                     <?php if ($role === 'doctor'): ?>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php">Appointments</a>
+                            <a class="nav-link" href="../pages/doctor_dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo $current_page == 'medicine_search.php' ? 'active' : ''; ?>" href="../pages/medicine_search.php">Medicines</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo $current_page == 'patients.php' ? 'active' : ''; ?>" href="../pages/patients.php">Patients</a>
+                            <a class="nav-link" href="../pages/prescriptions.php"><i class="fas fa-file-prescription"></i> Prescriptions</a>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo $current_page == 'dashboard.php' ? 'active' : ''; ?>" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a class="nav-link" href="../pages/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         </li>
                         
                         <?php if ($role === 'receptionist'): ?>
                             <li class="nav-item">
-                                <a class="nav-link <?php echo $current_page == 'patients.php' ? 'active' : ''; ?>" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                                <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
+                                <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
                             </li>
                         <?php else: ?>
                             <!-- Admin and other roles: full access -->
                             <li class="nav-item">
-                                <a class="nav-link <?php echo $current_page == 'patients.php' ? 'active' : ''; ?>" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
+                                <a class="nav-link" href="../pages/patients.php"><i class="fas fa-user-injured"></i> Patients</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link <?php echo $current_page == 'doctors.php' ? 'active' : ''; ?>" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
+                                <a class="nav-link" href="../pages/doctors.php"><i class="fas fa-user-md"></i> Doctors</a>
                             </li>
                             <li class="nav-item">
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo $current_page == 'appointments.php' ? 'active' : ''; ?>" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
+                                <a class="nav-link" href="../pages/appointments.php"><i class="fas fa-calendar-check"></i> Appointments</a>
                             </li>
                         <?php endif; ?>
-                        
-                        <li class="nav-item ms-md-2 border-start ps-md-3 border-secondary d-none d-lg-block">
-                            <a class="nav-link position-relative <?php echo $current_page == 'messenger.php' ? 'active text-white' : 'text-light'; ?>" href="../pages/messenger.php">
-                                <i class="fab fa-whatsapp me-1"></i> Messenger
-                                <span id="chatGlobalBadge" class="badge bg-danger rounded-pill ms-1" style="display:none;">0</span>
-                            </a>
-                        </li>
-                        <li class="nav-item d-lg-none">
-                            <a class="nav-link position-relative <?php echo $current_page == 'messenger.php' ? 'active' : ''; ?>" href="../pages/messenger.php">
-                                <i class="fab fa-whatsapp"></i> Messenger
-                                <span id="chatGlobalBadgeMobile" class="badge bg-danger rounded-pill ms-1" style="display:none;">0</span>
-                            </a>
-                        </li>
+                    <?php endif; ?>
+
+                    <?php if (basename($_SERVER['PHP_SELF']) !== 'messenger.php'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/messenger.php" title="Staff Messenger">
+                            <i class="fas fa-comments"></i>
+                            <span class="d-none d-md-inline ms-1">Messenger</span>
+                        </a>
+                    </li>
                     <?php endif; ?>
                 </ul>
                 <?php endif; ?>
@@ -161,11 +102,11 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                         // fetch user's profile picture if present
                         $waitingCount = 0;
                         $avatarUrl = '../assets/images/default_avatar.png';
-                        if (isset($db)) {
+                        if (isset($db) && ($db instanceof HybridPDO || $db instanceof PDO)) {
                             try {
                                 $cntQ = $db->prepare("SELECT COUNT(*) as cnt FROM waiting_list WHERE status = 'waiting'");
                                 $cntQ->execute(); $cntR = $cntQ->fetch(PDO::FETCH_ASSOC);
-                                $waitingCount = intval($cntR['cnt']);
+                                $waitingCount = intval($cntR['cnt'] ?? 0);
                             } catch (Throwable $e) { $waitingCount = 0; }
 
                             try {
@@ -181,14 +122,11 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                             } catch (Throwable $e) { $profileFullName = $_SESSION['username']; }
                         }
                     ?>
-                        <?php if (in_array($role, ['admin', 'root'])): ?>
                         <li class="nav-item me-2">
                             <a class="nav-link" href="../pages/manage_announcements.php" title="Manage Announcements">
                                 <i class="fas fa-bullhorn"></i>
                             </a>
                         </li>
-                        <?php endif; ?>
-
                         <li class="nav-item dropdown position-relative me-2">
                             <a class="nav-link position-relative" href="#" id="notificationBell" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
@@ -212,7 +150,7 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="<?php echo $avatarUrl; ?>" alt="avatar" style="width:30px;height:30px;object-fit:cover;border-radius:50%;margin-right:8px;">
+                                <img src="<?php echo $avatarUrl; ?>" alt="avatar" style="width:30px;height:30px;object-fit:cover;border-radius:50%;margin-right:8px;" onerror="this.onerror=null;this.src='../assets/images/default_avatar.png';">
                                 <span class="d-none d-md-inline"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
@@ -238,7 +176,6 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                                 <?php if (in_array($role, ['admin','root'])): ?>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="../pages/admin_tools.php"><i class="fas fa-tools"></i> Tools</a></li>
-                                    <li><a class="dropdown-item" href="../pages/manage_announcements.php"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                                     <li><a class="dropdown-item" href="../pages/employees.php"><i class="fas fa-users"></i> Employees</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
@@ -294,5 +231,5 @@ if (isLoggedIn() && isset($_SESSION['user_id'])) {
                 }
             })();
         </script>
-        <script src="../assets/js/notifications.js"></script>
+
         

@@ -111,16 +111,9 @@ try {
         }
 
         if (!isset($error)) {
-            // Calculate next serial number for this doctor and date
-            $serial_query = "SELECT MAX(appointment_serial) as max_serial FROM appointments 
-                            WHERE doctor_id = :doctor_id AND appointment_date = :appointment_date";
-            $serial_stmt = $db->prepare($serial_query);
-            $serial_stmt->execute([':doctor_id' => $doctor_id, ':appointment_date' => $appointment_date]);
-            $max_serial = $serial_stmt->fetch(PDO::FETCH_ASSOC)['max_serial'] ?? 0;
-            $appointment_serial = $max_serial + 1;
-
-            $query = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, consultation_type, symptoms, notes, status, appointment_serial) 
-                     VALUES (:patient_id, :doctor_id, :appointment_date, :appointment_time, :consultation_type, :symptoms, :notes, :status, :serial)";
+            // Use only columns that definitely exist in your appointments table
+            $query = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, consultation_type, symptoms, notes, status) 
+                     VALUES (:patient_id, :doctor_id, :appointment_date, :appointment_time, :consultation_type, :symptoms, :notes, :status)";
             
             $stmt = $db->prepare($query);
             $stmt->bindParam(':patient_id', $patient_id);
@@ -131,7 +124,6 @@ try {
             $stmt->bindParam(':symptoms', $symptoms);
             $stmt->bindParam(':notes', $notes);
             $stmt->bindParam(':status', $status);
-            $stmt->bindParam(':serial', $appointment_serial);
             
             if ($stmt->execute()) {
                 $appointment_id = $db->lastInsertId();
@@ -197,7 +189,7 @@ try {
                                 $pr = $pu->fetch(PDO::FETCH_ASSOC);
                                 $patientUserId = $pr['user_id'];
                             }
-                        } catch (Throwable $inner) {
+                        } catch (Exception $inner) {
                             // Column may not exist; fall back to matching by email
                             if (!empty($patient_email)) {
                                 $pu = $db->prepare('SELECT user_id FROM users WHERE email = :email LIMIT 1');
@@ -213,10 +205,10 @@ try {
                         if ($patientUserId) {
                             createNotification($db, $patientUserId, 'appointment_created', 'Appointment Scheduled', "Your appointment with Dr. $doctor_name on $appointment_date at $appointment_time has been scheduled.", $meta);
                         }
-                    } catch (Throwable $e) {
+                    } catch (Exception $e) {
                         logAction('NOTIF_ERROR', 'Failed to notify patient user: ' . $e->getMessage());
                     }
-                } catch (Throwable $e) {
+                } catch (Exception $e) {
                     logAction('NOTIF_ERROR', 'Failed to create appointment notifications: ' . $e->getMessage());
                 }
 
@@ -224,7 +216,7 @@ try {
                 if (!empty($patient_email)) {
                     try {
                         sendAppointmentNotificationToPatient($patient_email, $patient_name, $doctor_name, $appointment_date, $appointment_time, $notes);
-                    } catch (Throwable $e) {
+                    } catch (Exception $e) {
                         logAction('EMAIL_ERROR', 'Failed to send appointment email to patient: ' . $e->getMessage());
                     }
                 }
@@ -565,7 +557,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = appointmentDate.value;
 
         const slotPicker = document.getElementById('slotPicker');
-        slotPicker.innerHTML = '';
 
         if (!doctorId) {
             availabilityAlert.className = 'alert alert-info mb-0';

@@ -849,16 +849,18 @@ try {
 
                 try {
                     // Use distinct placeholders for username and email to avoid PDO "Invalid parameter number"
-                    $q = $db->prepare('SELECT user_id, username, password, role, doctor_id FROM users WHERE username = :u OR email = :e LIMIT 1');
+                    // Use LOWER() for case-insensitive lookup (important for SQLite which is CS by default for =)
+                    $q = $db->prepare('SELECT user_id, username, password, role, doctor_id FROM users WHERE LOWER(username) = LOWER(:u) OR LOWER(email) = LOWER(:e) LIMIT 1');
                     $q->bindParam(':u', $username);
                     $q->bindParam(':e', $username);
                     $q->execute();
-                    if ($q->rowCount() == 0) {
+                    $row = $q->fetch(PDO::FETCH_ASSOC);
+
+                    if (!$row) {
                         logAction('LOGIN_FAILED', "User not found: $username");
                         $_SESSION['error'] = 'Invalid username or password.';
                         redirect('pages/login.php');
                     }
-                    $row = $q->fetch(PDO::FETCH_ASSOC);
 
                     $stored = $row['password'] ?? '';
                     $ok = false;
@@ -903,11 +905,11 @@ try {
                     
                     // Update last_login
                     try {
-                        $up_login = $db->prepare("UPDATE users SET last_login = NOW() WHERE user_id = :uid");
+                        $up_login = $db->prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE user_id = :uid");
                         $up_login->execute(['uid' => $row['user_id']]);
 
                         // Log session start
-                        $ins_session = $db->prepare("INSERT INTO user_logins (user_id, login_time, ip_address, user_agent, status) VALUES (:uid, NOW(), :ip, :ua, 'active')");
+                        $ins_session = $db->prepare("INSERT INTO user_logins (user_id, login_time, ip_address, user_agent, status) VALUES (:uid, CURRENT_TIMESTAMP, :ip, :ua, 'active')");
                         $ins_session->execute([
                             'uid' => $row['user_id'],
                             'ip'  => $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN',

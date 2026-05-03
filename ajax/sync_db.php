@@ -17,8 +17,7 @@ try {
     // HybridPDO $db is already initialized in config.php
     
     if ($action === 'status') {
-        $store = new JsonDataStore(__DIR__ . '/../DatabaseJSON');
-        $pending = $store->getPendingChanges();
+        $pending = $db->getStore()->getPendingChanges();
         echo json_encode([
             'ok' => true,
             'is_offline' => $db->isOffline(),
@@ -30,13 +29,14 @@ try {
 
     if ($action === 'sync') {
         if ($db->isOffline()) {
-            // Try one last time to reconnect by including database.php again or checking isOnline
+            // Try to reconnect
             require_once '../config/database.php';
-            if (isOnline()) {
-                $newPdo = (Database::getInstance())->getConnection();
-                if ($newPdo instanceof PDO) {
-                    $db = new HybridPDO($newPdo, __DIR__ . '/../DatabaseJSON');
-                }
+            $database = new Database();
+            $newPdo = $database->getConnection();
+            if ($newPdo instanceof PDO) {
+                // Re-initialize with new connection
+                $sqlitePath = __DIR__ . '/../DatabaseSQL/clinic_offline.db';
+                $db = new HybridPDO($newPdo, $sqlitePath);
             }
         }
 
@@ -55,15 +55,47 @@ try {
     }
 
     if ($action === 'rebuild_index') {
-        require_once '../config/medicine_cache.php';
-        $jsonBasePath = __DIR__ . '/../DatabaseJSON';
-        $cache = new MedicineCache($jsonBasePath);
-        $res = $cache->rebuildIndex();
-        if ($res) {
-            echo json_encode(['ok' => true, 'message' => 'Medicine search index rebuilt for super fast performance.']);
-        } else {
-            echo json_encode(['ok' => false, 'message' => 'Failed to rebuild index. Master file may be missing.']);
+        if ($db->isOffline()) {
+            echo json_encode(['ok' => false, 'message' => 'Cannot rebuild while offline.']);
+            exit;
         }
+
+        // Refresh data from MySQL first
+        require_once '../config/init_sqlite.php';
+        $mysqlFile = __DIR__ . '/../sqls_DB/clinic_management.sql';
+        $sqliteFile = __DIR__ . '/../DatabaseSQL/clinic_offline.db';
+        $init = new SQLiteInitializer($mysqlFile, $sqliteFile);
+        $init->importData($db);
+        
+        // Then rebuild JSON partitions for the client-side SPA
+        require_once '../config/medicine_cache.php';
+        $cache = new MedicineCache(__DIR__ . '/../DatabaseSQL', $db);
+        $res = $cache->rebuildIndex();
+        
+        if ($res) {
+            echo json_encode(['ok' => true, 'message' => 'Offline database refreshed and medicine index partitions rebuilt.']);
+        } else {
+            echo json_encode(['ok' => false, 'message' => 'Database refreshed but index rebuild failed.']);
+        }
+        exit;
+    }
+
+    if ($action === 'force_export') {
+        if ($db->isOffline()) {
+            echo json_encode(['ok' => false, 'message' => 'Cannot export while offline.']);
+            exit;
+        }
+
+        require_once '../config/init_sqlite.php';
+        $mysqlFile = __DIR__ . '/../sqls_DB/clinic_management.sql';
+        $sqliteFile = __DIR__ . '/../DatabaseSQL/clinic_offline.db';
+        $init = new SQLiteInitializer($mysqlFile, $sqliteFile);
+        
+        // Full run: recreates schema and imports data
+        $init->run();
+        $init->importData($db);
+
+        echo json_encode(['ok' => true, 'message' => 'Full database export to SQLite completed.']);
         exit;
     }
 
