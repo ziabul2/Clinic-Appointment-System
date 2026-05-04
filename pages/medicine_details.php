@@ -1,7 +1,7 @@
 <?php
 $page_title = "Medicine Details";
+$hide_footer = true;
 require_once '../includes/header.php';
-if (!isLoggedIn()) redirect('../index.php');
 
 $id = $_GET['id'] ?? null;
 $medicine = null;
@@ -52,6 +52,9 @@ function get_dosage_icon($form) {
         <div class="col">
             <h1 class="h2 fw-bold text-dark mb-0"><?php echo htmlspecialchars($medicine['brand_name']); ?></h1>
         </div>
+        <div class="col-auto text-end">
+            <div id="google_translate_element" class="d-inline-block"></div>
+        </div>
     </div>
 
     <div class="row g-4">
@@ -74,9 +77,13 @@ function get_dosage_icon($form) {
                             <label class="small text-muted fw-bold d-block">DOSAGE FORM</label>
                             <div class="fw-bold text-dark"><?php echo clean_clinical_text($medicine['dosage_form']); ?></div>
                         </div>
-                        <div class="mb-0">
+                        <div class="mb-3">
                             <label class="small text-muted fw-bold d-block">MANUFACTURER</label>
                             <div class="fw-bold text-dark text-primary"><?php echo clean_clinical_text($medicine['manufacturer']); ?></div>
+                        </div>
+                        <div class="mb-0">
+                            <label class="small text-muted fw-bold d-block">UNIT PRICE</label>
+                            <div class="fw-bold text-success fs-5">৳ <?php echo $medicine['unit_price'] ? number_format($medicine['unit_price'], 2) : 'N/A'; ?></div>
                         </div>
                     </div>
                 </div>
@@ -193,3 +200,11 @@ function get_dosage_icon($form) {
 </style>
 
 <?php require_once '../includes/footer.php'; ?>
+
+<!-- Google Translate Widget -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'bn,en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

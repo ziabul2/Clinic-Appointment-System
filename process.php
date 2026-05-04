@@ -1595,82 +1595,90 @@ try {
 
         case 'search_medicine':
             header('Content-Type: application/json');
-            if (!isLoggedIn()) { echo json_encode(['ok'=>false, 'message'=>'Unauthorized']); exit; }
             $q = trim($_GET['q'] ?? '');
+            $limit = intval($_GET['limit'] ?? 20);
+            $offset = intval($_GET['offset'] ?? 0);
+            
             if (strlen($q) < 2) { echo json_encode([]); exit; }
             
             try {
-                // 1. Find primary matches (up to 30 to keep it fast)
-                // Use GROUP BY to avoid identical brand+generic+strength+form combinations from different manufacturers/IDs
-                $stmt = $db->prepare("SELECT MIN(id) as id, brand_name, generic_name, dosage_form, strength, manufacturer, drug_class, indication 
-                                    FROM medicine_master_data 
-                                    WHERE brand_name LIKE :q1 OR generic_name LIKE :q2 OR indication LIKE :q3
-                                    GROUP BY brand_name, generic_name, strength, dosage_form
-                                    ORDER BY (brand_name LIKE :eq1) DESC, (generic_name LIKE :eq2) DESC 
-                                    LIMIT 30");
-                $search = "%$q%";
-                $stmt->execute([
-                    'q1' => $search, 
-                    'q2' => $search, 
-                    'q3' => $search, 
-                    'eq1' => $q, 
-                    'eq2' => $q
-                ]);
-                $primaryResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                if (empty($primaryResults)) { echo json_encode([]); exit; }
-
-                // 2. Identify unique generics from primary results to find alternatives
-                $generics = [];
-                $brandNames = [];
-                foreach ($primaryResults as $res) {
-                    if ($res['generic_name']) $generics[] = $res['generic_name'];
-                    $brandNames[] = $res['brand_name'];
-                }
-                $generics = array_unique($generics);
-
-                $alternatives = [];
-                if (!empty($generics)) {
-                    // Fetch up to 2 alternatives per generic in a single query
-                    $genPlaceholders = implode(',', array_fill(0, count($generics), '?'));
-                    $brandPlaceholders = implode(',', array_fill(0, count($brandNames), '?'));
-                    
-                    $altStmt = $db->prepare("SELECT MIN(id) as id, brand_name, generic_name, dosage_form, strength, manufacturer 
-                                           FROM medicine_master_data 
-                                           WHERE generic_name IN ($genPlaceholders) 
-                                           AND brand_name NOT IN ($brandPlaceholders)
-                                           GROUP BY brand_name, generic_name, strength, dosage_form
-                                           LIMIT 60");
-                    
-                    $params = array_merge(array_values($generics), array_values($brandNames));
-                    $altStmt->execute($params);
-                    $alternatives = $altStmt->fetchAll(PDO::FETCH_ASSOC);
-                }
-
-                // 3. Merge results: Primary first, then their alternatives, with deduplication
-                $finalResults = [];
-                $seenIds = [];
+                // Optimized single-pass query with manufacturer prioritization
+                $sql = "SELECT MIN(id) as id, brand_name, generic_name, dosage_form, strength, manufacturer, drug_class, indication, unit_price 
+                        FROM medicine_master_data 
+                        WHERE brand_name LIKE :q1 OR generic_name LIKE :q2 OR indication LIKE :q3
+                        GROUP BY brand_name, generic_name, strength, dosage_form
+                        ORDER BY 
+                            (CASE 
+                                WHEN manufacturer LIKE '%Square%' THEN 1
+                                WHEN manufacturer LIKE '%Beximco%' THEN 2
+                                WHEN manufacturer LIKE '%Incepta%' THEN 3
+                                WHEN manufacturer LIKE '%ACME%' THEN 4
+                                WHEN manufacturer LIKE '%Aristopharma%' THEN 5
+                                WHEN manufacturer LIKE '%Ibn Sina%' THEN 6
+                                ELSE 10 
+                            END) ASC,
+                            (brand_name LIKE :eq1) DESC,
+                            (generic_name LIKE :eq2) DESC,
+                            brand_name ASC
+                        LIMIT :limit OFFSET :offset";
                 
-                foreach ($primaryResults as $p) {
-                    if (in_array($p['id'], $seenIds)) continue;
-                    $p['type'] = 'primary';
-                    $finalResults[] = $p;
-                    $seenIds[] = $p['id'];
-                    
-                    // Find alternatives for THIS specific primary result
-                    $count = 0;
-                    foreach ($alternatives as $alt) {
-                        if (in_array($alt['id'], $seenIds)) continue;
-                        if ($alt['generic_name'] === $p['generic_name'] && $count < 2) {
-                            $alt['type'] = 'related';
-                            $finalResults[] = $alt;
-                            $seenIds[] = $alt['id'];
-                            $count++;
-                        }
-                    }
+                $stmt = $db->prepare($sql);
+                $search = "%$q%";
+                $stmt->bindValue(':q1', $search, PDO::PARAM_STR);
+                $stmt->bindValue(':q2', $search, PDO::PARAM_STR);
+                $stmt->bindValue(':q3', $search, PDO::PARAM_STR);
+                $stmt->bindValue(':eq1', $q, PDO::PARAM_STR);
+                $stmt->bindValue(':eq2', $q, PDO::PARAM_STR);
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+                $stmt->execute();
+                
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                // Add a 'type' field to maintain compatibility with existing JS if needed, 
+                // although we are simplifying.
+                foreach ($results as &$r) {
+                    $r['type'] = 'primary'; 
                 }
 
-                echo json_encode($finalResults);
+                echo json_encode($results);
+            } catch (Exception $e) {
+                echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+            }
+            exit;
+            break;
+
+        case 'get_medicine_count':
+            header('Content-Type: application/json');
+            try {
+                $stmt = $db->query("SELECT COUNT(*) as total FROM medicine_master_data");
+                $res = $stmt->fetch(PDO::FETCH_ASSOC);
+                echo json_encode(['ok'=>true, 'total'=>$res['total']]);
+            } catch (Exception $e) {
+                echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
+            }
+            exit;
+            break;
+
+        case 'update_medicine_price':
+            header('Content-Type: application/json');
+            // Public access for price updates as requested
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['ok'=>false, 'message'=>'POST required']); exit; }
+            $id = intval($_POST['id'] ?? 0);
+            $price = floatval($_POST['price'] ?? 0);
+            
+            if (!$id || $price <= 0) { echo json_encode(['ok'=>false, 'message'=>'Invalid ID or Price']); exit; }
+            
+            try {
+                $sql = "UPDATE medicine_master_data SET unit_price = :price WHERE id = :id";
+                $stmt = $db->prepare($sql);
+                $stmt->execute(['price'=>$price, 'id'=>$id]);
+                
+                // Mirror to SQLite if offline sync table allows, or just direct exec if HybridPDO handles it
+                // Since it's a write query, HybridPDO will handle synchronization.
+                
+                logAction('MEDICINE_PRICE_UPDATE', "Price updated for medicine ID $id to $price");
+                echo json_encode(['ok'=>true, 'message'=>'Price updated successfully']);
             } catch (Exception $e) {
                 echo json_encode(['ok'=>false, 'message'=>$e->getMessage()]);
             }

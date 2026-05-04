@@ -49,9 +49,15 @@ require_once __DIR__ . '/../includes/header.php';
                 <a href="password_reset_request.php" class="small text-decoration-none text-primary fw-bold">Forgot Password?</a>
             </div>
 
-            <button class="btn btn-primary w-100 btn-login mb-4" type="submit">
+            <button class="btn btn-primary w-100 btn-login mb-3" type="submit">
                 <i class="fas fa-sign-in-alt me-2"></i> Sign In
             </button>
+
+            <div class="text-center">
+                <a href="medicine_search.php" class="btn btn-outline-info w-100 rounded-pill border-2 fw-bold">
+                    <i class="fas fa-search-plus me-2"></i> Browse Medicine Directory
+                </a>
+            </div>
         </form>
     </div>
 </div>
